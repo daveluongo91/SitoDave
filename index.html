@@ -112,73 +112,135 @@
 
       <!-- Filter Buttons -->
       <div style="display: flex; gap: 0.75rem; margin-bottom: 2.5rem; flex-wrap: wrap;">
-        <button class="btn btn-primary filter-tab active" data-category="all">Tutti</button>
-        <button class="btn btn-secondary filter-tab" data-category="astro">Astrofotografia</button>
-        <button class="btn btn-secondary filter-tab" data-category="montagna">Montagna</button>
-        <button class="btn btn-secondary filter-tab" data-category="mare">Mare & Scogliere</button>
+        <button class="btn btn-primary filter-tab active" data-category="all">Tutti gli Eventi</button>
+        <button class="btn btn-secondary filter-tab" data-category="nazionale">🇮🇹 Workshop Nazionali</button>
+        <button class="btn btn-secondary filter-tab" data-category="viaggio">✈️ Viaggi Fotografici</button>
       </div>
 
       <div class="workshop-grid">
         
-        <!-- Card 1: Nivolet 2026 -->
-        <div class="card workshop-card-item" data-category="astro">
+        <!-- Evento 1: Nivolet 2026 (Agosto 2026) -->
+        <div class="card workshop-card-item" data-category="nazionale">
           <div class="card-img-wrapper">
             <img src="assets/nivolet_workshop.png" alt="Workshop Colle del Nivolet" />
             <span class="badge-status limited">Ultimi 2 Posti</span>
           </div>
           <div class="card-body">
-            <div class="card-date">📅 8 - 9 Agosto 2026 • Colle del Nivolet</div>
+            <div class="card-date">📅 8 - 9 Agosto 2026 • Colle del Nivolet (Gran Paradiso)</div>
             <h3 class="card-title">Workshop Colle del Nivolet 2026</h3>
-            <p class="card-text">Co-hosted con Loris Ferrini. Una notte sotto il cielo stellato a 2.500m di quota, sessioni sul campo di astrofotografia ambientata, pernottamento e cena inclusi.</p>
+            <p class="card-text">Co-hosted con Loris Ferrini. Una notte a 2.500m di quota sotto un cielo stellato incontaminato. Astrofotografia ambientata, pernotto e cena inclusi al Rifugio Savoia.</p>
             
             <div class="card-meta">
               <div class="meta-info">
-                <span class="meta-label">Durata</span>
-                <span class="meta-value">2 Giorni / 1 Notte</span>
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Nazionale • 2 Giorni / 1 Notte</span>
               </div>
               <a href="nivolet-2026.html" class="btn btn-secondary" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Dettagli & Programma</a>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: Minorca 2027 -->
-        <div class="card workshop-card-item" data-category="mare">
+        <!-- Evento 2: Cinque Terre (Ottobre 2026) -->
+        <div class="card workshop-card-item" data-category="nazionale">
+          <div class="card-img-wrapper">
+            <img src="assets/cinque_terre_workshop.png" alt="Workshop Cinque Terre" />
+            <span class="badge-status active">Iscrizioni Aperte</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">📅 16 - 18 Ottobre 2026 • Cinque Terre & Costa Ligure</div>
+            <h3 class="card-title">Workshop Lunga Esposizione & Paesaggio Marino</h3>
+            <p class="card-text">Studio delle maree, uso di filtri ND/GND Kase e composizione diurna e notturna con la gamma Art di SIGMA tra i borghi e le scogliere liguri.</p>
+            
+            <div class="card-meta">
+              <div class="meta-info">
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Nazionale • 3 Giorni / 2 Notti</span>
+              </div>
+              <button class="btn btn-secondary open-modal-btn" data-subject="Workshop Cinque Terre 2026" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Richiedi Info</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento 3: Val d'Orcia (Novembre 2026) -->
+        <div class="card workshop-card-item" data-category="nazionale">
+          <div class="card-img-wrapper">
+            <img src="assets/val_dorcia_workshop.png" alt="Workshop Val d'Orcia" />
+            <span class="badge-status active">Iscrizioni Aperte</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">📅 14 - 17 Novembre 2026 • Val d'Orcia (Toscana)</div>
+            <h3 class="card-title">Workshop Val d'Orcia: Nebbie & Atmosfere d'Autunno</h3>
+            <p class="card-text">La luce radente autunnale tra i calanchi, le quinte di cipressi e le nebbie mattutine. Sessioni di scatto all'alba e post-produzione per valorizzare le sfumature della Toscana.</p>
+            
+            <div class="card-meta">
+              <div class="meta-info">
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Nazionale • 4 Giorni / 3 Notti</span>
+              </div>
+              <button class="btn btn-secondary open-modal-btn" data-subject="Workshop Val d'Orcia 2026" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Richiedi Info</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento 4: Lisbona (Marzo 2027) -->
+        <div class="card workshop-card-item" data-category="viaggio">
+          <div class="card-img-wrapper">
+            <img src="assets/lisbona_photo_tour.png" alt="Photo Tour Lisbona" />
+            <span class="badge-status upcoming">Anteprima 2027</span>
+          </div>
+          <div class="card-body">
+            <div class="card-date">📅 12 - 15 Marzo 2027 • Lisbona & Cabo da Roca (Portogallo)</div>
+            <h3 class="card-title">Photo Tour Lisbona: Oceano & Luce Atlantica</h3>
+            <p class="card-text">Un viaggio tra i fari drammatici di Cabo da Roca, la costa atlantica ventosa e il fascino storico della capitale portoghese al tramonto.</p>
+            
+            <div class="card-meta">
+              <div class="meta-info">
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Viaggio • 4 Giorni / 3 Notti</span>
+              </div>
+              <button class="btn btn-secondary open-modal-btn" data-subject="Interesse Lisbona 2027" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Lista d'Attesa</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento 5: Minorca (Maggio 2027) -->
+        <div class="card workshop-card-item" data-category="viaggio">
           <div class="card-img-wrapper">
             <img src="assets/minorca_photo_tour.png" alt="Photo Tour Minorca" />
             <span class="badge-status upcoming">Anteprima 2027</span>
           </div>
           <div class="card-body">
-            <div class="card-date">📅 Maggio 2027 • Isola di Minorca (Spagna)</div>
-            <h3 class="card-title">Photo Tour Minorca: Scogliere & Stelle</h3>
-            <p class="card-text">Un viaggio fotografico tra i faraglioni incontaminati di Minorca, riserva della biosfera UNESCO e Starlight Reserve per l'osservazione del cielo notturno.</p>
+            <div class="card-date">📅 21 - 25 Maggio 2027 • Isola di Minorca (Spagna)</div>
+            <h3 class="card-title">Photo Tour Minorca: Scogliere & Cieli Bui</h3>
+            <p class="card-text">Esplorazione fotografica tra i faraglioni e i fari di Minorca, riserva della biosfera UNESCO e Starlight Reserve per l'osservazione notturna del cielo stellato.</p>
             
             <div class="card-meta">
               <div class="meta-info">
-                <span class="meta-label">Durata</span>
-                <span class="meta-value">5 Giorni / 4 Notti</span>
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Viaggio • 5 Giorni / 4 Notti</span>
               </div>
               <button class="btn btn-secondary open-modal-btn" data-subject="Interesse Minorca 2027" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Lista d'Attesa</button>
             </div>
           </div>
         </div>
 
-        <!-- Card 3: Cinque Terre -->
-        <div class="card workshop-card-item" data-category="montagna">
+        <!-- Evento 6: Madeira (Giugno 2027) -->
+        <div class="card workshop-card-item" data-category="viaggio">
           <div class="card-img-wrapper">
-            <img src="assets/hero_milky_way.png" alt="Workshop Paesaggio Liguria" />
-            <span class="badge-status active">Iscrizioni Aperte</span>
+            <img src="assets/madeira_photo_tour.png" alt="Photo Tour Madeira" />
+            <span class="badge-status upcoming">Anteprima 2027</span>
           </div>
           <div class="card-body">
-            <div class="card-date">📅 Ottobre 2026 • Cinque Terre & Costa Ligure</div>
-            <h3 class="card-title">Workshop Lunga Esposizione & Paesaggio Marino</h3>
-            <p class="card-text">Tecniche di ripresa con filtri ND/GND, gestione delle maree, composizione ed elaborazione con filtri Kase e ottiche SIGMA Art.</p>
+            <div class="card-date">📅 18 - 24 Giugno 2027 • Isola di Madeira (Portogallo)</div>
+            <h3 class="card-title">Photo Tour Madeira: L'Isola dell'Eterna Primavera</h3>
+            <p class="card-text">Dalla foresta fiabesca di Fanal immersa nella nebbia alle cime sopra le nubi di Pico do Arieiro, con sessioni notturne di astrofotografia sull'Oceano.</p>
             
             <div class="card-meta">
               <div class="meta-info">
-                <span class="meta-label">Durata</span>
-                <span class="meta-value">3 Giorni</span>
+                <span class="meta-label">Tipologia / Durata</span>
+                <span class="meta-value">Viaggio • 7 Giorni / 6 Notti</span>
               </div>
-              <button class="btn btn-secondary open-modal-btn" data-subject="Workshop Cinque Terre" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Richiedi Info</button>
+              <button class="btn btn-secondary open-modal-btn" data-subject="Interesse Madeira 2027" style="padding: 0.5rem 1.1rem; font-size: 0.85rem;">Lista d'Attesa</button>
             </div>
           </div>
         </div>
