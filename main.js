@@ -5,6 +5,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Davide Luongo Astrophotography Website — Loaded successfully.");
 
+  // Fetch dynamic content from Backend API
+  fetch('/api/content')
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.home) {
+        // Sync Hero badge & description if elements exist
+        const heroBadge = document.querySelector('.hero-tagline-badge span');
+        if (heroBadge && data.home.badge) heroBadge.innerText = data.home.badge;
+      }
+    })
+    .catch(() => {
+      console.log("Backend API offline — running on static fallback.");
+    });
+
   // 1. Modal Functionality (Prenotazioni / Richiesta Info)
   const modalOverlay = document.getElementById('reservation-modal');
   const modalCloseBtn = document.getElementById('modal-close');

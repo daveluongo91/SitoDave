@@ -1,0 +1,25 @@
+{
+  "name": "sito-dave-backend",
+  "version": "1.0.0",
+  "description": "Backend & Admin CMS per il sito ufficiale di Davide Luongo (Landscape & Astrophotography)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "astrophotography",
+    "backend",
+    "cms",
+    "srgb",
+    "sharp"
+  ],
+  "author": "Davide Luongo",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.4"
+  }
+}

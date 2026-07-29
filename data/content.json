@@ -1,0 +1,366 @@
+{
+  "home": {
+    "badge": "HIKE • SHOOT • PRINT • REPEAT",
+    "title": "Cattura la magia della <span class=\"gradient-text\">luce e del cielo notturno</span>",
+    "description": "Esperienze fotografiche immersive in location straordinarie, viaggi guidati e corsi di formazione One-to-One. Dalla pianificazione sul campo alla stampa Fine Art.",
+    "stats": [
+      {
+        "number": "15+",
+        "label": "Workshop Organizzati"
+      },
+      {
+        "number": "100%",
+        "label": "Assistenza sul Campo"
+      },
+      {
+        "number": "SIGMA",
+        "label": "Official Ambassador"
+      },
+      {
+        "number": "Fine Art",
+        "label": "Stampa di Qualità"
+      }
+    ],
+    "bio": {
+      "title": "Davide Luongo",
+      "subtitle": "La Mia Storia",
+      "paragraphs": [
+        "Mi chiamo Davide e sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino ai vent’anni. Fin da bambino ho avuto modo di avvicinarmi alla tecnologia grazie a mio padre, grande appassionato di innovazione e fotografia: la mia prima macchina fotografica, infatti, era la sua.",
+        "Durante gli anni universitari, nel 2016, ho riscoperto la fotografia come hobby grazie al mio coinquilino Franz. Insieme realizzammo uno dei miei primi scatti notturni a Boccadasse, un luogo che negli anni è diventato per me particolarmente significativo.",
+        "Nel 2017 mi sono trasferito a Padova per motivi di lavoro. Qui ho vissuto un periodo di solitudine che ha contribuito in modo decisivo alla maturazione della mia passione per la fotografia, diventata uno strumento di crescita personale ed espressione.",
+        "Da qualche tempo collaboro con brand fotografici di primo piano come SIGMA Lenses, Kase Filters e Vanguard. La fotografia rappresenta per me il punto d’incontro con la mia passione per l’outdoor, la montagna e i paesaggi del grande Nord."
+      ]
+    }
+  },
+  "workshops": [
+    {
+      "id": "nivolet-2026",
+      "title": "Workshop Colle del Nivolet 2026",
+      "category": "nazionale",
+      "date": "8 - 9 Agosto 2026",
+      "location": "Colle del Nivolet (Gran Paradiso)",
+      "description": "Co-hosted con Loris Ferrini. Una notte a 2.500m di quota sotto un cielo stellato incontaminato. Astrofotografia ambientata, pernotto e cena inclusi al Rifugio Savoia.",
+      "duration": "2 Giorni / 1 Notte",
+      "price": "€290",
+      "availableSeats": 2,
+      "totalSeats": 8,
+      "status": "limited",
+      "statusLabel": "Ultimi 2 Posti",
+      "image": "assets/nivolet_workshop.png",
+      "detailsUrl": "nivolet-2026.html"
+    },
+    {
+      "id": "cinque-terre-2026",
+      "title": "Workshop Lunga Esposizione & Paesaggio Marino",
+      "category": "nazionale",
+      "date": "16 - 18 Ottobre 2026",
+      "location": "Cinque Terre & Costa Ligure",
+      "description": "Studio delle maree, uso di filtri ND/GND Kase e composizione diurna e notturna con la gamma Art di SIGMA tra i borghi e le scogliere liguri.",
+      "duration": "3 Giorni / 2 Notti",
+      "price": "€380",
+      "availableSeats": 6,
+      "totalSeats": 8,
+      "status": "active",
+      "statusLabel": "Iscrizioni Aperte",
+      "image": "assets/cinque_terre_workshop.png",
+      "detailsUrl": "#modal-cinque-terre"
+    },
+    {
+      "id": "val-dorcia-2026",
+      "title": "Workshop Val d'Orcia: Nebbie & Atmosfere d'Autunno",
+      "category": "nazionale",
+      "date": "14 - 17 Novembre 2026",
+      "location": "Val d'Orcia (Toscana)",
+      "description": "La luce radente autunnale tra i calanchi, le quinte di cipressi e le nebbie mattutine. Sessioni di scatto all'alba e post-produzione per valorizzare le sfumature della Toscana.",
+      "duration": "4 Giorni / 3 Notti",
+      "price": "€490",
+      "availableSeats": 5,
+      "totalSeats": 8,
+      "status": "active",
+      "statusLabel": "Iscrizioni Aperte",
+      "image": "assets/val_dorcia_workshop.png",
+      "detailsUrl": "#modal-val-dorcia"
+    },
+    {
+      "id": "lisbona-2027",
+      "title": "Photo Tour Lisbona: Oceano & Luce Atlantica",
+      "category": "viaggio",
+      "date": "12 - 15 Marzo 2027",
+      "location": "Lisbona & Cabo da Roca (Portogallo)",
+      "description": "Un viaggio tra i fari drammatici di Cabo da Roca, la costa atlantica ventosa e il fascino storico della capitale portoghese al tramonto.",
+      "duration": "4 Giorni / 3 Notti",
+      "price": "€650",
+      "availableSeats": 8,
+      "totalSeats": 8,
+      "status": "upcoming",
+      "statusLabel": "Anteprima 2027",
+      "image": "assets/lisbona_photo_tour.png",
+      "detailsUrl": "#modal-lisbona"
+    },
+    {
+      "id": "minorca-2027",
+      "title": "Photo Tour Minorca: Scogliere & Cieli Bui",
+      "category": "viaggio",
+      "date": "21 - 25 Maggio 2027",
+      "location": "Isola di Minorca (Spagna)",
+      "description": "Esplorazione fotografica tra i faraglioni e i fari di Minorca, riserva della biosfera UNESCO e Starlight Reserve per l'osservazione notturna del cielo stellato.",
+      "duration": "5 Giorni / 4 Notti",
+      "price": "€790",
+      "availableSeats": 8,
+      "totalSeats": 8,
+      "status": "upcoming",
+      "statusLabel": "Anteprima 2027 - Lista d'Attesa",
+      "image": "assets/minorca_photo_tour.png",
+      "detailsUrl": "#modal-minorca"
+    },
+    {
+      "id": "madeira-2027",
+      "title": "Photo Tour Madeira: L'Isola dell'Eterna Primavera",
+      "category": "viaggio",
+      "date": "18 - 24 Giugno 2027",
+      "location": "Isola di Madeira (Portogallo)",
+      "description": "Dalla foresta fiabesca di Fanal immersa nella nebbia alle cime sopra le nubi di Pico do Arieiro, con sessioni notturne di astrofotografia sull'Oceano.",
+      "duration": "7 Giorni / 6 Notti",
+      "price": "€950",
+      "availableSeats": 8,
+      "totalSeats": 8,
+      "status": "upcoming",
+      "statusLabel": "Anteprima 2027",
+      "image": "assets/madeira_photo_tour.png",
+      "detailsUrl": "#modal-madeira"
+    }
+  ],
+  "gear": [
+    {
+      "id": "sigma-14mm",
+      "title": "SIGMA 14mm f/1.4 DG DN Art",
+      "brand": "SIGMA LENSES • OBIETTIVO FISSO",
+      "category": "sigma",
+      "microArticle": "L'obiettivo definitivo per l'astrofotografia ambientata. La sua eccezionale luminosità f/1.4 combinata con un controllo impeccabile del coma e delle aberrazioni cromatiche ai bordi dell'immagine permette di catturare il nucleo della Via Lattea con tempi di scatto ridotti e ISO bassi. È il punto di riferimento in tutti i miei workshop notturni.",
+      "specs": [
+        "Sony E / L-Mount",
+        "Apertura: f/1.4",
+        "Astro-Lock Switch",
+        "Staffa Treppiede Inclusa"
+      ],
+      "ambassadorBadge": "SIGMA Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su SIGMA Italia",
+      "actionUrl": "https://www.sigma-foto.it/",
+      "image": "assets/gear_sigma_14mm.png"
+    },
+    {
+      "id": "sigma-24-70mm",
+      "title": "SIGMA 24-70mm f/2.8 DG DN Art (Sony E)",
+      "brand": "SIGMA LENSES • ZOOM STANDARD",
+      "category": "sigma",
+      "microArticle": "Lo zoom di lavoro quotidiano per eccellenza. Estremamente nitido da bordo a bordo a qualsiasi focale, è la lente ideale per la fotografia di paesaggio diurno, ritratti ambientati e scatti durante i trekking in montagna dove occorre rapidità di composizione e versatilità senza cambiare ottica.",
+      "specs": [
+        "Sony E",
+        "Apertura Costante: f/2.8",
+        "Vetri FLD / SLD",
+        "Tropicalizzato"
+      ],
+      "ambassadorBadge": "SIGMA Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su SIGMA Italia",
+      "actionUrl": "https://www.sigma-foto.it/",
+      "image": "assets/gear_sigma_2470.png"
+    },
+    {
+      "id": "sigma-100-400mm",
+      "title": "SIGMA 100-400mm f/5-6.3 DG DN OS (Sony E)",
+      "brand": "SIGMA LENSES • TELEOBIETTIVO",
+      "category": "sigma",
+      "microArticle": "Il teleobiettivo leggero per isolare dettagli di creste montuose, giochi di luce sulle nubi e strati di paesaggio compresso. Offre un'incisione ottica straordinaria in un corpo compatto che non pesa nello zaino durante le lunghe salite in quota.",
+      "specs": [
+        "Sony E",
+        "Stabilizzazione Ottica OS",
+        "Dual Action Zoom",
+        "Peso Ridotto"
+      ],
+      "ambassadorBadge": "SIGMA Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su SIGMA Italia",
+      "actionUrl": "https://www.sigma-foto.it/",
+      "image": "assets/gear_sigma_100400.png"
+    },
+    {
+      "id": "nomad-msm",
+      "title": "Nomad Move Shoot Move Star Tracker",
+      "brand": "ASTROPHOTOGRAPHY • STAR TRACKER",
+      "category": "astro",
+      "microArticle": "Il tracciatore stellare ultra-compatto per chi ama viaggiare leggero senza rinunciare alla qualità. Compensando la rotazione terrestre, permette di effettuare lunghe esposizioni del cielo notturno mantenendo le stelle perfettamente puntiformi e il rumore digitale al minimo.",
+      "specs": [
+        "Formato Tascabile",
+        "Batteria USB Ricaricabile",
+        "Allineamento Polare Laser",
+        "Payload fino a 3kg"
+      ],
+      "ambassadorBadge": null,
+      "affiliateBadge": "Codice Sconto & Affiliato",
+      "discountCode": "MSM5DAVE",
+      "actionLabel": "Acquista con Link Affiliato",
+      "actionUrl": "https://www.moveshootmove.com/",
+      "image": "assets/gear_nomad_msm.png"
+    },
+    {
+      "id": "vanguard-alta-pro",
+      "title": "Vanguard Alta Pro 3VL 264CT",
+      "brand": "VANGUARD • TREPPIEDE CARBONIO",
+      "category": "vanguard",
+      "microArticle": "Treppiede in fibra di carbonio ad alte prestazioni con mezza sfera di livellamento integrata. Garantisce una stabilità incrollabile per l'astrofotografia in presenza di vento forte e un livellamento istantaneo su pendenze montuose o scogliere impervie.",
+      "specs": [
+        "Fibra di Carbonio 8X",
+        "Mezza Sfera di Livellamento",
+        "Testa Fluida Video/Foto",
+        "Piedini Chiodati"
+      ],
+      "ambassadorBadge": "Vanguard Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su Vanguard World",
+      "actionUrl": "https://www.vanguardworld.it/",
+      "image": "assets/gear_vanguard_alta.png"
+    },
+    {
+      "id": "vanguard-lbp50s",
+      "title": "Vanguard LBP-50S Lens Pouch",
+      "brand": "VANGUARD • ACCESSORI & CUSTODIE",
+      "category": "vanguard",
+      "microArticle": "Custodia protettiva imbottita e tropicalizzata per l'alloggiamento e il trasporto in sicurezza di ottiche pregiate, filtri a lastra e accessori delicati. Perfetta da agganciare all'esterno o all'interno dello zaino durante i trekking.",
+      "specs": [
+        "Imbottitura Anti-Urto",
+        "Tessuto Idrorepellente",
+        "Attacco Modulare MOLLE"
+      ],
+      "ambassadorBadge": "Vanguard Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su Vanguard World",
+      "actionUrl": "https://www.vanguardworld.it/",
+      "image": "assets/gear_vanguard_lbp.png"
+    },
+    {
+      "id": "vanguard-veo-active-53kg",
+      "title": "Vanguard VEO Active 53KG",
+      "brand": "VANGUARD • ZAINO TREKKING HIGH CAPACITY",
+      "category": "vanguard",
+      "microArticle": "Lo zaino fotografico da spedizione da 53 litri. Progettato per contenere tutto il corredo fotografico (2 corpi, 4 obiettivi, tracciatore stellare) insieme all'attrezzatura per il bivacco in quota (tenda, sacco a pelo, vestiario tecnico). Schienale ergonomico ad altissimo comfort.",
+      "specs": [
+        "Capacità 53 Litri",
+        "Modulo Removibile ICU",
+        "Porta Sacca Idrica",
+        "Copertura Pioggia Inclusa"
+      ],
+      "ambassadorBadge": "Vanguard Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su Vanguard World",
+      "actionUrl": "https://www.vanguardworld.it/",
+      "image": "assets/gear_vanguard_active53.png"
+    },
+    {
+      "id": "vanguard-veo-active-46kg",
+      "title": "Vanguard VEO Active 46KG",
+      "brand": "VANGUARD • ZAINO OUTDOOR COMPATTO",
+      "category": "vanguard",
+      "microArticle": "La versione agile e dinamica da 46 litri, ottima per uscite giornaliere e trekking veloci. Mantiene gli stessi standard costruttivi ed ergonomici del 53KG in un volume più compatto, ideale per chi viaggia in aereo o su percorsi ripidi.",
+      "specs": [
+        "Capacità 46 Litri",
+        "Accesso Posteriore Sicuro",
+        "Tasche USB Passthrough",
+        "Attacco Treppiede Doppio"
+      ],
+      "ambassadorBadge": "Vanguard Ambassador",
+      "affiliateBadge": null,
+      "discountCode": null,
+      "actionLabel": "Scopri su Vanguard World",
+      "actionUrl": "https://www.vanguardworld.it/",
+      "image": "assets/gear_vanguard_active46.png"
+    }
+  ],
+  "blog": [
+    {
+      "id": "pianificare-via-lattea-nivolet",
+      "title": "Pianificare la Via Lattea in Quota: Guida al Tracciamento Stellare al Nivolet",
+      "category": "personale",
+      "publisherTag": "✍️ BLOG DI DAVIDE LUONGO",
+      "excerpt": "Come preparare uno scatto di astrofotografia a 2.500m di quota analizzando fase lunare, calcolo dell'inclinazione polare, ISO nativi e la tecnica di integrazione per ridurre il rumore digitale mantenendo la nitidezza del primo piano.",
+      "date": "15 Luglio 2026",
+      "readTime": "8 min lettura",
+      "image": "assets/blog_nivolet_guide.png",
+      "actionUrl": "#articolo-nivolet"
+    },
+    {
+      "id": "test-sigma-14mm-art",
+      "title": "Test sul Campo: SIGMA 14mm f/1.4 DG DN Art sotto il Cielo del Gran Paradiso",
+      "category": "esterno",
+      "publisherTag": "📷 SIGMA ITALIA BLOG",
+      "excerpt": "Articolo e test sul campo scritto per il blog ufficiale SIGMA Italia. Analisi approfondita sul comportamento ottico del 14mm f/1.4 Art a tutta apertura, correzione del coma ai bordi e resa cromatica sulle nebulose stellari.",
+      "date": "22 Giugno 2026",
+      "readTime": "SIGMA Italia Blog",
+      "image": "assets/gear_sigma_14mm.png",
+      "actionUrl": "https://www.sigma-foto.it/"
+    },
+    {
+      "id": "guida-zaino-vanguard",
+      "title": "Guida alla Scelta dello Zaino Fotografico per Trekking e Bivacco in Montagna",
+      "category": "esterno",
+      "publisherTag": "🎒 VANGUARD WORLD OFFICIAL",
+      "excerpt": "Articolo guida pubblicato sul blog ufficiale Vanguard World sulla gestione dei carichi e la bilanciatura dello zaino VEO Active 53KG per trasportare tenda, sacco a pelo, corpo macchina, 4 obiettivi e tracciatore stellare.",
+      "date": "10 Maggio 2026",
+      "readTime": "Vanguard World",
+      "image": "assets/gear_vanguard_active53.png",
+      "actionUrl": "https://www.vanguardworld.it/"
+    },
+    {
+      "id": "rce-foto-usato-guida",
+      "title": "Fotografia di Paesaggio e Usato Garantito: Come Comporre un Kit Senza Sprecare Budget",
+      "category": "esterno",
+      "publisherTag": "🛍️ RCE FOTO MAGAZINE",
+      "excerpt": "Articolo speciale scritto per RCE Foto Magazine su come selezionare corpi macchina e ottiche usate certificate per muovere i primi passi nella fotografia paesaggistica e notturna con la massima resa.",
+      "date": "18 Aprile 2026",
+      "readTime": "RCE Foto Magazine",
+      "image": "assets/gear_sigma_2470.png",
+      "actionUrl": "https://www.rcefoto.it/"
+    },
+    {
+      "id": "dal-raw-alla-stampa-fine-art",
+      "title": "Dal RAW alla Stampa Fine Art: Perché il Profilo Colore e la Carta Fanno la Differenza",
+      "category": "personale",
+      "publisherTag": "✍️ BLOG DI DAVIDE LUONGO",
+      "excerpt": "Riflessioni e consigli pratici sulla gestione della catena del colore a video, la prova d'assaggio (soft-proofing in Photoshop) e la scelta delle carte cotone a grammatura elevata per esaltare i neri profondi della Via Lattea.",
+      "date": "02 Aprile 2026",
+      "readTime": "6 min lettura",
+      "image": "assets/hero_milky_way.png",
+      "actionUrl": "#articolo-stampa"
+    },
+    {
+      "id": "kase-filters-cinque-terre",
+      "title": "Lunga Esposizione Marina: Gestire Filtri ND e GND sulle Scogliere delle Cinque Terre",
+      "category": "esterno",
+      "publisherTag": "🔍 KASE FILTERS ITALIA",
+      "excerpt": "Tutorial tecnico sulle tecniche di filtrazione ottica magnetica Kase per bilanciare la forte dinamica di luce al tramonto tra la luce del cielo e l'effetto seta del mare sulle scogliere liguri.",
+      "date": "14 Marzo 2026",
+      "readTime": "Kase Filters Italia",
+      "image": "assets/cinque_terre_workshop.png",
+      "actionUrl": "https://kasefilters.it/"
+    }
+  ],
+  "assets": [
+    {
+      "filename": "test_sigma_14mm_fullres.png",
+      "fullResPath": "assets/upload/test_sigma_14mm_fullres_web.jpg",
+      "webpPath": "assets/upload/test_sigma_14mm_fullres_web.webp",
+      "jpegPath": "assets/upload/test_sigma_14mm_fullres_web.jpg",
+      "width": 1024,
+      "height": 1024,
+      "srgbPreserved": true,
+      "uploadDate": "2026-07-29"
+    }
+  ]
+}

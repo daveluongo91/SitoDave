@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard & CMS • Davide Luongo</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: var(--bg-main);
+      padding-top: 5rem;
+    }
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .admin-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan);
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .admin-tab-nav {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .admin-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .admin-section-title {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .dropzone {
+      border: 2px dashed var(--accent-cyan);
+      border-radius: var(--radius-md);
+      padding: 3rem 2rem;
+      text-align: center;
+      background: rgba(0, 240, 255, 0.03);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .dropzone:hover {
+      background: rgba(0, 240, 255, 0.08);
+    }
+    .asset-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .asset-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      font-size: 0.85rem;
+    }
+    .asset-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+    .asset-card-body {
+      padding: 0.75rem;
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      background: var(--accent-emerald);
+      color: #040914;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 3000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo • CMS Admin</span>
+      </a>
+
+      <div class="nav-actions">
+        <span class="admin-badge">⚡ Backend API Status: Online</span>
+        <a href="index.html" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Vedi Sito Live ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    
+    <div class="admin-header">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 0.3rem;">Pannello di Amministrazione & Content Manager</h1>
+        <p style="color: var(--text-secondary);">Modifica i testi del sito, aggiorna la disponibilità dei workshop e carica le foto in alta risoluzione con conversione sRGB WebP automatica.</p>
+      </div>
+      <button id="save-all-btn" class="btn btn-primary" style="padding: 0.85rem 1.75rem;">💾 Salva Tutte le Modifiche</button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tab-nav">
+      <button class="btn btn-primary admin-tab-btn active" data-tab="tab-content">📝 Modifica Testi & Pagine</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-workshops">📅 Gestione Workshop</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-gear">📷 Gestione Gear & Attrezzatura</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-assets">🖼️ Gestore Upload Foto sRGB</button>
+    </div>
+
+    <!-- TAB 1: MODIFICA TESTI PAGINA HOME -->
+    <div id="tab-content" class="admin-tab-content">
+      <div class="admin-section">
+        <h2 class="admin-section-title">🏠 Testi Hero & Sezione Principale (Home Page)</h2>
+        
+        <div class="form-group">
+          <label class="form-label" for="edit-hero-badge">Badge Animato Hero</label>
+          <input type="text" id="edit-hero-badge" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-hero-title">Titolo Principale Hero (supporta HTML)</label>
+          <input type="text" id="edit-hero-title" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-hero-desc">Descrizione Sotto-Titolo Hero</label>
+          <textarea id="edit-hero-desc" class="form-textarea" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h2 class="admin-section-title">👤 Biografia & Chi Sono</h2>
+        <div id="bio-paragraphs-container"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: GESTIONE WORKSHOP -->
+    <div id="tab-workshops" class="admin-tab-content" style="display: none;">
+      <div class="admin-section">
+        <h2 class="admin-section-title">📅 Gestione Workshop & Disponibilità Posti</h2>
+        <div id="admin-workshops-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: GESTIONE GEAR -->
+    <div id="tab-gear" class="admin-tab-content" style="display: none;">
+      <div class="admin-section">
+        <h2 class="admin-section-title">📷 Prodotti Gear, Recensioni & Codici Sconto</h2>
+        <div id="admin-gear-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: GESTORE UPLOAD ASSET S RGB -->
+    <div id="tab-assets" class="admin-tab-content" style="display: none;">
+      <div class="admin-section">
+        <h2 class="admin-section-title">🖼️ Upload Immagini Full-Resolution (Auto-scaling sRGB & WebP)</h2>
+        
+        <div class="dropzone" id="image-dropzone">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Trascina qui le tue foto in alta risoluzione o clicca per selezionarle</h3>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Il backend ridimensionerà automaticamente le immagini generandone una versione WebP ed una versione JPEG ad alta fedeltà, <strong>preservando al 100% lo spazio colore sRGB</strong>.
+          </p>
+          <input type="file" id="file-input" accept="image/*" style="display: none;" multiple />
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Asset Elaborati nel Database Server</h3>
+          <div class="asset-list-grid" id="admin-assets-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Modifiche salvate con successo!</div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
