@@ -58,10 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Category Filter Tabs (Workshops & Gear)
+  // 3. Category Filter Tabs (Workshops, Gear & Blog)
   const filterTabs = document.querySelectorAll('.filter-tab');
   const workshopCards = document.querySelectorAll('.workshop-card-item');
   const gearCards = document.querySelectorAll('.gear-card');
+  const blogCards = document.querySelectorAll('.blog-card-item');
 
   if (filterTabs.length > 0) {
     filterTabs.forEach(tab => {
@@ -88,6 +89,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter Gear Cards
         if (gearCards.length > 0) {
           gearCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        }
+
+        // Filter Blog Cards
+        if (blogCards.length > 0) {
+          blogCards.forEach(card => {
             if (category === 'all' || card.getAttribute('data-category') === category) {
               card.style.display = 'flex';
             } else {

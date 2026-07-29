@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog & Pubblicazioni • Davide Luongo | Landscape & Astrophotography</title>
+  <meta name="description" content="Articoli originali di Davide Luongo, guide sul campo, recensioni e tutte le pubblicazioni scritte per blog terzi come SIGMA Italia, Vanguard World, Kase e RCE Foto." />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Blog & Pubblicazioni • Davide Luongo" />
+  <meta property="og:description" content="Leggi gli articoli personali di Davide e le pubblicazioni scritte per i principali blog fotografici italiani ed internazionali." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/pittogramma.png" alt="Davide Luongo Pictogram" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#workshops">Workshop & Tour</a></li>
+        <li><a href="index.html#corsi">Formazione 1-to-1</a></li>
+        <li><a href="gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="blog.html" style="color: var(--accent-cyan); font-weight: 700;">Blog & Pubblicazioni</a></li>
+        <li><a href="index.html#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="index.html#workshops" class="btn btn-primary">Prenota Workshop</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION BLOG ==================== -->
+  <section class="hero" style="min-height: 55vh; padding-top: 10rem; padding-bottom: 3rem;">
+    <img src="assets/hero_milky_way.png" alt="Davide Luongo Blog" class="hero-bg" />
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tagline-badge">
+          <span>ARTICOLI • TEST SUL CAMPO • PUBBLICAZIONI</span>
+        </div>
+
+        <h1 class="hero-title">
+          Blog & <span class="gradient-text">Pubblicazioni</span>
+        </h1>
+
+        <p class="hero-description">
+          Una raccolta di pensieri, guide tecniche originali e tutti gli articoli da me scritti per blog e riviste di settore con cui collaboro.
+        </p>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+          <div class="partner-item">✍️ Scrivo per Me (Blog Personale)</div>
+          <div class="partner-item">📰 Scrivo per gli Altri (Articoli Esterni)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN BLOG SECTION ==================== -->
+  <section class="section">
+    <div class="container">
+      
+      <!-- Filter Tabs -->
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 2.5rem; flex-wrap: wrap;">
+        <button class="btn btn-primary filter-tab active" data-category="all">Tutti gli Articoli</button>
+        <button class="btn btn-secondary filter-tab" data-category="personale">✍️ Scrivo per Me</button>
+        <button class="btn btn-secondary filter-tab" data-category="esterno">📰 Scrivo per gli Altri</button>
+      </div>
+
+      <!-- Blog Grid -->
+      <div class="blog-grid">
+
+        <!-- Card 1: Scrivo per Me (Articolo Test Primo Piano) -->
+        <div class="blog-card blog-card-item" data-category="personale">
+          <div class="blog-img-wrapper">
+            <img src="assets/blog_nivolet_guide.png" alt="Pianificare la Via Lattea in Quota" />
+            <span class="badge-blog-type personal">Scrivo per Me</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</div>
+            <h3 class="blog-title">Pianificare la Via Lattea in Quota: Guida al Tracciamento Stellare al Nivolet</h3>
+            <p class="blog-excerpt">
+              Come preparare uno scatto di astrofotografia a 2.500m di quota analizzando fase lunare, calcolo dell'inclinazione polare, ISO nativi e la tecnica di integrazione per ridurre il rumore digitale mantenendo la nitidezza del primo piano.
+            </p>
+            <div class="blog-meta">
+              <span>📅 15 Luglio 2026</span>
+              <a href="#articolo-nivolet" class="btn btn-secondary open-modal-btn" data-subject="Lettura Articolo Nivolet" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi l'Articolo</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Scrivo per gli Altri (SIGMA Italia) -->
+        <div class="blog-card blog-card-item" data-category="esterno">
+          <div class="blog-img-wrapper">
+            <img src="assets/gear_sigma_14mm.png" style="object-fit: contain; background: #0B1929;" alt="SIGMA 14mm Art Test" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">📷 SIGMA ITALIA BLOG</div>
+            <h3 class="blog-title">Test sul Campo: SIGMA 14mm f/1.4 DG DN Art sotto il Cielo del Gran Paradiso</h3>
+            <p class="blog-excerpt">
+              Articolo e test sul campo scritto per il blog ufficiale SIGMA Italia. Analisi approfondita sul comportamento ottico del 14mm f/1.4 Art a tutta apertura, correzione del coma ai bordi e resa cromatica sulle nebulose stellari.
+            </p>
+            <div class="blog-meta">
+              <span>📅 22 Giugno 2026</span>
+              <a href="https://www.sigma-foto.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su SIGMA Italia</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Scrivo per gli Altri (Vanguard World) -->
+        <div class="blog-card blog-card-item" data-category="esterno">
+          <div class="blog-img-wrapper">
+            <img src="assets/gear_vanguard_active53.png" style="object-fit: contain; background: #0B1929;" alt="Vanguard Backpack Guide" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">🎒 VANGUARD WORLD OFFICIAL</div>
+            <h3 class="blog-title">Guida alla Scelta dello Zaino Fotografico per Trekking e Bivacco in Montagna</h3>
+            <p class="blog-excerpt">
+              Articolo guida pubblicato sul blog ufficiale Vanguard World sulla gestione dei carichi e la bilanciatura dello zaino VEO Active 53KG per trasportare tenda, sacco a pelo, corpo macchina, 4 obiettivi e tracciatore stellare.
+            </p>
+            <div class="blog-meta">
+              <span>📅 10 Maggio 2026</span>
+              <a href="https://www.vanguardworld.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su Vanguard World</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Scrivo per gli Altri (RCE Foto) -->
+        <div class="blog-card blog-card-item" data-category="esterno">
+          <div class="blog-img-wrapper">
+            <img src="assets/gear_sigma_2470.png" style="object-fit: contain; background: #0B1929;" alt="RCE Foto Magazine" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">🛍️ RCE FOTO MAGAZINE</div>
+            <h3 class="blog-title">Fotografia di Paesaggio e Usato Garantito: Come Comporre un Kit Senza Sprecare Budget</h3>
+            <p class="blog-excerpt">
+              Articolo speciale scritto per RCE Foto Magazine su come selezionare corpi macchina e ottiche usate certificate per muovere i primi passi nella fotografia paesaggistica e notturna con la massima resa.
+            </p>
+            <div class="blog-meta">
+              <span>📅 18 Aprile 2026</span>
+              <a href="https://www.rcefoto.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su RCE Foto</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Scrivo per Me (Stampa Fine Art) -->
+        <div class="blog-card blog-card-item" data-category="personale">
+          <div class="blog-img-wrapper">
+            <img src="assets/hero_milky_way.png" alt="Dal RAW alla Stampa Fine Art" />
+            <span class="badge-blog-type personal">Scrivo per Me</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</div>
+            <h3 class="blog-title">Dal RAW alla Stampa Fine Art: Perché il Profilo Colore e la Carta Fanno la Differenza</h3>
+            <p class="blog-excerpt">
+              Riflessioni e consigli pratici sulla gestione della catena del colore a video, la prova d'assaggio (soft-proofing in Photoshop) e la scelta delle carte cotone a grammatura elevata per esaltare i neri profondi della Via Lattea.
+            </p>
+            <div class="blog-meta">
+              <span>📅 02 Aprile 2026</span>
+              <a href="#articolo-stampa" class="btn btn-secondary open-modal-btn" data-subject="Lettura Articolo Stampa" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi l'Articolo</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Scrivo per gli Altri (Kase Filters) -->
+        <div class="blog-card blog-card-item" data-category="esterno">
+          <div class="blog-img-wrapper">
+            <img src="assets/cinque_terre_workshop.png" alt="Kase Filters Tutorial" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">🔍 KASE FILTERS ITALIA</div>
+            <h3 class="blog-title">Lunga Esposizione Marina: Gestire Filtri ND e GND sulle Scogliere delle Cinque Terre</h3>
+            <p class="blog-excerpt">
+              Tutorial tecnico sulle tecniche di filtrazione ottica magnetica Kase per bilanciare la forte dinamica di luce al tramonto tra la luce del cielo e l'effetto seta del mare sulle scogliere liguri.
+            </p>
+            <div class="blog-meta">
+              <span>📅 14 Marzo 2026</span>
+              <a href="https://kasefilters.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su Kase Filters</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <img src="assets/pittogramma.png" alt="Davide Luongo Pictogram" class="logo-img" />
+            <span>Davide Luongo</span>
+          </a>
+          <p>Landscape & Astrophotography. Workshop, viaggi fotografici, recensioni attrezzatura e articoli d'approfondimento.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigazione</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#workshops">Workshop 2026</a></li>
+            <li><a href="gear.html">Gear & Attrezzatura</a></li>
+            <li><a href="blog.html">Blog & Pubblicazioni</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Partner Tecnologici</h4>
+          <ul class="footer-links">
+            <li><a href="#">SIGMA Italia</a></li>
+            <li><a href="#">Vanguard World</a></li>
+            <li><a href="#">Kase Filters</a></li>
+            <li><a href="#">RCE Foto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Social & Contatti</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/" target="_blank">Instagram (@davepics_91)</a></li>
+            <li><a href="https://www.youtube.com/" target="_blank">Canale YouTube</a></li>
+            <li><a href="mailto:info@davideluongo.it">info@davideluongo.it</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Davide Luongo. Tutti i diritti riservati.</div>
+        <div>Pubblicazioni ufficiali & Blog personale.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="main.js"></script>
+</body>
+</html>
