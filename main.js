@@ -58,9 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Workshop Category Filter Tabs
+  // 3. Category Filter Tabs (Workshops & Gear)
   const filterTabs = document.querySelectorAll('.filter-tab');
   const workshopCards = document.querySelectorAll('.workshop-card-item');
+  const gearCards = document.querySelectorAll('.gear-card');
 
   if (filterTabs.length > 0) {
     filterTabs.forEach(tab => {
@@ -73,13 +74,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const category = tab.getAttribute('data-category');
 
-        workshopCards.forEach(card => {
-          if (category === 'all' || card.getAttribute('data-category') === category) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+        // Filter Workshop Cards
+        if (workshopCards.length > 0) {
+          workshopCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        }
+
+        // Filter Gear Cards
+        if (gearCards.length > 0) {
+          gearCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        }
       });
     });
   }
