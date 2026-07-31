@@ -1,10 +1,11 @@
 /* ==========================================================================
-   Davide Luongo — Workshop Reservation & Info Request Modal System
+   Davide Luongo — Workshop Reservation & Info Request System (Event Delegated)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   setupReservationModal();
   setupInfoModal();
+  setupGlobalClickDelegation();
   updateUrgencyCounters();
 });
 
@@ -38,6 +39,39 @@ function updateUrgencyCounters() {
     .catch(err => console.log('Urgency counter fetch skipped:', err));
 }
 
+// Global Click Delegation to catch ALL clicks on email/info links
+function setupGlobalClickDelegation() {
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('a[href*="mailto:info@davideluongo.it"], .open-info-modal');
+    if (target) {
+      e.preventDefault();
+      
+      let subj = 'Informazioni Workshop';
+      try {
+        if (target.href && target.href.includes('subject=')) {
+          const url = new URL(target.href);
+          subj = url.searchParams.get('subject') || subj;
+        } else {
+          subj = target.getAttribute('data-subject') || target.innerText.replace('✉️', '').replace('↗', '').strip() || subj;
+        }
+      } catch (err) {
+        subj = target.getAttribute('data-subject') || 'Informazioni Workshop';
+      }
+
+      openInfoModalWithSubject(subj);
+    }
+  });
+}
+
+function openInfoModalWithSubject(subject) {
+  const infoOverlay = document.getElementById('info-modal-overlay');
+  if (infoOverlay) {
+    document.getElementById('info-modal-title').innerText = `✉️ Richiedi Info: ${subject}`;
+    document.getElementById('info-subject-input').value = subject;
+    infoOverlay.classList.add('active');
+  }
+}
+
 // 1. INFO REQUEST MODAL (Richiedi Info via Email)
 function setupInfoModal() {
   let infoOverlay = document.getElementById('info-modal-overlay');
@@ -53,7 +87,7 @@ function setupInfoModal() {
 
         <div style="text-align: center; margin-bottom: 1.5rem;">
           <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Richiedi Informazioni via Email</h3>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia le tue domande direttamente a <strong>info@davideluongo.it</strong>.</p>
+          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia le tue domande direttamente alla casella <strong>info@davideluongo.it</strong>.</p>
         </div>
 
         <form id="info-request-form">
@@ -65,7 +99,7 @@ function setupInfoModal() {
           </div>
 
           <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-email-input">Indirizzo Email *</label>
+            <label class="form-label" for="info-email-input">La Tua Email per la Risposta *</label>
             <input type="email" id="info-email-input" class="form-input" placeholder="nome@esempio.com" required />
           </div>
 
@@ -78,11 +112,11 @@ function setupInfoModal() {
           </div>
 
           <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-message-input">Il Tuo Messaggio / Domande</label>
-            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui le tue domande o richieste specifiche..."></textarea>
+            <label class="form-label" for="info-message-input">Messaggio / Domande Esterne</label>
+            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui qualsiasi dubbio su programma, attrezzatura necessaria o logistica..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; margin-top: 1.25rem;">✉️ Invia Richiesta a info@davideluongo.it</button>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem;">✉️ Invia Richiesta a info@davideluongo.it</button>
         </form>
       </div>
     `;
@@ -93,26 +127,6 @@ function setupInfoModal() {
   if (closeBtn) {
     closeBtn.addEventListener('click', () => infoOverlay.classList.remove('active'));
   }
-
-  // Intercept all "Richiedi Info via Email" buttons or mailto links
-  document.querySelectorAll('a[href^="mailto:info@davideluongo.it"], .open-info-modal').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      // Extract subject from URL if present
-      let subj = 'Informazioni Generali';
-      try {
-        const url = new URL(link.href);
-        if (url.searchParams.has('subject')) subj = url.searchParams.get('subject');
-      } catch (err) {
-        subj = link.getAttribute('data-subject') || 'Informazioni Workshop';
-      }
-
-      document.getElementById('info-modal-title').innerText = `✉️ Richiedi Info: ${subj}`;
-      document.getElementById('info-subject-input').value = subj;
-      infoOverlay.classList.add('active');
-    });
-  });
 
   // Handle Info Form Submit
   const infoForm = document.getElementById('info-request-form');
@@ -133,21 +147,53 @@ function setupInfoModal() {
       })
       .then(res => res.json())
       .then(data => {
-        if (data.status === 'success') {
-          alert(`✅ Grazie ${name}! La tua richiesta è stata inviata a info@davideluongo.it. Ti risponderemo al più presto.`);
-          infoOverlay.classList.remove('active');
-          infoForm.reset();
-        } else {
-          // Fallback to mailto if API fails
-          window.location.href = data.mailtoUrl || `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}`;
-        }
+        infoOverlay.classList.remove('active');
+        showThankYouInfoModal(name, email, subject, data.mailtoUrl);
+        infoForm.reset();
       })
       .catch(err => {
         console.error('Info email error:', err);
-        window.location.href = `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\n' + message)}`;
+        infoOverlay.classList.remove('active');
+        const fallbackMailto = `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\n' + message)}`;
+        showThankYouInfoModal(name, email, subject, fallbackMailto);
       });
     });
   }
+}
+
+// Display Thank You Info Modal Overlay
+function showThankYouInfoModal(name, email, subject, mailtoUrl) {
+  let thankYouOverlay = document.getElementById('thankyou-info-overlay');
+  
+  if (!thankYouOverlay) {
+    thankYouOverlay = document.createElement('div');
+    thankYouOverlay.id = 'thankyou-info-overlay';
+    thankYouOverlay.className = 'modal-overlay';
+    document.body.appendChild(thankYouOverlay);
+  }
+
+  thankYouOverlay.innerHTML = `
+    <div class="modal-content" style="max-width: 520px; text-align: center; padding: 2.5rem 2rem;">
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📩</div>
+      <h3 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Richiesta Inviata!</h3>
+      <p style="color: var(--text-primary); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        Grazie <strong>${name}</strong>!<br />
+        La tua richiesta per "<em>${subject}</em>" è stata inviata alla casella di posta <strong>info@davideluongo.it</strong>.
+      </p>
+
+      <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--accent-cyan); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: left;">
+        ✉️ Risponderemo direttamente alla tua email: <strong>${email}</strong>.<br />
+        Se desideri aprire anche la tua applicazione di posta predefinita, clicca sul pulsante in basso.
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <a href="${mailtoUrl}" target="_blank" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">✉️ Apri Client di Posta</a>
+        <button class="btn btn-secondary" onclick="document.getElementById('thankyou-info-overlay').classList.remove('active')" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">Chiudi Finestra</button>
+      </div>
+    </div>
+  `;
+
+  thankYouOverlay.classList.add('active');
 }
 
 // 2. RESERVATION MODAL (Prenota Workshop)
