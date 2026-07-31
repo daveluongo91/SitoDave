@@ -384,21 +384,54 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
             return
 
-        elif parsed.path == "/api/send-excel-email":
+        elif parsed.path == "/api/send-info-email":
             body = self.rfile.read(content_length)
             try:
                 req = json.loads(body.decode("utf-8"))
-                ws_id = req.get("workshopId")
-                ws_name = req.get("workshopName", "Workshop")
-                recipient = req.get("recipientEmail", "info@davideluongo.com")
+                name = req.get("name")
+                email = req.get("email")
+                phone = req.get("phone", "Non specificato")
+                subject = req.get("subject", "Informazioni Workshop")
+                message = req.get("message", "")
 
-                filepath, filename = generate_excel_report(ws_id)
-                success, msg = send_excel_email_report(filepath, recipient_email=recipient, workshop_name=ws_name)
+                # Store request in data/info_requests.json
+                requests_file = ROOT / "data" / "info_requests.json"
+                info_requests = []
+                if requests_file.exists():
+                    try:
+                        with open(requests_file, "r", encoding="utf-8") as f:
+                            info_requests = json.load(f)
+                    except Exception:
+                        info_requests = []
+
+                new_req = {
+                    "id": f"INF-{len(info_requests)+1:04d}",
+                    "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "subject": subject,
+                    "message": message,
+                    "recipient": "info@davideluongo.it"
+                }
+                info_requests.insert(0, new_req)
+                with open(requests_file, "w", encoding="utf-8") as f:
+                    json.dump(info_requests, f, ensure_ascii=False, indent=2)
+
+                # Log email send attempt
+                log_entry = f"[{datetime.now().isoformat()}] Info Request from {name} ({email}, Tel: {phone}) for '{subject}' to info@davideluongo.it\n"
+                (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+
+                mailto_url = f"mailto:info@davideluongo.it?subject={urllib.parse.quote('Richiesta Info: ' + subject)}&body={urllib.parse.quote('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\nMessaggio:\n' + message)}"
 
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
-                self.wfile.write(json.dumps({"status": "success" if success else "error", "message": msg, "filename": filename}).encode("utf-8"))
+                self.wfile.write(json.dumps({
+                    "status": "success",
+                    "message": "Richiesta informazioni inviata a info@davideluongo.it!",
+                    "mailtoUrl": mailto_url
+                }).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")

@@ -1,16 +1,17 @@
 /* ==========================================================================
-   Davide Luongo — Workshop Reservation System, PayPal & Urgency Logic
+   Davide Luongo — Workshop Reservation & Info Request Modal System
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   setupReservationModal();
+  setupInfoModal();
   updateUrgencyCounters();
 });
 
 // Calculate Urgency Counter (Seats available minus 20% for FOMO urgency)
 function calculateUrgencySeats(availableSeats, totalSeats = 8) {
   if (availableSeats <= 0) return 0;
-  const bias = Math.ceil(totalSeats * 0.20); // 8 * 0.20 = 1.6 -> 2 seats bias
+  const bias = Math.ceil(totalSeats * 0.20);
   return Math.max(1, availableSeats - bias);
 }
 
@@ -23,7 +24,6 @@ function updateUrgencyCounters() {
       data.workshops.forEach(ws => {
         const displayedSeats = calculateUrgencySeats(ws.availableSeats || 8, ws.totalSeats || 8);
         
-        // Find elements with data-workshop-seats attribute
         document.querySelectorAll(`[data-workshop-seats="${ws.id}"]`).forEach(el => {
           if (ws.availableSeats <= 0) {
             el.innerText = '🔴 SOLD OUT';
@@ -38,12 +38,123 @@ function updateUrgencyCounters() {
     .catch(err => console.log('Urgency counter fetch skipped:', err));
 }
 
-// Reservation Modal Setup
+// 1. INFO REQUEST MODAL (Richiedi Info via Email)
+function setupInfoModal() {
+  let infoOverlay = document.getElementById('info-modal-overlay');
+
+  if (!infoOverlay) {
+    infoOverlay = document.createElement('div');
+    infoOverlay.id = 'info-modal-overlay';
+    infoOverlay.className = 'modal-overlay';
+
+    infoOverlay.innerHTML = `
+      <div class="modal-content" style="max-width: 580px;">
+        <button id="info-modal-close" class="modal-close">&times;</button>
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Richiedi Informazioni via Email</h3>
+          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia le tue domande direttamente a <strong>info@davideluongo.it</strong>.</p>
+        </div>
+
+        <form id="info-request-form">
+          <input type="hidden" id="info-subject-input" value="Informazioni Generali" />
+          
+          <div class="form-group">
+            <label class="form-label" for="info-name-input">Nome e Cognome *</label>
+            <input type="text" id="info-name-input" class="form-input" placeholder="Es. Mario Rossi" required />
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-email-input">Indirizzo Email *</label>
+            <input type="email" id="info-email-input" class="form-input" placeholder="nome@esempio.com" required />
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-phone-input">Numero di Telefono (Facoltativo)</label>
+            <input type="tel" id="info-phone-input" class="form-input" placeholder="Es. +39 333 1234567 (opzionale)" />
+            <div style="font-size: 0.775rem; color: var(--accent-cyan); margin-top: 0.35rem;">
+              ℹ️ Il telefono è <strong>facoltativo</strong>: inseriscilo solo se preferisci essere ricontattato direttamente via <strong>WhatsApp</strong>.
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-message-input">Il Tuo Messaggio / Domande</label>
+            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui le tue domande o richieste specifiche..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; margin-top: 1.25rem;">✉️ Invia Richiesta a info@davideluongo.it</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(infoOverlay);
+  }
+
+  const closeBtn = document.getElementById('info-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => infoOverlay.classList.remove('active'));
+  }
+
+  // Intercept all "Richiedi Info via Email" buttons or mailto links
+  document.querySelectorAll('a[href^="mailto:info@davideluongo.it"], .open-info-modal').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Extract subject from URL if present
+      let subj = 'Informazioni Generali';
+      try {
+        const url = new URL(link.href);
+        if (url.searchParams.has('subject')) subj = url.searchParams.get('subject');
+      } catch (err) {
+        subj = link.getAttribute('data-subject') || 'Informazioni Workshop';
+      }
+
+      document.getElementById('info-modal-title').innerText = `✉️ Richiedi Info: ${subj}`;
+      document.getElementById('info-subject-input').value = subj;
+      infoOverlay.classList.add('active');
+    });
+  });
+
+  // Handle Info Form Submit
+  const infoForm = document.getElementById('info-request-form');
+  if (infoForm) {
+    infoForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('info-name-input').value;
+      const email = document.getElementById('info-email-input').value;
+      const phone = document.getElementById('info-phone-input').value || 'Non specificato';
+      const subject = document.getElementById('info-subject-input').value;
+      const message = document.getElementById('info-message-input').value;
+
+      fetch('/api/send-info-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, subject, message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert(`✅ Grazie ${name}! La tua richiesta è stata inviata a info@davideluongo.it. Ti risponderemo al più presto.`);
+          infoOverlay.classList.remove('active');
+          infoForm.reset();
+        } else {
+          // Fallback to mailto if API fails
+          window.location.href = data.mailtoUrl || `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}`;
+        }
+      })
+      .catch(err => {
+        console.error('Info email error:', err);
+        window.location.href = `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\n' + message)}`;
+      });
+    });
+  }
+}
+
+// 2. RESERVATION MODAL (Prenota Workshop)
 function setupReservationModal() {
   const modalBtns = document.querySelectorAll('.open-modal-btn');
   let modalOverlay = document.getElementById('booking-modal-overlay');
 
-  // Create modal dynamically if it doesn't exist
   if (!modalOverlay) {
     modalOverlay = document.createElement('div');
     modalOverlay.id = 'booking-modal-overlay';
@@ -117,7 +228,7 @@ function setupReservationModal() {
           <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1rem; margin-bottom: 1rem;">💳 Conferma & Paga con PayPal Business</button>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-            <a id="modal-email-btn" href="mailto:info@davideluongo.it" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem; text-align: center;">✉️ Chiedi Info via Email</a>
+            <button type="button" class="btn btn-secondary open-info-modal" style="font-size: 0.8rem; padding: 0.5rem; text-align: center;">✉️ Chiedi Info via Email</button>
             <a id="modal-whatsapp-btn" href="https://wa.me/393735096237" target="_blank" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem; text-align: center; border-color: #25D366; color: #25D366;">💬 Chat WhatsApp</a>
           </div>
 
@@ -127,15 +238,11 @@ function setupReservationModal() {
     document.body.appendChild(modalOverlay);
   }
 
-  // Bind close button
   const closeBtn = document.getElementById('booking-modal-close');
   if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      modalOverlay.classList.remove('active');
-    });
+    closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
   }
 
-  // Bind open modal buttons
   modalBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -143,15 +250,12 @@ function setupReservationModal() {
       
       document.getElementById('booking-modal-title').innerText = `Prenota ${subject}`;
       document.getElementById('booking-workshop-id').value = subject;
-      
-      document.getElementById('modal-email-btn').href = `mailto:info@davideluongo.it?subject=Richiesta%20Info%20${encodeURIComponent(subject)}`;
       document.getElementById('modal-whatsapp-btn').href = `https://wa.me/393735096237?text=${encodeURIComponent('Ciao Davide, vorrei informazioni su ' + subject)}`;
 
       modalOverlay.classList.add('active');
     });
   });
 
-  // Handle Form Submission
   const bookingForm = document.getElementById('workshop-booking-form');
   if (bookingForm) {
     bookingForm.addEventListener('submit', (e) => {
@@ -182,7 +286,6 @@ function setupReservationModal() {
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
-          // Open PayPal Business window or redirect to Thank You page
           window.open(data.paypalUrl, '_blank');
           window.location.href = data.thankYouUrl;
         } else {
