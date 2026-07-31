@@ -152,6 +152,37 @@ function sendExcelEmail() {
   .catch(err => console.error('Send email error:', err));
 }
 
+function saveSmtpConfig() {
+  const smtpUser = document.getElementById('smtp-user-input').value;
+  const smtpPassword = document.getElementById('smtp-pass-input').value;
+  const smtpHost = document.getElementById('smtp-host-input').value;
+
+  if (!smtpPassword) {
+    alert('Per favore inserisci la password della tua casella email Aruba.');
+    return;
+  }
+
+  fetch('/api/save-smtp-config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      smtpUser: smtpUser,
+      smtpPassword: smtpPassword,
+      smtpHost: smtpHost,
+      smtpPort: 465
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      showToast('✅ Credenziali Aruba SMTP salvate! Le email verranno spedite realmente.');
+    } else {
+      alert('Errore salvataggio credenziali: ' + data.message);
+    }
+  })
+  .catch(err => console.error('Save SMTP error:', err));
+}
+
 // Render Home Page Editor Sections
 function renderHomeEditor() {
   if (!globalData || !globalData.home) return;

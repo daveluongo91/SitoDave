@@ -103,20 +103,66 @@ def generate_excel_report(workshop_id_or_name=None):
 
     return filepath, filename
 
+def send_real_email_aruba(recipient_email, subject, body_text, attachment_path=None):
+    """
+    Sends real emails via Aruba SMTP (smtps.aruba.it:465 SSL).
+    Reads password from environment ARUBA_SMTP_PASS or data/smtp_config.json.
+    """
+    config_file = ROOT / "data" / "smtp_config.json"
+    smtp_pass = os.environ.get("ARUBA_SMTP_PASS", "")
+    smtp_user = os.environ.get("ARUBA_SMTP_USER", "info@davideluongo.it")
+    smtp_host = os.environ.get("ARUBA_SMTP_HOST", "smtps.aruba.it")
+    smtp_port = int(os.environ.get("ARUBA_SMTP_PORT", "465"))
+
+    if not smtp_pass and config_file.exists():
+        try:
+            with open(config_file, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+                smtp_pass = cfg.get("smtpPassword", "")
+                smtp_user = cfg.get("smtpUser", smtp_user)
+                smtp_host = cfg.get("smtpHost", smtp_host)
+                smtp_port = cfg.get("smtpPort", smtp_port)
+        except Exception:
+            pass
+
+    msg = MIMEMultipart()
+    msg["From"] = f"Davide Luongo Website <{smtp_user}>"
+    msg["To"] = recipient_email
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body_text, "plain"))
+
+    if attachment_path and Path(attachment_path).exists():
+        att_path = Path(attachment_path)
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(att_path.read_bytes())
+        encoders.encode_base64(part)
+        part.add_header("Content-Disposition", f"attachment; filename={att_path.name}")
+        msg.attach(part)
+
+    if smtp_pass:
+        try:
+            server = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=15)
+            server.login(smtp_user, smtp_pass)
+            server.sendmail(smtp_user, [recipient_email], msg.as_string())
+            server.quit()
+            
+            log_entry = f"[{datetime.now().isoformat()}] REAL EMAIL SENT via Aruba SMTP to {recipient_email} (Subject: {subject})\n"
+            (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+            return True, f"Email inviata con successo via Aruba SMTP a {recipient_email}"
+        except Exception as e:
+            log_entry = f"[{datetime.now().isoformat()}] Aruba SMTP error: {str(e)}\n"
+            (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+            return False, f"Errore invio SMTP Aruba: {str(e)}"
+    else:
+        # Log pending configuration
+        log_entry = f"[{datetime.now().isoformat()}] SMTP Password not set. Email logged locally for {recipient_email} (Subject: {subject})\n"
+        (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+        return True, "Email registrata in locale (inserisci la password Aruba in Admin per la spedizione reale)"
+
 def send_excel_email_report(filepath, recipient_email="info@davideluongo.com", workshop_name="Workshop"):
-    """
-    Sends the generated Excel participant report to info@davideluongo.com.
-    Logs delivery status cleanly.
-    """
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = "info@davideluongo.it"
-        msg["To"] = recipient_email
-        msg["Subject"] = f"📊 Report Partecipanti Excel Cutoff — {workshop_name}"
+    body = f"""Ciao Davide,
 
-        body = f"""Ciao Davide,
-
-In allegato trovi il report Excel ufficiale dei partecipanti iscritto per: {workshop_name}.
+In allegato trovi il report Excel ufficiale dei partecipanti per: {workshop_name}.
 
 - Data generazione: {datetime.now().strftime("%d/%m/%Y %H:%M")}
 - Destinatario: {recipient_email}
@@ -126,20 +172,7 @@ Il file contiene nome, cognome, indirizzo email e numero di telefono per la crea
 Un saluto,
 Davide Luongo Website Automated Engine
 """
-        msg.attach(MIMEText(body, "plain"))
-
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(filepath.read_bytes())
-        encoders.encode_base64(part)
-        part.add_header("Content-Disposition", f"attachment; filename={filepath.name}")
-        msg.attach(part)
-
-        # Log simulated or SMTP delivery
-        log_entry = f"[{datetime.now().isoformat()}] Email sent to {recipient_email} with file {filepath.name}\n"
-        (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
-        return True, "Email inviata con successo a " + recipient_email
-    except Exception as e:
-        return False, str(e)
+    return send_real_email_aruba(recipient_email, f"📊 Report Partecipanti Excel Cutoff — {workshop_name}", body, attachment_path=filepath)
 
 def process_image_srgb(input_bytes, original_filename, target_page="general"):
     raw_data = input_bytes.getvalue()
@@ -418,9 +451,21 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 with open(requests_file, "w", encoding="utf-8") as f:
                     json.dump(info_requests, f, ensure_ascii=False, indent=2)
 
-                # Log email send attempt
-                log_entry = f"[{datetime.now().isoformat()}] Info Request from {name} ({email}, Tel: {phone}) for '{subject}' to info@davideluongo.it\n"
-                (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+                # Send REAL EMAIL via Aruba SMTP to info@davideluongo.it
+                email_body = f"""Nuova Richiesta Informazioni Ricevuta dal Sito Web:
+
+Nome e Cognome: {name}
+Email Mittente: {email}
+Telefono (WhatsApp): {phone}
+Oggetto / Workshop: {subject}
+
+Messaggio:
+{message}
+
+---
+Inviato in data {new_req['date']} dal Sito Web Davide Luongo.
+"""
+                success, send_msg = send_real_email_aruba("info@davideluongo.it", f"✉️ Richiesta Info Sito Web: {subject} ({name})", email_body)
 
                 mailto_url = f"mailto:info@davideluongo.it?subject={urllib.parse.quote('Richiesta Info: ' + subject)}&body={urllib.parse.quote('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\nMessaggio:\n' + message)}"
 
@@ -429,9 +474,32 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({
                     "status": "success",
-                    "message": "Richiesta informazioni inviata a info@davideluongo.it!",
+                    "message": send_msg,
                     "mailtoUrl": mailto_url
                 }).encode("utf-8"))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
+        elif parsed.path == "/api/save-smtp-config":
+            body = self.rfile.read(content_length)
+            try:
+                req = json.loads(body.decode("utf-8"))
+                smtp_config = {
+                    "smtpUser": req.get("smtpUser", "info@davideluongo.it"),
+                    "smtpPassword": req.get("smtpPassword", ""),
+                    "smtpHost": req.get("smtpHost", "smtps.aruba.it"),
+                    "smtpPort": int(req.get("smtpPort", 465))
+                }
+                config_file = ROOT / "data" / "smtp_config.json"
+                with open(config_file, "w", encoding="utf-8") as f:
+                    json.dump(smtp_config, f, ensure_ascii=False, indent=2)
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success", "message": "Configurazione Aruba SMTP salvata con successo!"}).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")

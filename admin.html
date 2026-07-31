@@ -463,6 +463,31 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- ARUBA SMTP CONFIGURATION BOX -->
+            <div style="margin-top: 2.5rem; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-md);">
+              <h4 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">📧 Configurazione Invil Reali Email (Aruba SMTP)</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                Inserisci la password della tua casella Aruba (<code>info@davideluongo.it</code>) per consentire al backend di spedire istantaneamente le email reali di richiesta info e i report Excel direttamente nella tua casella di posta.
+              </p>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Server SMTP Aruba</label>
+                  <input type="text" id="smtp-host-input" class="form-input" value="smtps.aruba.it" readonly />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Utente Email Aruba</label>
+                  <input type="email" id="smtp-user-input" class="form-input" value="info@davideluongo.it" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password Account Email Aruba *</label>
+                  <input type="password" id="smtp-pass-input" class="form-input" placeholder="Password della tua email Aruba" />
+                </div>
+              </div>
+
+              <button class="btn btn-primary" onclick="saveSmtpConfig()" style="margin-top: 1rem; font-size: 0.85rem; padding: 0.5rem 1.25rem;">💾 Salva Credenziali Aruba SMTP</button>
+            </div>
           </div>
         </div>
 
