@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard & CMS • Davide Luongo</title>
+  <title>Admin Dashboard & Content Manager • Davide Luongo</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
@@ -11,7 +11,7 @@
       padding-top: 5rem;
     }
     .admin-container {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
     }
@@ -22,10 +22,12 @@
       margin-bottom: 2rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--border-glass);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
     .admin-badge {
       display: inline-block;
-      padding: 0.3rem 0.8rem;
+      padding: 0.35rem 0.85rem;
       background: rgba(0, 240, 255, 0.15);
       color: var(--accent-cyan);
       border: 1px solid var(--accent-cyan);
@@ -35,8 +37,9 @@
     }
     .admin-tab-nav {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
     .admin-section {
       background: var(--bg-secondary);
@@ -51,7 +54,7 @@
       color: var(--accent-cyan);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: space-between;
     }
     .form-grid {
       display: grid;
@@ -61,7 +64,7 @@
     .dropzone {
       border: 2px dashed var(--accent-cyan);
       border-radius: var(--radius-md);
-      padding: 3rem 2rem;
+      padding: 2.5rem 2rem;
       text-align: center;
       background: rgba(0, 240, 255, 0.03);
       cursor: pointer;
@@ -72,7 +75,7 @@
     }
     .asset-list-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
@@ -82,14 +85,41 @@
       border-radius: var(--radius-md);
       overflow: hidden;
       font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
     }
     .asset-card img {
       width: 100%;
-      height: 140px;
+      height: 150px;
       object-fit: cover;
     }
     .asset-card-body {
-      padding: 0.75rem;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .entity-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.2);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .delete-btn:hover {
+      background: rgba(239, 68, 68, 0.4);
     }
     .toast {
       position: fixed;
@@ -117,7 +147,7 @@
       </a>
 
       <div class="nav-actions">
-        <span class="admin-badge">⚡ Backend API Status: Online</span>
+        <span class="admin-badge">⚡ Backend Engine: Online</span>
         <a href="index.html" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Vedi Sito Live ↗</a>
       </div>
     </div>
@@ -127,24 +157,25 @@
     
     <div class="admin-header">
       <div>
-        <h1 style="font-size: 2rem; margin-bottom: 0.3rem;">Pannello di Amministrazione & Content Manager</h1>
-        <p style="color: var(--text-secondary);">Modifica i testi del sito, aggiorna la disponibilità dei workshop e carica le foto in alta risoluzione con conversione sRGB WebP automatica.</p>
+        <h1 style="font-size: 2rem; margin-bottom: 0.3rem;">Pannello di Amministrazione & Manager Entità</h1>
+        <p style="color: var(--text-secondary);">Gestisci i testi suddivisi per pagina, crea nuovi workshop o viaggi e carica foto in alta risoluzione (auto-scaling >5MB/2048px senza alterazioni sRGB).</p>
       </div>
       <button id="save-all-btn" class="btn btn-primary" style="padding: 0.85rem 1.75rem;">💾 Salva Tutte le Modifiche</button>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="admin-tab-nav">
-      <button class="btn btn-primary admin-tab-btn active" data-tab="tab-content">📝 Modifica Testi & Pagine</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-workshops">📅 Gestione Workshop</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-gear">📷 Gestione Gear & Attrezzatura</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-assets">🖼️ Gestore Upload Foto sRGB</button>
+      <button class="btn btn-primary admin-tab-btn active" data-tab="tab-content">📝 Testi per Pagina</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-workshops">📅 Workshop & Viaggi</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-blog">📰 Articoli Blog</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-gear">📷 Gear & Attrezzatura</button>
+      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-assets">🖼️ Gestore Asset sRGB per Pagina</button>
     </div>
 
-    <!-- TAB 1: MODIFICA TESTI PAGINA HOME -->
+    <!-- TAB 1: TESTI E BLOCCHI SUDDIVISI PER PAGINA -->
     <div id="tab-content" class="admin-tab-content">
       <div class="admin-section">
-        <h2 class="admin-section-title">🏠 Testi Hero & Sezione Principale (Home Page)</h2>
+        <h2 class="admin-section-title"><span>🏠 Pagina Home (Hero & Biografia)</span></h2>
         
         <div class="form-group">
           <label class="form-label" for="edit-hero-badge">Badge Animato Hero</label>
@@ -160,46 +191,94 @@
           <label class="form-label" for="edit-hero-desc">Descrizione Sotto-Titolo Hero</label>
           <textarea id="edit-hero-desc" class="form-textarea" rows="3"></textarea>
         </div>
-      </div>
 
-      <div class="admin-section">
-        <h2 class="admin-section-title">👤 Biografia & Chi Sono</h2>
+        <h3 style="font-size: 1.1rem; margin: 1.5rem 0 1rem 0; color: var(--accent-cyan);">Paragrafi Biografia ("Chi Sono")</h3>
         <div id="bio-paragraphs-container"></div>
       </div>
     </div>
 
-    <!-- TAB 2: GESTIONE WORKSHOP -->
+    <!-- TAB 2: WORKSHOP E VIAGGI (GESTIONE ED ENTITÀ CREAZIONE) -->
     <div id="tab-workshops" class="admin-tab-content" style="display: none;">
       <div class="admin-section">
-        <h2 class="admin-section-title">📅 Gestione Workshop & Disponibilità Posti</h2>
+        <div class="admin-section-title">
+          <span>📅 Gestione Workshop 2026 & Viaggi 2027</span>
+          <button id="open-create-workshop-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Crea Nuovo Workshop / Viaggio</button>
+        </div>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-cyan); margin-bottom: 1rem;">Workshop 2026 Attivi</h3>
         <div id="admin-workshops-list"></div>
+
+        <h3 style="font-size: 1.1rem; color: var(--accent-purple); margin: 2rem 0 1rem 0;">Viaggi Fotografici 2027</h3>
+        <div id="admin-trips-list"></div>
       </div>
     </div>
 
-    <!-- TAB 3: GESTIONE GEAR -->
+    <!-- TAB 3: ARTICOLI BLOG -->
+    <div id="tab-blog" class="admin-tab-content" style="display: none;">
+      <div class="admin-section">
+        <div class="admin-section-title">
+          <span>📰 Articoli del Blog & Pubblicazioni</span>
+          <button id="open-create-blog-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Nuovo Articolo Blog</button>
+        </div>
+        <div id="admin-blog-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: GESTIONE GEAR -->
     <div id="tab-gear" class="admin-tab-content" style="display: none;">
       <div class="admin-section">
-        <h2 class="admin-section-title">📷 Prodotti Gear, Recensioni & Codici Sconto</h2>
+        <div class="admin-section-title">
+          <span>📷 Prodotti Gear, Recensioni & Codici Sconto</span>
+          <button id="open-create-gear-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Nuovo Prodotto Gear</button>
+        </div>
         <div id="admin-gear-list"></div>
       </div>
     </div>
 
-    <!-- TAB 4: GESTORE UPLOAD ASSET S RGB -->
+    <!-- TAB 5: GESTORE UPLOAD ASSET PER PAGINA -->
     <div id="tab-assets" class="admin-tab-content" style="display: none;">
       <div class="admin-section">
-        <h2 class="admin-section-title">🖼️ Upload Immagini Full-Resolution (Auto-scaling sRGB & WebP)</h2>
+        <h2 class="admin-section-title"><span>🖼️ Upload & Gestione Asset per Pagina (sRGB Preserved)</span></h2>
         
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="asset-page-select">Seleziona Pagina / Sezione Target per i nuovi Upload</label>
+          <select id="asset-page-select" class="form-input" style="background: var(--bg-card);">
+            <option value="home">Pagina Home (index.html)</option>
+            <option value="friuli-2026">Workshop Friuli 2026</option>
+            <option value="cascate-appennino-2026">Workshop Cascate Appennino 2026</option>
+            <option value="canfaito-2026">Workshop Canfaito 2026</option>
+            <option value="foreste-casentinesi-2026">Workshop Foreste Casentinesi 2026</option>
+            <option value="viaggi-2027">Viaggi 2027 (Lapponia, Minorca, Azzorre, Islanda)</option>
+            <option value="gear">Pagina Gear & Attrezzatura (gear.html)</option>
+            <option value="blog">Pagina Blog & Pubblicazioni (blog.html)</option>
+          </select>
+        </div>
+
         <div class="dropzone" id="image-dropzone">
           <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Trascina qui le tue foto in alta risoluzione o clicca per selezionarle</h3>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Trascina qui le tue foto o clicca per selezionarle</h3>
           <p style="color: var(--text-secondary); font-size: 0.9rem;">
-            Il backend ridimensionerà automaticamente le immagini generandone una versione WebP ed una versione JPEG ad alta fedeltà, <strong>preservando al 100% lo spazio colore sRGB</strong>.
+            Se l'immagine supera i <strong>5MB</strong> o i <strong>2048px</strong> sul lato lungo, il backend la ridimensionerà mantenendo le proporzioni e <strong>preservando al 100% lo spazio colore sRGB senza alcuna alterazione cromatica</strong>.
           </p>
           <input type="file" id="file-input" accept="image/*" style="display: none;" multiple />
         </div>
 
-        <div style="margin-top: 2rem;">
-          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Asset Elaborati nel Database Server</h3>
+        <div style="margin-top: 2.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem;">Asset Salvati per Pagina</h3>
+            <select id="asset-filter-select" class="form-input" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.85rem;">
+              <option value="all">Filtra: Tutte le Pagine</option>
+              <option value="home">Home Page</option>
+              <option value="friuli-2026">Friuli 2026</option>
+              <option value="cascate-appennino-2026">Cascate Appennino 2026</option>
+              <option value="canfaito-2026">Canfaito 2026</option>
+              <option value="foreste-casentinesi-2026">Foreste Casentinesi 2026</option>
+              <option value="viaggi-2027">Viaggi 2027</option>
+              <option value="gear">Gear</option>
+              <option value="blog">Blog</option>
+            </select>
+          </div>
+
           <div class="asset-list-grid" id="admin-assets-list"></div>
         </div>
       </div>
@@ -207,9 +286,82 @@
 
   </div>
 
+  <!-- MODALE CREAZIONE NUOVO WORKSHOP / VIAGGIO -->
+  <div id="create-workshop-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 650px;">
+      <button class="modal-close" onclick="closeModal('create-workshop-modal')">&times;</button>
+      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Crea Nuovo Workshop o Viaggio</h3>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Crea l'entità ed il backend genererà automaticamente la pagina landing dedicata.</p>
+
+      <form id="create-workshop-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Tipo Entità</label>
+            <select id="new-ws-type" class="form-input">
+              <option value="workshop">Workshop Nazionale 2026</option>
+              <option value="viaggio">Viaggio Fotografico 2027</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Slug / ID Unico (es. dolomiti-2027)</label>
+            <input type="text" id="new-ws-id" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Titolo Completo</label>
+            <input type="text" id="new-ws-title" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Data (es. 15 - 17 Maggio 2027)</label>
+            <input type="text" id="new-ws-date" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" id="new-ws-location" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Durata (es. 3 Giorni / 2 Notti)</label>
+            <input type="text" id="new-ws-duration" class="form-input" value="2 Giorni / 1 Notte" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Quota Partecipazione (es. €290)</label>
+            <input type="text" id="new-ws-price" class="form-input" value="€290" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Posti Disponibili</label>
+            <input type="number" id="new-ws-seats" class="form-input" value="8" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label class="form-label">Percorso Immagine Copertina</label>
+          <input type="text" id="new-ws-image" class="form-input" value="assets/hero_milky_way.png" />
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label class="form-label">Descrizione Breve</label>
+          <textarea id="new-ws-desc" class="form-textarea" rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Crea Entità & Genera Pagina Landing</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="toast">Modifiche salvate con successo!</div>
 
   <script src="admin.js"></script>
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+  </script>
 </body>
 </html>
