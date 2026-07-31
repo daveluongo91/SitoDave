@@ -148,21 +148,20 @@ function setupInfoModal() {
       .then(res => res.json())
       .then(data => {
         infoOverlay.classList.remove('active');
-        showThankYouInfoModal(name, email, subject, data.mailtoUrl);
+        showThankYouInfoModal(name, email, subject);
         infoForm.reset();
       })
       .catch(err => {
         console.error('Info email error:', err);
         infoOverlay.classList.remove('active');
-        const fallbackMailto = `mailto:info@davideluongo.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Nome: ' + name + '\nEmail: ' + email + '\nTelefono: ' + phone + '\n\n' + message)}`;
-        showThankYouInfoModal(name, email, subject, fallbackMailto);
+        showThankYouInfoModal(name, email, subject);
       });
     });
   }
 }
 
 // Display Thank You Info Modal Overlay
-function showThankYouInfoModal(name, email, subject, mailtoUrl) {
+function showThankYouInfoModal(name, email, subject) {
   let thankYouOverlay = document.getElementById('thankyou-info-overlay');
   
   if (!thankYouOverlay) {
@@ -173,22 +172,20 @@ function showThankYouInfoModal(name, email, subject, mailtoUrl) {
   }
 
   thankYouOverlay.innerHTML = `
-    <div class="modal-content" style="max-width: 520px; text-align: center; padding: 2.5rem 2rem;">
+    <div class="modal-content" style="max-width: 500px; text-align: center; padding: 2.5rem 2rem;">
       <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📩</div>
       <h3 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Richiesta Inviata!</h3>
       <p style="color: var(--text-primary); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">
         Grazie <strong>${name}</strong>!<br />
-        La tua richiesta per "<em>${subject}</em>" è stata inviata alla casella di posta <strong>info@davideluongo.it</strong>.
+        La tua richiesta per "<em>${subject}</em>" è stata inviata con successo alla casella di posta <strong>info@davideluongo.it</strong>.
       </p>
 
       <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--accent-cyan); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: left;">
-        ✉️ Risponderemo direttamente alla tua email: <strong>${email}</strong>.<br />
-        Se desideri aprire anche la tua applicazione di posta predefinita, clicca sul pulsante in basso.
+        ✉️ Risponderemo al più presto direttamente alla tua email: <strong>${email}</strong>.
       </div>
 
-      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-        <a href="${mailtoUrl}" target="_blank" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">✉️ Apri Client di Posta</a>
-        <button class="btn btn-secondary" onclick="document.getElementById('thankyou-info-overlay').classList.remove('active')" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">Chiudi Finestra</button>
+      <div style="display: flex; justify-content: center;">
+        <button class="btn btn-primary" onclick="document.getElementById('thankyou-info-overlay').classList.remove('active')" style="padding: 0.75rem 2rem; font-size: 0.95rem;">Chiudi</button>
       </div>
     </div>
   `;
