@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog, Pubblicazioni & Articoli • Davide Luongo</title>
+  <meta name="description" content="Articoli, tutorial ed interviste di Davide Luongo su fotografia di paesaggio, astrofotografia, recensioni ottiche e stampe Fine Art." />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <img src="../assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html#home">Home</a></li>
+        <li><a href="../index.html#workshops">Workshop & Tour</a></li>
+        <li><a href="../index.html#corsi">Formazione 1-to-1</a></li>
+        <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="blog.html" class="nav-current">Blog & Pubblicazioni</a></li>
+        <li><a href="../index.html#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="../index.html#contatti" class="btn btn-primary">Contatti</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BLOG -->
+  <section class="hero" style="min-height: 60vh; padding-top: 8rem;">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tagline-badge">
+          <span>📰 PUBBLICAZIONI & DIARIO FOTOGRAFICO</span>
+        </div>
+
+        <h1 class="hero-title">
+          Articoli, Guida Tecniche & <span class="gradient-text">Pubblicazioni Esterne</span>
+        </h1>
+
+        <p class="hero-description">
+          Approfondimenti su tecnica sul campo, astrofotografia notturna, pianificazione dei paesaggi e recensioni scritte per blog di settore come SIGMA Italia e Vanguard.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE ARTICOLI BLOG (Carosello 3D) -->
+  <section class="publication-section section" id="articoli-blog" data-carousel>
+    <div class="container">
+      <div class="publication-heading">
+        <div>
+          <span class="section-eyebrow">✍️ SCRIVO PER ME & PER GLI ALTRI</span>
+          <h2 class="publication-title">Tutti gli Articoli In Evidenza</h2>
+        </div>
+        <div class="publication-nav">
+          <button class="carousel-btn" data-carousel-prev aria-label="Precedente">←</button>
+          <button class="carousel-btn" data-carousel-next aria-label="Successivo">→</button>
+        </div>
+      </div>
+
+      <div class="publication-carousel">
+        <div class="carousel-track">
+          
+          <article class="publication-card" data-slide>
+            <div class="publication-image">
+              <img src="../assets/blog_nivolet_milkyway.png" alt="Astrofotografia al Nivolet" />
+            </div>
+            <div class="publication-content">
+              <span class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</span>
+              <h3>Guida Definitiva all'Astrofotografia sul Colle del Nivolet</h3>
+              <p>Pianificazione con PhotoPills, calcolo della Via Lattea a 2.600m e gestione dell'inquinamento luminoso.</p>
+              <a href="#" class="publication-link">Leggi Articolo Completo <span>↗</span></a>
+            </div>
+          </article>
+
+          <article class="publication-card" data-slide>
+            <div class="publication-image">
+              <img src="../assets/blog_sigma_review.png" alt="Test SIGMA 14mm f1.4 Art" />
+            </div>
+            <div class="publication-content">
+              <span class="publisher-tag">📷 SIGMA ITALIA BLOG</span>
+              <h3>Test sul Campo: SIGMA 14mm f/1.4 DG DN Art per la Notturna</h3>
+              <p>Analisi dettagliata di coma, astigmatismo ed incisione ai bordi dell'obiettivo ultra-grandangolare più luminoso al mondo.</p>
+              <a href="https://blog.sigma-foto.it" target="_blank" class="publication-link">Leggi su SIGMA Italia <span>↗</span></a>
+            </div>
+          </article>
+
+          <article class="publication-card" data-slide>
+            <div class="publication-image">
+              <img src="../assets/blog_fineart_print.png" alt="Stampa Fine Art Paesaggistica" />
+            </div>
+            <div class="publication-content">
+              <span class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</span>
+              <h3>Dal File alla Carta: Guida alla Stampa Fine Art Paesaggistica</h3>
+              <p>Spazi colore AdobeRGB, profilatura monitor LAB e scelta delle carte cotone Hahnemühle per le foto di paesaggio.</p>
+              <a href="#" class="publication-link">Leggi Articolo Completo <span>↗</span></a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <script src="../blog.js"></script>
+  <script src="../main.js"></script>
+</body>
+</html>

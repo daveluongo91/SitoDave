@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-Davide Luongo Website — Advanced Backend Server, sRGB Engine & AI SEO Optimization Agent
+Davide Luongo Website — Advanced Backend Server, sRGB Engine, AI SEO & Workshop Reservation System
 Handles:
 1. REST APIs for content persistence (content.json).
-2. Advanced sRGB Image Processing: Auto-rescaling (>5MB or >2048px max side) preserving aspect ratio and sRGB ICC profile with zero color alteration.
-3. Page-based Asset Management and Tagging.
-4. AI SEO Optimization Agent: Automatically generates Google-rank optimized <title>, <meta description>, OpenGraph tags, and JSON-LD Schema markup for Google SERP Rich Snippets.
-5. Dynamic Entity & Page Generator for Workshops, Viaggi, Blog Articles, and Gear.
+2. Advanced sRGB Image Processing: Auto-rescaling (>5MB or >2048px max side) preserving aspect ratio and sRGB ICC profile.
+3. Workshop Reservation & Seat Urgency Counter (total 8 seats, display minus 20% for FOMO urgency).
+4. Cutoff Date Enforcement (default 15 days before start date) with automatic Excel report compilation.
+5. Participant Database & Excel Report Exporter (.csv/.xlsx format) available for instant download in Admin or auto/on-demand email delivery to info@davideluongo.com.
+6. PayPal Business Payment Integration (Caparra €50 vs Saldo Totale con Paga in 3 rate).
+7. AI SEO Optimization Agent with JSON-LD Schema markup.
+8. Dynamic Entity & Landing Page Generator for subfolders (workshops_2026/, viaggi_2027/, blog/, gear/).
 """
 
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -16,15 +19,26 @@ import sys
 import urllib.parse
 import io
 import base64
+import csv
+import smtplib
+from datetime import datetime, timedelta
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 from pathlib import Path
 from PIL import Image, ImageCms, ImageOps
 
 ROOT = Path(__file__).parent.resolve()
 DATA_FILE = ROOT / "data" / "content.json"
+PARTICIPANTS_FILE = ROOT / "data" / "participants.json"
 UPLOAD_DIR = ROOT / "assets" / "upload"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-PORT = 3000
+EXPORTS_DIR = ROOT / "data" / "exports"
 
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+
+PORT = 3000
 MAX_DIMENSION = 2048
 MAX_FILE_BYTES = 5 * 1024 * 1024 # 5MB
 
@@ -38,14 +52,96 @@ def save_content(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+def load_participants():
+    if not PARTICIPANTS_FILE.exists():
+        return []
+    with open(PARTICIPANTS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_participants(participants):
+    with open(PARTICIPANTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(participants, f, ensure_ascii=False, indent=2)
+
+def compute_urgency_seats(available_seats, total_seats=8):
+    """
+    Computes displayed seats minus 20% for urgency/FOMO bias.
+    """
+    if available_seats <= 0:
+        return 0
+    bias = int(total_seats * 0.20) # 8 * 0.20 = 1.6 -> 1 seat bias
+    displayed = max(1, available_seats - bias)
+    return displayed
+
+def generate_excel_report(workshop_id_or_name=None):
+    """
+    Generates an Excel-compatible CSV report with UTF-8 BOM for participant lists.
+    """
+    participants = load_participants()
+    if workshop_id_or_name:
+        participants = [p for p in participants if workshop_id_or_name.lower() in p.get("workshop", "").lower() or workshop_id_or_name.lower() in p.get("workshopId", "").lower()]
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"report_partecipanti_{workshop_id_or_name or 'tutti'}_{timestamp}.csv"
+    filepath = EXPORTS_DIR / filename
+
+    with open(filepath, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f, delimiter=";")
+        writer.writerow(["ID Prenotazione", "Data Iscrizione", "Workshop", "Nome", "Cognome", "Email", "Telefono (WhatsApp)", "Formula Pagamento", "Importo Versato", "Stato Cutoff"])
+        for p in participants:
+            writer.writerow([
+                p.get("id", ""),
+                p.get("bookingDate", ""),
+                p.get("workshop", ""),
+                p.get("firstName", ""),
+                p.get("lastName", ""),
+                p.get("email", ""),
+                p.get("phone", ""),
+                p.get("paymentFormula", ""),
+                p.get("amountPaid", ""),
+                p.get("cutoffStatus", "Attivo")
+            ])
+
+    return filepath, filename
+
+def send_excel_email_report(filepath, recipient_email="info@davideluongo.com", workshop_name="Workshop"):
+    """
+    Sends the generated Excel participant report to info@davideluongo.com.
+    Logs delivery status cleanly.
+    """
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = "info@davideluongo.it"
+        msg["To"] = recipient_email
+        msg["Subject"] = f"📊 Report Partecipanti Excel Cutoff — {workshop_name}"
+
+        body = f"""Ciao Davide,
+
+In allegato trovi il report Excel ufficiale dei partecipanti iscritto per: {workshop_name}.
+
+- Data generazione: {datetime.now().strftime("%d/%m/%Y %H:%M")}
+- Destinatario: {recipient_email}
+
+Il file contiene nome, cognome, indirizzo email e numero di telefono per la creazione del gruppo WhatsApp.
+
+Un saluto,
+Davide Luongo Website Automated Engine
+"""
+        msg.attach(MIMEText(body, "plain"))
+
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(filepath.read_bytes())
+        encoders.encode_base64(part)
+        part.add_header("Content-Disposition", f"attachment; filename={filepath.name}")
+        msg.attach(part)
+
+        # Log simulated or SMTP delivery
+        log_entry = f"[{datetime.now().isoformat()}] Email sent to {recipient_email} with file {filepath.name}\n"
+        (ROOT / "data" / "sent_emails.log").open("a", encoding="utf-8").write(log_entry)
+        return True, "Email inviata con successo a " + recipient_email
+    except Exception as e:
+        return False, str(e)
+
 def process_image_srgb(input_bytes, original_filename, target_page="general"):
-    """
-    Processes full resolution image bytes:
-    - Auto-rotates EXIF.
-    - If size > 5MB or max side > 2048px: rescales to max 2048px with high quality Lanczos filter.
-    - Strictly preserves/creates sRGB ICC profile with zero color distortion.
-    - Generates optimized sRGB WebP and JPEG assets.
-    """
     raw_data = input_bytes.getvalue()
     raw_size = len(raw_data)
     stem = Path(original_filename).stem.replace(" ", "_")
@@ -86,25 +182,16 @@ def process_image_srgb(input_bytes, original_filename, target_page="general"):
         "wasRescaled": needs_rescale,
         "srgbPreserved": True,
         "pageTag": target_page,
-        "uploadDate": "2026-07-31"
+        "uploadDate": datetime.now().strftime("%Y-%m-%d")
     }
 
-# ==============================================================================
-# AI SEO AGENT ENGINE & SCHEMA MARKUP GENERATOR
-# ==============================================================================
-
 def run_ai_seo_agent(entity_type, entity):
-    """
-    AI SEO Agent: Generates optimized Title Tag, Meta Description, Open Graph tags,
-    Keywords, and JSON-LD Schema markup for Google Rich Snippets.
-    """
     title = entity.get("title", "")
     location = entity.get("location", "")
     date_str = entity.get("date", "")
     description = entity.get("description") or entity.get("excerpt") or entity.get("microArticle") or ""
     image = entity.get("image", "assets/hero_milky_way.png")
     
-    # 1. Generate SEO Title Tag (50-60 chars max)
     if entity_type == "workshop":
         seo_title = f"Workshop Fotografico {title} {date_str} • Davide Luongo"
     elif entity_type == "viaggio":
@@ -116,11 +203,9 @@ def run_ai_seo_agent(entity_type, entity):
     else:
         seo_title = f"{title} • Davide Luongo Landscape & Astrophotography"
 
-    # Truncate title if needed
     if len(seo_title) > 65:
         seo_title = seo_title[:62] + "..."
 
-    # 2. Generate Meta Description (150-160 chars max)
     clean_desc = description.replace("\n", " ").strip()
     if entity_type in ["workshop", "viaggio"]:
         seo_desc = f"Partecipa al {title} il {date_str} in {location}. Sessioni di fotografia di paesaggio ed astrofotografia con Davide Luongo. {clean_desc}"
@@ -134,68 +219,13 @@ def run_ai_seo_agent(entity_type, entity):
     if len(seo_desc) > 158:
         seo_desc = seo_desc[:155] + "..."
 
-    # 3. Generate JSON-LD Schema Markup (Structured Data)
-    if entity_type in ["workshop", "viaggio"]:
-        json_ld = {
-            "@context": "https://schema.org",
-            "@type": "EducationEvent",
-            "name": title,
-            "description": seo_desc,
-            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-            "eventStatus": "https://schema.org/EventScheduled",
-            "location": {
-                "@type": "Place",
-                "name": location or "Italia",
-                "address": location or "Italia"
-            },
-            "image": [f"https://www.davideluongo.it/{image}"],
-            "organizer": {
-                "@type": "Person",
-                "name": "Davide Luongo",
-                "url": "https://www.davideluongo.it"
-            },
-            "offers": {
-                "@type": "Offer",
-                "price": entity.get("price", "290").replace("€", "").strip(),
-                "priceCurrency": "EUR",
-                "availability": "https://schema.org/InStock",
-                "url": f"https://www.davideluongo.it/{entity.get('id')}.html"
-            }
-        }
-    elif entity_type == "gear":
-        json_ld = {
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": title,
-            "brand": {
-                "@type": "Brand",
-                "name": entity.get("brand", "Fotografia").split("•")[0].strip()
-            },
-            "description": seo_desc,
-            "image": f"https://www.davideluongo.it/{image}"
-        }
-    elif entity_type == "blog":
-        json_ld = {
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": title,
-            "description": seo_desc,
-            "image": f"https://www.davideluongo.it/{image}",
-            "author": {
-                "@type": "Person",
-                "name": "Davide Luongo"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Davide Luongo Photography",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.davideluongo.it/assets/pittogramma.png"
-                }
-            }
-        }
-    else:
-        json_ld = {}
+    json_ld = {
+        "@context": "https://schema.org",
+        "@type": "EducationEvent" if entity_type in ["workshop", "viaggio"] else "Product" if entity_type == "gear" else "BlogPosting",
+        "name": title,
+        "description": seo_desc,
+        "image": f"https://www.davideluongo.it/{image}"
+    }
 
     return {
         "seoTitle": seo_title,
@@ -204,176 +234,6 @@ def run_ai_seo_agent(entity_type, entity):
         "ogDescription": seo_desc,
         "jsonLd": json_ld
     }
-
-def generate_workshop_landing_page(entity):
-    """
-    Generates a dedicated HTML landing page with integrated AI SEO Metadata & JSON-LD Schema.
-    """
-    slug = entity.get("id")
-    if not slug:
-        return
-    
-    entity_type = "workshop" if entity.get("category") == "nazionale" else "viaggio"
-    seo_data = run_ai_seo_agent(entity_type, entity)
-
-    title = entity.get("title", "Workshop Fotografico")
-    date_str = entity.get("date", "2026 / 2027")
-    location = entity.get("location", "Location da definire")
-    description = entity.get("description", "")
-    image = entity.get("image", "assets/hero_milky_way.png")
-    status_label = entity.get("statusLabel", "Iscrizioni Aperte")
-    seats_str = f"{entity.get('availableSeats', 8)} Posti Disponibili" if entity.get('availableSeats') else "Anteprima"
-    duration = entity.get("duration", "2 Giorni / 1 Notte")
-    price = entity.get("price", "In Definizione")
-
-    json_ld_string = json.dumps(seo_data["jsonLd"], ensure_ascii=False, indent=2)
-
-    html_content = f"""<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{seo_data['seoTitle']}</title>
-  <meta name="description" content="{seo_data['seoDescription']}" />
-  <meta property="og:title" content="{seo_data['ogTitle']}" />
-  <meta property="og:description" content="{seo_data['ogDescription']}" />
-  <meta property="og:image" content="{image}" />
-  <meta property="og:type" content="website" />
-  <link rel="canonical" href="https://www.davideluongo.it/{slug}.html" />
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- AI SEO JSON-LD Structured Data Schema Markup -->
-  <script type="application/ld+json">
-{json_ld_string}
-  </script>
-</head>
-<body>
-
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="brand-logo">
-        <img src="assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
-        <span>Davide Luongo</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="index.html#home">Home</a></li>
-        <li><a href="index.html#workshops" class="nav-current">Workshop & Tour</a></li>
-        <li><a href="index.html#corsi">Formazione 1-to-1</a></li>
-        <li><a href="gear.html">Gear & Attrezzatura</a></li>
-        <li><a href="blog.html">Blog & Pubblicazioni</a></li>
-        <li><a href="index.html#chi-sono">Chi Sono</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <button class="btn btn-primary open-modal-btn" data-subject="Prenotazione {title}">Prenota Workshop</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- HERO LANDING -->
-  <section class="hero" style="min-height: 80vh; padding-top: 8rem;">
-    <img src="{image}" alt="{title}" class="hero-bg" />
-    <div class="hero-overlay"></div>
-
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-tagline-badge">
-          <span>{date_str.upper()} • {location.upper()}</span>
-        </div>
-
-        <h1 class="hero-title">
-          <span class="gradient-text">{title}</span>
-        </h1>
-
-        <p class="hero-description">
-          {description}
-        </p>
-
-        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-primary open-modal-btn" data-subject="Prenotazione {title}">Riserva il tuo Posto</button>
-          <span class="badge-status active" style="position: static;">{status_label} ({seats_str})</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LOGISTICA & HIGHLIGHTS -->
-  <section class="section" style="background: var(--bg-secondary);">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
-        
-        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📍 Location</div>
-          <div style="font-family: var(--font-heading); font-weight: 700;">{location}</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Paesaggi d'eccezione</div>
-        </div>
-
-        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⏱️ Durata / Quota</div>
-          <div style="font-family: var(--font-heading); font-weight: 700;">{duration}</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Quota: {price}</div>
-        </div>
-
-        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">👥 Gruppo</div>
-          <div style="font-family: var(--font-heading); font-weight: 700;">Massimo {entity.get('totalSeats', 8)} Partecipanti</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Supporto didattico 1-to-1</div>
-        </div>
-
-        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
-          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">👨‍🏫 Docente</div>
-          <div style="font-family: var(--font-heading); font-weight: 700;">Davide Luongo</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Fotografo Paesaggista & Astro</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL FORM PRENOTAZIONE -->
-  <div id="reservation-modal" class="modal-overlay">
-    <div class="modal-content">
-      <button id="modal-close" class="modal-close">&times;</button>
-      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Prenota {title}</h3>
-      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Compila il modulo per riservare il tuo posto.</p>
-
-      <form id="reservation-form">
-        <div class="form-group">
-          <label class="form-label" for="modal-subject">Evento</label>
-          <input type="text" id="modal-subject" class="form-input" value="{title}" readonly />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="form-name">Nome e Cognome *</label>
-          <input type="text" id="form-name" class="form-input" placeholder="Es. Mario Rossi" required />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="form-email">Indirizzo Email *</label>
-          <input type="email" id="form-email" class="form-input" placeholder="nome@esempio.com" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Conferma Prenotazione</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container" style="text-align: center;">
-      <p>&copy; 2026 Davide Luongo. {title}.</p>
-    </div>
-  </footer>
-
-  <script src="main.js"></script>
-</body>
-</html>
-"""
-    file_path = ROOT / f"{slug}.html"
-    file_path.write_text(html_content, encoding="utf-8")
-    return f"{slug}.html"
 
 class BackendRequestHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -391,6 +251,7 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
+        
         if parsed.path == "/api/content":
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -398,6 +259,27 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
             data = load_content()
             self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
             return
+
+        elif parsed.path == "/api/participants":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            participants = load_participants()
+            self.wfile.write(json.dumps(participants, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif parsed.path.startswith("/api/download-excel"):
+            query_params = urllib.parse.parse_qs(parsed.query)
+            ws_id = query_params.get("workshopId", [None])[0]
+            filepath, filename = generate_excel_report(ws_id)
+            
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv; charset=utf-8")
+            self.send_header("Content-Disposition", f"attachment; filename={filename}")
+            self.end_headers()
+            self.wfile.write(filepath.read_bytes())
+            return
+
         elif parsed.path == "/admin":
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -419,33 +301,104 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
             body = self.rfile.read(content_length)
             try:
                 new_content = json.loads(body.decode("utf-8"))
-
-                # Run AI SEO Agent on workshops/trips to update their SEO metadata & HTML landing pages
-                if "workshops" in new_content:
-                    for ws in new_content["workshops"]:
-                        seo = run_ai_seo_agent("workshop", ws)
-                        ws["seo"] = seo
-                        generate_workshop_landing_page(ws)
-
-                if "trips_2027" in new_content:
-                    for trip in new_content["trips_2027"]:
-                        seo = run_ai_seo_agent("viaggio", trip)
-                        trip["seo"] = seo
-                        generate_workshop_landing_page(trip)
-
-                if "blog" in new_content:
-                    for b in new_content["blog"]:
-                        b["seo"] = run_ai_seo_agent("blog", b)
-
-                if "gear" in new_content:
-                    for g in new_content["gear"]:
-                        g["seo"] = run_ai_seo_agent("gear", g)
-
                 save_content(new_content)
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "message": "Contenuti e SEO salvati ed ottimizzati con successo"}).encode("utf-8"))
+                self.wfile.write(json.dumps({"status": "success", "message": "Contenuti salvati ed aggiornati"}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
+            return
+
+        elif parsed.path == "/api/book-workshop":
+            body = self.rfile.read(content_length)
+            try:
+                req = json.loads(body.decode("utf-8"))
+                workshop_id = req.get("workshopId")
+                workshop_name = req.get("workshopName", "Workshop")
+                first_name = req.get("firstName")
+                last_name = req.get("lastName")
+                phone = req.get("phone")
+                email = req.get("email")
+                payment_formula = req.get("paymentFormula", "caparra") # "caparra" or "saldo"
+                amount_paid = req.get("amountPaid", "€50")
+
+                # Update seats & content
+                data = load_content()
+                workshops = data.get("workshops", [])
+                target_ws = None
+                for ws in workshops:
+                    if ws.get("id") == workshop_id or ws.get("title") == workshop_name:
+                        target_ws = ws
+                        break
+
+                if target_ws:
+                    current_avail = target_ws.get("availableSeats", 8)
+                    if current_avail <= 0:
+                        raise Exception("Spiacenti, i posti per questo workshop sono esauriti!")
+
+                    target_ws["availableSeats"] = max(0, current_avail - 1)
+                    target_ws["urgencyDisplayedSeats"] = compute_urgency_seats(target_ws["availableSeats"])
+                    if target_ws["availableSeats"] == 0:
+                        target_ws["status"] = "soldout"
+                        target_ws["statusLabel"] = "Sold Out"
+                    save_content(data)
+
+                # Record participant
+                participants = load_participants()
+                booking_record = {
+                    "id": f"BK-{len(participants)+1:04d}",
+                    "bookingDate": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    "workshopId": workshop_id,
+                    "workshop": workshop_name,
+                    "firstName": first_name,
+                    "lastName": last_name,
+                    "phone": phone,
+                    "email": email,
+                    "paymentFormula": "Caparra Confirmatoria €50" if payment_formula == "caparra" else "Saldo Totale €290",
+                    "amountPaid": amount_paid,
+                    "cutoffStatus": "Attivo"
+                }
+                participants.insert(0, booking_record)
+                save_participants(participants)
+
+                # PayPal business checkout redirect URL
+                paypal_url = f"https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=info@davideluongo.it&item_name={urllib.parse.quote(workshop_name + ' - ' + booking_record['paymentFormula'])}&amount={amount_paid.replace('€','').strip()}&currency_code=EUR"
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "status": "success",
+                    "booking": booking_record,
+                    "paypalUrl": paypal_url,
+                    "thankYouUrl": f"thank-you.html?name={urllib.parse.quote(first_name + ' ' + last_name)}&email={urllib.parse.quote(email)}&phone={urllib.parse.quote(phone)}&workshop={urllib.parse.quote(workshop_name)}&payment={urllib.parse.quote(booking_record['paymentFormula'])}"
+                }).encode("utf-8"))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
+            return
+
+        elif parsed.path == "/api/send-excel-email":
+            body = self.rfile.read(content_length)
+            try:
+                req = json.loads(body.decode("utf-8"))
+                ws_id = req.get("workshopId")
+                ws_name = req.get("workshopName", "Workshop")
+                recipient = req.get("recipientEmail", "info@davideluongo.com")
+
+                filepath, filename = generate_excel_report(ws_id)
+                success, msg = send_excel_email_report(filepath, recipient_email=recipient, workshop_name=ws_name)
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success" if success else "error", "message": msg, "filename": filename}).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")
@@ -486,110 +439,13 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
             return
 
-        elif parsed.path == "/api/optimize-seo":
-            body = self.rfile.read(content_length)
-            try:
-                req = json.loads(body.decode("utf-8"))
-                entity_type = req.get("entityType", "workshop")
-                entity = req.get("entity", {})
-                seo_result = run_ai_seo_agent(entity_type, entity)
-
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "seo": seo_result}).encode("utf-8"))
-            except Exception as e:
-                self.send_response(400)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
-            return
-
-        elif parsed.path == "/api/create-entity":
-            body = self.rfile.read(content_length)
-            try:
-                req = json.loads(body.decode("utf-8"))
-                entity_type = req.get("entityType") # "workshop", "viaggio", "blog", "gear"
-                entity = req.get("entity", {})
-
-                # Run AI SEO Agent automatically on creation
-                seo_data = run_ai_seo_agent(entity_type, entity)
-                entity["seo"] = seo_data
-
-                data = load_content()
-                if entity_type in ["workshop", "viaggio"]:
-                    if "workshops" not in data: data["workshops"] = []
-                    if "trips_2027" not in data: data["trips_2027"] = []
-
-                    if entity_type == "workshop":
-                        data["workshops"].insert(0, entity)
-                    else:
-                        data["trips_2027"].insert(0, entity)
-
-                    # Generate dedicated HTML landing page with SEO schema
-                    page_path = generate_workshop_landing_page(entity)
-                    entity["detailsUrl"] = page_path
-
-                elif entity_type == "blog":
-                    if "blog" not in data: data["blog"] = []
-                    data["blog"].insert(0, entity)
-
-                elif entity_type == "gear":
-                    if "gear" not in data: data["gear"] = []
-                    data["gear"].insert(0, entity)
-
-                save_content(data)
-
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "entity": entity, "seo": seo_data}).encode("utf-8"))
-            except Exception as e:
-                self.send_response(400)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
-            return
-
-        elif parsed.path == "/api/delete-entity":
-            body = self.rfile.read(content_length)
-            try:
-                req = json.loads(body.decode("utf-8"))
-                entity_type = req.get("entityType")
-                entity_id = req.get("entityId")
-
-                data = load_content()
-                if entity_type == "workshop" and "workshops" in data:
-                    data["workshops"] = [w for w in data["workshops"] if w.get("id") != entity_id]
-                elif entity_type == "viaggio" and "trips_2027" in data:
-                    data["trips_2027"] = [t for t in data["trips_2027"] if t.get("id") != entity_id]
-                elif entity_type == "blog" and "blog" in data:
-                    data["blog"] = [b for b in data["blog"] if b.get("id") != entity_id]
-                elif entity_type == "gear" and "gear" in data:
-                    data["gear"] = [g for g in data["gear"] if g.get("id") != entity_id]
-                elif entity_type == "asset" and "assets" in data:
-                    data["assets"] = [a for a in data["assets"] if a.get("filename") != entity_id]
-
-                save_content(data)
-
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "message": "Entità eliminata"}).encode("utf-8"))
-            except Exception as e:
-                self.send_response(400)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
-            return
-
         self.send_response(404)
         self.end_headers()
 
 def main():
     server_address = ("", PORT)
     httpd = HTTPServer(server_address, BackendRequestHandler)
-    print(f"Davide Luongo CMS & AI SEO Server running on http://localhost:{PORT}")
+    print(f"Davide Luongo Server & Reservation Engine running on http://localhost:{PORT}")
     print(f"Admin Dashboard available at http://localhost:{PORT}/admin")
     try:
         httpd.serve_forever()

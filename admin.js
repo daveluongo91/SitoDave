@@ -46,12 +46,13 @@ function selectPageNode(pageId) {
   // Update Page Title
   const titles = {
     'page-home': '🏠 Home Page (index.html)',
-    'page-friuli': '🏞️ Workshop Friuli 2026 (friuli-2026.html)',
-    'page-cascate': '💧 Workshop Cascate Appennino 2026 (cascate-appennino-2026.html)',
-    'page-canfaito': '🍂 Workshop Faggeta di Canfaito 2026 (canfaito-2026.html)',
-    'page-casentinesi': '🌲 Workshop Foreste Casentinesi 2026 (foreste-casentinesi-2026.html)',
-    'page-gear': '📷 Pagina Gear & Attrezzatura (gear.html)',
-    'page-blog': '📰 Pagina Blog & Pubblicazioni (blog.html)'
+    'page-friuli': '🏞️ Workshop Friuli 2026 (workshops_2026/friuli-2026.html)',
+    'page-cascate': '💧 Workshop Cascate Appennino 2026 (workshops_2026/cascate-appennino-2026.html)',
+    'page-canfaito': '🍂 Workshop Faggeta di Canfaito 2026 (workshops_2026/canfaito-2026.html)',
+    'page-casentinesi': '🌲 Workshop Foreste Casentinesi 2026 (workshops_2026/foreste-casentinesi-2026.html)',
+    'page-gear': '📷 Pagina Gear & Attrezzatura (gear/gear.html)',
+    'page-blog': '📰 Pagina Blog & Pubblicazioni (blog/blog.html)',
+    'page-participants': '📊 Lista Partecipanti & Export Report Excel'
   };
 
   const titleEl = document.getElementById('active-page-title');
@@ -76,16 +77,79 @@ function scrollToSection(sectionId) {
 function renderActivePageEditor() {
   const panelHome = document.getElementById('panel-page-home');
   const panelGeneric = document.getElementById('panel-page-generic');
+  const panelParticipants = document.getElementById('panel-page-participants');
 
   if (activePage === 'page-home') {
     if (panelHome) panelHome.style.display = 'block';
     if (panelGeneric) panelGeneric.style.display = 'none';
+    if (panelParticipants) panelParticipants.style.display = 'none';
     renderHomeEditor();
+  } else if (activePage === 'page-participants') {
+    if (panelHome) panelHome.style.display = 'none';
+    if (panelGeneric) panelGeneric.style.display = 'none';
+    if (panelParticipants) panelParticipants.style.display = 'block';
+    renderParticipantsEditor();
   } else {
     if (panelHome) panelHome.style.display = 'none';
     if (panelGeneric) panelGeneric.style.display = 'block';
+    if (panelParticipants) panelParticipants.style.display = 'none';
     renderGenericPageEditor(activePage);
   }
+}
+
+// Render Participants Table
+function renderParticipantsEditor() {
+  fetch('/api/participants')
+    .then(res => res.json())
+    .then(participants => {
+      const tbody = document.getElementById('participants-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (!participants || participants.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="padding: 1.5rem; text-align: center; color: var(--text-muted);">Nessuna prenotazione registrata al momento.</td></tr>';
+        return;
+      }
+
+      participants.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+        tr.innerHTML = `
+          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">${p.id}</td>
+          <td style="padding: 0.75rem; color: var(--text-muted);">${p.bookingDate}</td>
+          <td style="padding: 0.75rem;">${p.workshop}</td>
+          <td style="padding: 0.75rem; font-weight: 700;">${p.firstName} ${p.lastName}</td>
+          <td style="padding: 0.75rem; color: var(--text-secondary);">${p.email}</td>
+          <td style="padding: 0.75rem;"><a href="https://wa.me/${p.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color: #25D366; text-decoration: underline;">💬 ${p.phone}</a></td>
+          <td style="padding: 0.75rem;"><span style="color: var(--accent-purple);">${p.paymentFormula}</span></td>
+          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">${p.amountPaid}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => console.error('Fetch participants error:', err));
+}
+
+function sendExcelEmail() {
+  showToast('✉️ Invio report Excel in corso a info@davideluongo.com...');
+
+  fetch('/api/send-excel-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      recipientEmail: 'info@davideluongo.com',
+      workshopName: 'Tutti i Workshop'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      showToast('✅ Report Excel inviato con successo a info@davideluongo.com!');
+    } else {
+      alert('Errore invio email: ' + data.message);
+    }
+  })
+  .catch(err => console.error('Send email error:', err));
 }
 
 // Render Home Page Editor Sections

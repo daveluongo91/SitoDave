@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prenotazione Confermata • Davide Luongo Workshop</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: var(--bg-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .thank-you-container {
+      max-width: 760px;
+      margin: 8rem auto 4rem auto;
+      padding: 3rem 2rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    .summary-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+    .summary-row:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-secondary" style="padding: 0.5rem 1rem;">Torna alla Home ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="thank-you-container">
+      <div class="success-icon">🎉</div>
+      <h1 class="gradient-text" style="font-size: 2.2rem; margin-bottom: 0.75rem;">Prenotazione Ricevuta con Successo!</h1>
+      <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;">
+        Grazie per esserti iscritto al Workshop Fotografico con Davide Luongo. Abbiamo registrato i tuoi dati per la preparazione della lista partecipanti.
+      </p>
+
+      <div class="summary-box">
+        <h3 style="color: var(--accent-cyan); margin-bottom: 1rem; font-size: 1.1rem;">📋 Riepilogo Iscrizione & Dettagli</h3>
+        
+        <div class="summary-row">
+          <span style="color: var(--text-secondary);">Partecipante:</span>
+          <strong id="summary-name">Mario Rossi</strong>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-secondary);">Email:</span>
+          <strong id="summary-email">mario@esempio.com</strong>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-secondary);">Telefono (Gruppo WhatsApp):</span>
+          <strong id="summary-phone">+39 333 1234567</strong>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-secondary);">Workshop Selezionato:</span>
+          <strong id="summary-workshop">Workshop Friuli 2026</strong>
+        </div>
+
+        <div class="summary-row">
+          <span style="color: var(--text-secondary);">Formula di Pagamento:</span>
+          <strong id="summary-payment" style="color: var(--accent-emerald);">Caparra Confirmatoria €50 (Saldo in loco)</strong>
+        </div>
+      </div>
+
+      <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--accent-cyan); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 2rem; text-align: left;">
+        <h4 style="color: var(--accent-cyan); margin-bottom: 0.4rem;">📱 Gruppo WhatsApp Operativo</h4>
+        <p style="font-size: 0.875rem; color: var(--text-primary); margin: 0;">
+          Il tuo numero di telefono è stato registrato ed è fondamentale per la creazione del gruppo WhatsApp ufficiale dell'evento. Verrai aggiunto qualche giorno prima del workshop per condividere logistica, orari e punti di ritrovo.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20ho%20completato%20la%20prenotazione%20per%20il%20workshop!" target="_blank" class="btn btn-primary" style="background: #25D366; border-color: #25D366; color: #fff;">💬 Apri Chat WhatsApp (+39 373 5096237)</a>
+        <a href="mailto:info@davideluongo.it?subject=Informazioni%20Prenotazione%20Workshop" class="btn btn-secondary">✉️ Chiedi Info a info@davideluongo.it</a>
+        <a href="index.html" class="btn btn-secondary">🏠 Torna alla Home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="margin-top: auto;">
+    <div class="container" style="text-align: center;">
+      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('name')) document.getElementById('summary-name').innerText = urlParams.get('name');
+      if (urlParams.has('email')) document.getElementById('summary-email').innerText = urlParams.get('email');
+      if (urlParams.has('phone')) document.getElementById('summary-phone').innerText = urlParams.get('phone');
+      if (urlParams.has('workshop')) document.getElementById('summary-workshop').innerText = urlParams.get('workshop');
+      if (urlParams.has('payment')) document.getElementById('summary-payment').innerText = urlParams.get('payment');
+    });
+  </script>
+</body>
+</html>

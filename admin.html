@@ -209,6 +209,16 @@
 </head>
 <body>
 
+  <!-- Navigation Tabs -->
+  <div class="admin-tab-nav">
+    <button class="btn btn-primary admin-tab-btn active" data-tab="tab-content">📝 Testi per Pagina</button>
+    <button class="btn btn-secondary admin-tab-btn" data-tab="tab-workshops">📅 Workshop & Viaggi</button>
+    <button class="btn btn-secondary admin-tab-btn" data-tab="tab-participants">📊 Lista Partecipanti & Excel Cutoff</button>
+    <button class="btn btn-secondary admin-tab-btn" data-tab="tab-blog">📰 Articoli Blog</button>
+    <button class="btn btn-secondary admin-tab-btn" data-tab="tab-gear">📷 Gear & Attrezzatura</button>
+    <button class="btn btn-secondary admin-tab-btn" data-tab="tab-assets">🖼️ Gestore Asset sRGB per Pagina</button>
+  </div>
+
   <!-- Top Navbar -->
   <header class="navbar">
     <div class="container nav-container">
@@ -237,6 +247,14 @@
 
       <nav class="tree-nav" id="tree-navigator">
         
+        <!-- PAGINA 0: LISTA PARTECIPANTI & EXCEL -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-participants')">
+            <span>📊 Partecipanti & Report Excel Cutoff</span>
+            <span>★</span>
+          </div>
+        </div>
+
         <!-- PAGINA 1: HOME PAGE -->
         <div class="tree-node">
           <div class="tree-page-title active" onclick="selectPageNode('page-home')">
@@ -409,6 +427,43 @@
             <div class="asset-list-grid" id="home-assets-grid"></div>
           </div>
 
+        </div>
+
+        <!-- VISTA PARTECIPANTI & EXPORT EXCEL CUTOFF -->
+        <div id="panel-page-participants" class="page-editor-panel" style="display: none;">
+          <div class="section-card">
+            <div class="section-card-title">
+              <span>📊 Lista Partecipanti & Export Excel Report Cutoff</span>
+              <div style="display: flex; gap: 0.75rem;">
+                <a href="/api/download-excel" target="_blank" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;">📥 Download Excel Completo (.csv)</a>
+                <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;" onclick="sendExcelEmail()">✉️ Invia Report a info@davideluongo.com</button>
+              </div>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem;">
+              Gestisci gli iscritti ai workshop, scarica il report Excel generato per la data di cutoff (15 giorni prima dell'evento) o invialo via email. I numeri di telefono sono evidenziati per la creazione dei gruppi WhatsApp.
+            </p>
+
+            <div id="participants-table-container">
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--border-glass); color: var(--accent-cyan);">
+                    <th style="padding: 0.75rem;">ID</th>
+                    <th style="padding: 0.75rem;">Data</th>
+                    <th style="padding: 0.75rem;">Workshop</th>
+                    <th style="padding: 0.75rem;">Partecipante</th>
+                    <th style="padding: 0.75rem;">Email</th>
+                    <th style="padding: 0.75rem;">Telefono (WhatsApp)</th>
+                    <th style="padding: 0.75rem;">Formula</th>
+                    <th style="padding: 0.75rem;">Versato</th>
+                  </tr>
+                </thead>
+                <tbody id="participants-table-body">
+                  <!-- Dynamically populated via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <!-- VISTA EDITOR ALTRE PAGINE (DINAMICA) -->
