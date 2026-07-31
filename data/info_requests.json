@@ -1,0 +1,12 @@
+[
+  {
+    "id": "INF-0001",
+    "date": "2026-07-31 13:53",
+    "name": "Test Automatico Aruba",
+    "email": "info@davideluongo.it",
+    "phone": "+39 373 5096237",
+    "subject": "Test Verifica Server Aruba SMTP",
+    "message": "Test di verifica invio email automatico tramite Aruba SMTP smtps.aruba.it:465",
+    "recipient": "info@davideluongo.it"
+  }
+]
