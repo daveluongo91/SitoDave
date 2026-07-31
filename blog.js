@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-carousel]').forEach((carousel) => {
     const slides = Array.from(carousel.querySelectorAll('[data-slide]'));
     const status = carousel.querySelector('.carousel-status');
+    const prevBtn = carousel.querySelector('[data-carousel-prev]');
+    const nextBtn = carousel.querySelector('[data-carousel-next]');
     let activeIndex = 0;
     let isRotating = false;
 
@@ -27,16 +29,32 @@ document.addEventListener('DOMContentLoaded', () => {
         slide.setAttribute('aria-hidden', Math.abs(distance) > 1 ? 'true' : 'false');
       });
 
-      status.textContent = `${activeIndex + 1} / ${slides.length}`;
+      if (status) {
+        status.textContent = `${activeIndex + 1} / ${slides.length}`;
+      }
     };
 
     const rotateTo = (index) => {
       if (index === activeIndex || isRotating) return;
       isRotating = true;
-      activeIndex = index;
+      activeIndex = (index + slides.length) % slides.length;
       render();
       window.setTimeout(() => { isRotating = false; }, 400);
     };
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        rotateTo(activeIndex - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        rotateTo(activeIndex + 1);
+      });
+    }
 
     slides.forEach((slide, index) => {
       slide.addEventListener('pointerenter', (event) => {
@@ -54,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     carousel.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') rotateTo((activeIndex - 1 + slides.length) % slides.length);
-      if (event.key === 'ArrowRight') rotateTo((activeIndex + 1) % slides.length);
+      if (event.key === 'ArrowLeft') rotateTo(activeIndex - 1);
+      if (event.key === 'ArrowRight') rotateTo(activeIndex + 1);
     });
 
     render();
