@@ -337,7 +337,9 @@
           <h2 id="active-page-title" style="font-size: 1.25rem; color: var(--accent-cyan);">🏠 Home Page (index.html)</h2>
         </div>
 
-        <div style="display: flex; gap: 1rem; align-items: center;">
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <span class="badge-status active" style="position: static; font-size: 0.75rem;">🤖 AI SEO Agent: Attivo</span>
+          <button id="run-ai-seo-btn" class="btn btn-secondary" style="padding: 0.65rem 1.1rem; font-size: 0.85rem;" onclick="triggerAiSeoOptimization()">✨ Ottimizza SEO con IA</button>
           <button id="save-all-btn" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">💾 Salva Tutte le Modifiche</button>
         </div>
       </div>

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Davide Luongo Website — Advanced Backend Server, Asset Engine & Entity CMS Generator
+Davide Luongo Website — Advanced Backend Server, sRGB Engine & AI SEO Optimization Agent
 Handles:
 1. REST APIs for content persistence (content.json).
 2. Advanced sRGB Image Processing: Auto-rescaling (>5MB or >2048px max side) preserving aspect ratio and sRGB ICC profile with zero color alteration.
 3. Page-based Asset Management and Tagging.
-4. Dynamic Entity & Page Generation for Workshops, Viaggi, Blog Articles, and Gear.
+4. AI SEO Optimization Agent: Automatically generates Google-rank optimized <title>, <meta description>, OpenGraph tags, and JSON-LD Schema markup for Google SERP Rich Snippets.
+5. Dynamic Entity & Page Generator for Workshops, Viaggi, Blog Articles, and Gear.
 """
 
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -58,22 +59,18 @@ def process_image_srgb(input_bytes, original_filename, target_page="general"):
     if needs_rescale:
         img.thumbnail((MAX_DIMENSION, MAX_DIMENSION), Image.Resampling.LANCZOS)
 
-    # Maintain / Convert to RGB mode
     if img.mode != 'RGB':
         img = img.convert('RGB')
 
-    # sRGB Profile handling
     icc_profile = img.info.get('icc_profile')
     srgb_cms = ImageCms.createProfile('sRGB')
     srgb_bytes = ImageCms.ImageCmsProfile(srgb_cms).tobytes()
     final_icc = icc_profile or srgb_bytes
 
-    # Generate WebP sRGB
     webp_filename = f"{stem}_web.webp"
     webp_path = UPLOAD_DIR / webp_filename
     img.save(webp_path, format="WEBP", quality=90, icc_profile=final_icc)
 
-    # Generate JPEG sRGB
     jpg_filename = f"{stem}_web.jpg"
     jpg_path = UPLOAD_DIR / jpg_filename
     img.save(jpg_path, format="JPEG", quality=92, icc_profile=final_icc)
@@ -92,14 +89,133 @@ def process_image_srgb(input_bytes, original_filename, target_page="general"):
         "uploadDate": "2026-07-31"
     }
 
+# ==============================================================================
+# AI SEO AGENT ENGINE & SCHEMA MARKUP GENERATOR
+# ==============================================================================
+
+def run_ai_seo_agent(entity_type, entity):
+    """
+    AI SEO Agent: Generates optimized Title Tag, Meta Description, Open Graph tags,
+    Keywords, and JSON-LD Schema markup for Google Rich Snippets.
+    """
+    title = entity.get("title", "")
+    location = entity.get("location", "")
+    date_str = entity.get("date", "")
+    description = entity.get("description") or entity.get("excerpt") or entity.get("microArticle") or ""
+    image = entity.get("image", "assets/hero_milky_way.png")
+    
+    # 1. Generate SEO Title Tag (50-60 chars max)
+    if entity_type == "workshop":
+        seo_title = f"Workshop Fotografico {title} {date_str} • Davide Luongo"
+    elif entity_type == "viaggio":
+        seo_title = f"Photo Tour {title} {date_str} • Davide Luongo Viaggi"
+    elif entity_type == "blog":
+        seo_title = f"{title} • Guida & Articolo | Davide Luongo"
+    elif entity_type == "gear":
+        seo_title = f"{title} • Test & Recensione | Davide Luongo Gear"
+    else:
+        seo_title = f"{title} • Davide Luongo Landscape & Astrophotography"
+
+    # Truncate title if needed
+    if len(seo_title) > 65:
+        seo_title = seo_title[:62] + "..."
+
+    # 2. Generate Meta Description (150-160 chars max)
+    clean_desc = description.replace("\n", " ").strip()
+    if entity_type in ["workshop", "viaggio"]:
+        seo_desc = f"Partecipa al {title} il {date_str} in {location}. Sessioni di fotografia di paesaggio ed astrofotografia con Davide Luongo. {clean_desc}"
+    elif entity_type == "blog":
+        seo_desc = f"Leggi l'articolo '{title}' su paesaggio e astrofotografia di Davide Luongo: {clean_desc}"
+    elif entity_type == "gear":
+        seo_desc = f"Recensione tecnica e test sul campo di {title} di Davide Luongo: {clean_desc}"
+    else:
+        seo_desc = clean_desc
+
+    if len(seo_desc) > 158:
+        seo_desc = seo_desc[:155] + "..."
+
+    # 3. Generate JSON-LD Schema Markup (Structured Data)
+    if entity_type in ["workshop", "viaggio"]:
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "EducationEvent",
+            "name": title,
+            "description": seo_desc,
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "location": {
+                "@type": "Place",
+                "name": location or "Italia",
+                "address": location or "Italia"
+            },
+            "image": [f"https://www.davideluongo.it/{image}"],
+            "organizer": {
+                "@type": "Person",
+                "name": "Davide Luongo",
+                "url": "https://www.davideluongo.it"
+            },
+            "offers": {
+                "@type": "Offer",
+                "price": entity.get("price", "290").replace("€", "").strip(),
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/InStock",
+                "url": f"https://www.davideluongo.it/{entity.get('id')}.html"
+            }
+        }
+    elif entity_type == "gear":
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": title,
+            "brand": {
+                "@type": "Brand",
+                "name": entity.get("brand", "Fotografia").split("•")[0].strip()
+            },
+            "description": seo_desc,
+            "image": f"https://www.davideluongo.it/{image}"
+        }
+    elif entity_type == "blog":
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": title,
+            "description": seo_desc,
+            "image": f"https://www.davideluongo.it/{image}",
+            "author": {
+                "@type": "Person",
+                "name": "Davide Luongo"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Davide Luongo Photography",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.davideluongo.it/assets/pittogramma.png"
+                }
+            }
+        }
+    else:
+        json_ld = {}
+
+    return {
+        "seoTitle": seo_title,
+        "seoDescription": seo_desc,
+        "ogTitle": seo_title,
+        "ogDescription": seo_desc,
+        "jsonLd": json_ld
+    }
+
 def generate_workshop_landing_page(entity):
     """
-    Generates a dedicated HTML landing page for a Workshop or Viaggio entity.
+    Generates a dedicated HTML landing page with integrated AI SEO Metadata & JSON-LD Schema.
     """
     slug = entity.get("id")
     if not slug:
         return
     
+    entity_type = "workshop" if entity.get("category") == "nazionale" else "viaggio"
+    seo_data = run_ai_seo_agent(entity_type, entity)
+
     title = entity.get("title", "Workshop Fotografico")
     date_str = entity.get("date", "2026 / 2027")
     location = entity.get("location", "Location da definire")
@@ -110,14 +226,26 @@ def generate_workshop_landing_page(entity):
     duration = entity.get("duration", "2 Giorni / 1 Notte")
     price = entity.get("price", "In Definizione")
 
+    json_ld_string = json.dumps(seo_data["jsonLd"], ensure_ascii=False, indent=2)
+
     html_content = f"""<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} • Davide Luongo</title>
-  <meta name="description" content="{description}" />
+  <title>{seo_data['seoTitle']}</title>
+  <meta name="description" content="{seo_data['seoDescription']}" />
+  <meta property="og:title" content="{seo_data['ogTitle']}" />
+  <meta property="og:description" content="{seo_data['ogDescription']}" />
+  <meta property="og:image" content="{image}" />
+  <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://www.davideluongo.it/{slug}.html" />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- AI SEO JSON-LD Structured Data Schema Markup -->
+  <script type="application/ld+json">
+{json_ld_string}
+  </script>
 </head>
 <body>
 
@@ -291,11 +419,33 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
             body = self.rfile.read(content_length)
             try:
                 new_content = json.loads(body.decode("utf-8"))
+
+                # Run AI SEO Agent on workshops/trips to update their SEO metadata & HTML landing pages
+                if "workshops" in new_content:
+                    for ws in new_content["workshops"]:
+                        seo = run_ai_seo_agent("workshop", ws)
+                        ws["seo"] = seo
+                        generate_workshop_landing_page(ws)
+
+                if "trips_2027" in new_content:
+                    for trip in new_content["trips_2027"]:
+                        seo = run_ai_seo_agent("viaggio", trip)
+                        trip["seo"] = seo
+                        generate_workshop_landing_page(trip)
+
+                if "blog" in new_content:
+                    for b in new_content["blog"]:
+                        b["seo"] = run_ai_seo_agent("blog", b)
+
+                if "gear" in new_content:
+                    for g in new_content["gear"]:
+                        g["seo"] = run_ai_seo_agent("gear", g)
+
                 save_content(new_content)
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "message": "Contenuti salvati con successo"}).encode("utf-8"))
+                self.wfile.write(json.dumps({"status": "success", "message": "Contenuti e SEO salvati ed ottimizzati con successo"}).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")
@@ -336,12 +486,35 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
             return
 
+        elif parsed.path == "/api/optimize-seo":
+            body = self.rfile.read(content_length)
+            try:
+                req = json.loads(body.decode("utf-8"))
+                entity_type = req.get("entityType", "workshop")
+                entity = req.get("entity", {})
+                seo_result = run_ai_seo_agent(entity_type, entity)
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "success", "seo": seo_result}).encode("utf-8"))
+            except Exception as e:
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode("utf-8"))
+            return
+
         elif parsed.path == "/api/create-entity":
             body = self.rfile.read(content_length)
             try:
                 req = json.loads(body.decode("utf-8"))
                 entity_type = req.get("entityType") # "workshop", "viaggio", "blog", "gear"
                 entity = req.get("entity", {})
+
+                # Run AI SEO Agent automatically on creation
+                seo_data = run_ai_seo_agent(entity_type, entity)
+                entity["seo"] = seo_data
 
                 data = load_content()
                 if entity_type in ["workshop", "viaggio"]:
@@ -353,7 +526,7 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                     else:
                         data["trips_2027"].insert(0, entity)
 
-                    # Generate dedicated HTML landing page
+                    # Generate dedicated HTML landing page with SEO schema
                     page_path = generate_workshop_landing_page(entity)
                     entity["detailsUrl"] = page_path
 
@@ -370,7 +543,7 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
-                self.wfile.write(json.dumps({"status": "success", "entity": entity}).encode("utf-8"))
+                self.wfile.write(json.dumps({"status": "success", "entity": entity, "seo": seo_data}).encode("utf-8"))
             except Exception as e:
                 self.send_response(400)
                 self.send_header("Content-Type", "application/json")
@@ -416,7 +589,7 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
 def main():
     server_address = ("", PORT)
     httpd = HTTPServer(server_address, BackendRequestHandler)
-    print(f"Davide Luongo CMS Server running on http://localhost:{PORT}")
+    print(f"Davide Luongo CMS & AI SEO Server running on http://localhost:{PORT}")
     print(f"Admin Dashboard available at http://localhost:{PORT}/admin")
     try:
         httpd.serve_forever()

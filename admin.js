@@ -533,6 +533,26 @@ function setupSaveButton() {
   });
 }
 
+function triggerAiSeoOptimization() {
+  showToast('🤖 L\'Agente AI SEO sta analizzando i contenuti e rigenerando i tag SEO per Google...');
+
+  fetch('/api/content', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(globalData)
+  })
+  .then(res => res.json())
+  .then(resData => {
+    if (resData.status === 'success') {
+      showToast('✨ AI SEO Agent: Tag <title>, <meta description> e Schema JSON-LD ottimizzati per tutte le pagine!');
+      fetchContent();
+    } else {
+      alert('Errore ottimizzazione SEO: ' + resData.message);
+    }
+  })
+  .catch(err => console.error('AI SEO error:', err));
+}
+
 function showToast(msg) {
   const toast = document.getElementById('toast');
   if (!toast) return;
