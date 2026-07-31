@@ -332,6 +332,28 @@ class BackendRequestHandler(SimpleHTTPRequestHandler):
             self.wfile.write(filepath.read_bytes())
             return
 
+        elif any(tag in parsed.path.lower() for tag in ["blog", "pubblicazioni"]):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            blog_file = ROOT / "blog" / "blog.html"
+            if blog_file.exists():
+                self.wfile.write(blog_file.read_bytes())
+            else:
+                self.wfile.write(b"Blog page not found")
+            return
+
+        elif parsed.path in ["/gear", "/gear/", "/gear.html"]:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            gear_file = ROOT / "gear" / "gear.html"
+            if gear_file.exists():
+                self.wfile.write(gear_file.read_bytes())
+            else:
+                self.wfile.write(b"Gear page not found")
+            return
+
         elif parsed.path == "/admin":
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
