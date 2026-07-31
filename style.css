@@ -1343,3 +1343,31 @@ h1, h2, h3, h4, h5, h6 {
   .publication-image { height: 215px; }
   .carousel-status { margin-top: 0.8rem; }
 }
+
+/* Gear Product Card Hover & Image Zoom Animation */
+.gear-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  cursor: pointer;
+}
+
+.gear-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
+}
+
+.gear-card-img-container {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.gear-card-img-container img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gear-card:hover .gear-card-img-container img,
+.gear-card-img-container:hover img {
+  transform: scale(1.09);
+}
+

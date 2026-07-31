@@ -162,19 +162,19 @@
       "title": "SIGMA 14mm f/1.4 DG DN Art",
       "brand": "SIGMA LENSES • OBIETTIVO FISSO",
       "category": "sigma",
-      "microArticle": "L'obiettivo definitivo per l'astrofotografia ambientata. La sua eccezionale luminosità f/1.4 combinata con un controllo impeccabile del coma e delle aberrazioni cromatiche ai bordi dell'immagine permette di catturare il nucleo della Via Lattea con tempi di scatto ridotti e ISO bassi. È il punto di riferimento in tutti i miei workshop notturni.",
+      "microArticle": "L'obiettivo definitivo per l'astrofotografia ambientata e la fotografia di paesaggio notturno in alta quota. Il SIGMA 14mm f/1.4 DG DN Art rappresenta una pietra miliare dell'ottica moderna: è il primo 14mm al mondo con apertura nativa f/1.4 per fotocamere mirrorless full-frame.\n\nRaccogliendo il 200% di luce in più rispetto ad un classico f/2.8, permette di lavorare a ISO 1600 anziché 6400, riducendo drasticamente il rumore e conservando una gamma dinamica ed una fedeltà cromatica eccezionali sia sulla Via Lattea che sul primo piano.\n\nIl sofisticato schema ottico a 19 elementi corregge in modo impeccabile il coma ed i bagliori ai bordi del fotogramma, mantenendo le stelle perfettamente sferiche ed incise a tutta apertura. Completo di blocco del fuoco MFL Switch e supporto per fasce anticondensa, è lo strumento di lavoro fondamentale nei miei workshop.",
       "specs": [
         "Sony E / L-Mount",
-        "Apertura: f/1.4",
-        "Astro-Lock Switch",
-        "Staffa Treppiede Inclusa"
+        "Apertura Nativa: f/1.4",
+        "MFL Manual Focus Lock",
+        "Holder Anti-Condensa"
       ],
       "ambassadorBadge": "SIGMA Ambassador",
       "affiliateBadge": null,
       "discountCode": null,
-      "actionLabel": "Scopri su SIGMA Italia",
-      "actionUrl": "https://www.sigma-foto.it/",
-      "image": "assets/gear_sigma_14mm.png"
+      "actionLabel": "Leggi l'Articolo Completo nel Blog →",
+      "actionUrl": "../blog/test-sigma-14mm-art.html",
+      "image": "assets/gear_sigma_14mm_vertical.jpg"
     },
     {
       "id": "sigma-24-70mm",
