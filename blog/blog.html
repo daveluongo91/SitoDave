@@ -49,6 +49,55 @@
       border-color: var(--accent-cyan);
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
     }
+
+    /* NEON PINK FLICKER EFFECT FOR COMING SOON */
+    @keyframes neonFlicker {
+      0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+        opacity: 0.98;
+        text-shadow: 
+          0 0 4px #fff,
+          0 0 10px #ff2a85,
+          0 0 20px #ff2a85,
+          0 0 40px #ff007f,
+          0 0 80px #ff007f,
+          0 0 120px #ff007f;
+      }
+      20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+        opacity: 0.35;
+        text-shadow: none;
+      }
+    }
+
+    .neon-pink-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      background: radial-gradient(circle at center, rgba(255, 0, 127, 0.08) 0%, rgba(10, 5, 20, 0.75) 100%);
+      border: 1px solid rgba(255, 42, 133, 0.35);
+      border-radius: var(--radius-md);
+      box-shadow: 0 0 35px rgba(255, 0, 127, 0.15), inset 0 0 25px rgba(255, 0, 127, 0.08);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .neon-pink-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      color: #fff;
+      text-transform: uppercase;
+      animation: neonFlicker 3.8s infinite alternate ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+      .neon-pink-text {
+        font-size: 2.2rem;
+        letter-spacing: 0.18em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -95,8 +144,31 @@
     </div>
   </section>
 
+  <!-- ==================== SEZIONE 0: 🤓 LE MIE FOTOCHIACCHIERATE (NEON PINK COMING SOON) ==================== -->
+  <section id="fotochiacchierate-section" class="section" style="padding-top: 1rem; padding-bottom: 3rem;">
+    <div class="container">
+      
+      <div class="publisher-section-heading" style="border-bottom: 1px solid rgba(255, 42, 133, 0.35);">
+        <div class="publisher-title-text" style="color: #ff70a6;">
+          <span>🤓 Le mie fotochiacchierate</span>
+        </div>
+        <span style="font-size: 0.85rem; color: #ff2a85; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; background: rgba(255, 42, 133, 0.12); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); border: 1px solid rgba(255, 42, 133, 0.4);">
+          Podcast & Interviste
+        </span>
+      </div>
+
+      <div class="neon-pink-container">
+        <div class="neon-pink-text">COMING SOON</div>
+        <p style="color: rgba(255, 255, 255, 0.75); font-size: 0.95rem; margin-top: 1.25rem; letter-spacing: 0.05em; font-weight: 500; max-width: 600px;">
+          Chiacchierate informali su attrezzatura, aneddoti sul campo e confronti con fotografi di settore. Episodi in arrivo prossimamente!
+        </p>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ==================== SEZIONE 1: VANGUARD WORLD (CAROSELLO 3D - 4 ARTICOLI) ==================== -->
-  <section class="publication-section section" id="vanguard-carousel-section" data-carousel style="padding-top: 2rem; padding-bottom: 4rem;">
+  <section class="publication-section section" id="vanguard-carousel-section" data-carousel style="padding-top: 1rem; padding-bottom: 4rem;">
     <div class="container">
       
       <div class="publisher-section-heading">
