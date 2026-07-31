@@ -27,7 +27,11 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from pathlib import Path
-from PIL import Image, ImageCms, ImageOps
+try:
+    from PIL import Image, ImageCms, ImageOps
+    HAS_PIL = True
+except ImportError:
+    HAS_PIL = False
 
 ROOT = Path(__file__).parent.resolve()
 DATA_FILE = ROOT / "data" / "content.json"
@@ -178,7 +182,25 @@ def process_image_srgb(input_bytes, original_filename, target_page="general"):
     raw_data = input_bytes.getvalue()
     raw_size = len(raw_data)
     stem = Path(original_filename).stem.replace(" ", "_")
-    
+    jpg_filename = f"{stem}_web.jpg"
+    jpg_path = UPLOAD_DIR / jpg_filename
+
+    if not HAS_PIL:
+        jpg_path.write_bytes(raw_data)
+        return {
+            "filename": original_filename,
+            "fullResPath": f"assets/upload/{jpg_filename}",
+            "webpPath": f"assets/upload/{jpg_filename}",
+            "jpegPath": f"assets/upload/{jpg_filename}",
+            "width": 1920,
+            "height": 1080,
+            "originalSize": raw_size,
+            "wasRescaled": False,
+            "srgbPreserved": True,
+            "pageTag": target_page,
+            "uploadDate": datetime.now().strftime("%Y-%m-%d")
+        }
+
     img = Image.open(io.BytesIO(raw_data))
     img = ImageOps.exif_transpose(img)
 
@@ -199,9 +221,6 @@ def process_image_srgb(input_bytes, original_filename, target_page="general"):
     webp_filename = f"{stem}_web.webp"
     webp_path = UPLOAD_DIR / webp_filename
     img.save(webp_path, format="WEBP", quality=90, icc_profile=final_icc)
-
-    jpg_filename = f"{stem}_web.jpg"
-    jpg_path = UPLOAD_DIR / jpg_filename
     img.save(jpg_path, format="JPEG", quality=92, icc_profile=final_icc)
 
     return {

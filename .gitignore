@@ -3,4 +3,6 @@ davide-second-brain/
 *.log
 __pycache__/
 *.pyc
+data/smtp_config.json
+
 
