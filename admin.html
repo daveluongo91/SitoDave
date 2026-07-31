@@ -3,124 +3,195 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard & Content Manager • Davide Luongo</title>
+  <title>Admin Elementor-Style CMS • Davide Luongo</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       background-color: var(--bg-main);
-      padding-top: 5rem;
+      padding-top: 4.5rem;
+      height: 100vh;
+      overflow: hidden;
     }
-    .admin-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
+    
+    .elementor-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: calc(100vh - 4.5rem);
+      overflow: hidden;
     }
-    .admin-header {
+
+    /* Left Tree View Sidebar */
+    .tree-sidebar {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-glass);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .tree-sidebar-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-glass);
+      background: rgba(11, 25, 41, 0.7);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-glass);
-      flex-wrap: wrap;
-      gap: 1rem;
     }
-    .admin-badge {
-      display: inline-block;
-      padding: 0.35rem 0.85rem;
-      background: rgba(0, 240, 255, 0.15);
+
+    .tree-sidebar-title {
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--accent-cyan);
-      border: 1px solid var(--accent-cyan);
-      border-radius: var(--radius-full);
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-    .admin-tab-nav {
       display: flex;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    .admin-section {
+
+    .tree-nav {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    /* Tree Node Elements */
+    .tree-node {
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+
+    .tree-page-title {
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition-fast);
+    }
+
+    .tree-page-title:hover, .tree-page-title.active {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+
+    .tree-sub-list {
+      padding-left: 1rem;
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .tree-sub-item {
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-fast);
+    }
+
+    .tree-sub-item:hover, .tree-sub-item.active {
+      background: rgba(168, 85, 247, 0.15);
+      color: #D8B4FE;
+    }
+
+    /* Right Main Editor Panel */
+    .editor-main {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-main);
+    }
+
+    .editor-toolbar {
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .editor-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 2.5rem;
+    }
+
+    .section-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-lg);
       padding: 2rem;
       margin-bottom: 2rem;
+      box-shadow: var(--shadow-card);
     }
-    .admin-section-title {
-      font-size: 1.4rem;
-      margin-bottom: 1.5rem;
+
+    .section-card-title {
+      font-size: 1.3rem;
+      font-weight: 800;
       color: var(--accent-cyan);
+      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
+
     .dropzone {
       border: 2px dashed var(--accent-cyan);
       border-radius: var(--radius-md);
-      padding: 2.5rem 2rem;
+      padding: 2.5rem 1.5rem;
       text-align: center;
       background: rgba(0, 240, 255, 0.03);
       cursor: pointer;
       transition: var(--transition-fast);
     }
+
     .dropzone:hover {
       background: rgba(0, 240, 255, 0.08);
     }
+
     .asset-list-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
     }
+
     .asset-card {
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
       overflow: hidden;
-      font-size: 0.85rem;
-      display: flex;
-      flex-direction: column;
+      font-size: 0.8rem;
     }
+
     .asset-card img {
       width: 100%;
-      height: 150px;
+      height: 130px;
       object-fit: cover;
     }
+
     .asset-card-body {
-      padding: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
+      padding: 0.75rem;
     }
-    .entity-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-    .delete-btn {
-      background: rgba(239, 68, 68, 0.2);
-      color: #F87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      padding: 0.35rem 0.75rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition-fast);
-    }
-    .delete-btn:hover {
-      background: rgba(239, 68, 68, 0.4);
-    }
+
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -138,215 +209,273 @@
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Top Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="index.html" class="brand-logo">
         <img src="assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
-        <span>Davide Luongo • CMS Admin</span>
+        <span>Davide Luongo • Elementor CMS Navigator</span>
       </a>
 
       <div class="nav-actions">
-        <span class="admin-badge">⚡ Backend Engine: Online</span>
-        <a href="index.html" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Vedi Sito Live ↗</a>
+        <span class="badge-status active" style="position: static;">⚡ Engine Status: Live</span>
+        <a href="index.html" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Vedi Sito Live ↗</a>
       </div>
     </div>
   </header>
 
-  <div class="admin-container">
+  <div class="elementor-layout">
     
-    <div class="admin-header">
-      <div>
-        <h1 style="font-size: 2rem; margin-bottom: 0.3rem;">Pannello di Amministrazione & Manager Entità</h1>
-        <p style="color: var(--text-secondary);">Gestisci i testi suddivisi per pagina, crea nuovi workshop o viaggi e carica foto in alta risoluzione (auto-scaling >5MB/2048px senza alterazioni sRGB).</p>
+    <!-- LEFT SIDEBAR: ALBERO STRUTTURATO PAGINE (ELEMENTOR NAVIGATOR) -->
+    <aside class="tree-sidebar">
+      <div class="tree-sidebar-header">
+        <div class="tree-sidebar-title">
+          <span>🌳 Navigatore Pagine</span>
+        </div>
+        <button id="add-entity-btn" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">➕ Nuova Pagina</button>
       </div>
-      <button id="save-all-btn" class="btn btn-primary" style="padding: 0.85rem 1.75rem;">💾 Salva Tutte le Modifiche</button>
-    </div>
 
-    <!-- Navigation Tabs -->
-    <div class="admin-tab-nav">
-      <button class="btn btn-primary admin-tab-btn active" data-tab="tab-content">📝 Testi per Pagina</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-workshops">📅 Workshop & Viaggi</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-blog">📰 Articoli Blog</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-gear">📷 Gear & Attrezzatura</button>
-      <button class="btn btn-secondary admin-tab-btn" data-tab="tab-assets">🖼️ Gestore Asset sRGB per Pagina</button>
-    </div>
-
-    <!-- TAB 1: TESTI E BLOCCHI SUDDIVISI PER PAGINA -->
-    <div id="tab-content" class="admin-tab-content">
-      <div class="admin-section">
-        <h2 class="admin-section-title"><span>🏠 Pagina Home (Hero & Biografia)</span></h2>
+      <nav class="tree-nav" id="tree-navigator">
         
-        <div class="form-group">
-          <label class="form-label" for="edit-hero-badge">Badge Animato Hero</label>
-          <input type="text" id="edit-hero-badge" class="form-input" />
+        <!-- PAGINA 1: HOME PAGE -->
+        <div class="tree-node">
+          <div class="tree-page-title active" onclick="selectPageNode('page-home')">
+            <span>🏠 Home Page (index.html)</span>
+            <span>▼</span>
+          </div>
+          <div class="tree-sub-list">
+            <div class="tree-sub-item active" onclick="scrollToSection('home-hero')">🌄 Section: Hero Principal</div>
+            <div class="tree-sub-item" onclick="scrollToSection('home-workshops-2026')">🇮🇹 Entità: Workshop 2026</div>
+            <div class="tree-sub-item" onclick="scrollToSection('home-viaggi-2027')">✈️ Entità: Viaggi 2027</div>
+            <div class="tree-sub-item" onclick="scrollToSection('home-bio')">👤 Section: Biografia & Story</div>
+            <div class="tree-sub-item" onclick="scrollToSection('home-assets')">🖼️ Asset & Foto Home</div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="edit-hero-title">Titolo Principale Hero (supporta HTML)</label>
-          <input type="text" id="edit-hero-title" class="form-input" />
+        <!-- PAGINA 2: WORKSHOP FRIULI 2026 -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-friuli')">
+            <span>🏞️ Friuli 2026 (friuli-2026.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-friuli')">🌄 Hero & Titolo Landing</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-friuli')">📍 Logistica & Highlights</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-friuli')">🖼️ Asset Immagini Friuli</div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="edit-hero-desc">Descrizione Sotto-Titolo Hero</label>
-          <textarea id="edit-hero-desc" class="form-textarea" rows="3"></textarea>
+        <!-- PAGINA 3: WORKSHOP CASCATE APPENNINO 2026 -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-cascate')">
+            <span>💧 Cascate Appennino (cascate-appennino-2026.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-cascate')">🌄 Hero & Titolo Landing</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-cascate')">📍 Logistica & Highlights</div>
+          </div>
         </div>
 
-        <h3 style="font-size: 1.1rem; margin: 1.5rem 0 1rem 0; color: var(--accent-cyan);">Paragrafi Biografia ("Chi Sono")</h3>
-        <div id="bio-paragraphs-container"></div>
+        <!-- PAGINA 4: WORKSHOP CANFAITO 2026 -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-canfaito')">
+            <span>🍂 Canfaito 2026 (canfaito-2026.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-canfaito')">🌄 Hero & Titolo Landing</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-canfaito')">📍 Logistica & Highlights</div>
+          </div>
+        </div>
+
+        <!-- PAGINA 5: WORKSHOP FORESTE CASENTINESI 2026 -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-casentinesi')">
+            <span>🌲 Foreste Casentinesi (foreste-casentinesi-2026.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-casentinesi')">🌄 Hero & Titolo Landing</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-casentinesi')">📍 Logistica & Highlights</div>
+          </div>
+        </div>
+
+        <!-- PAGINA 6: GEAR & ATTREZZATURA -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-gear')">
+            <span>📷 Gear & Attrezzatura (gear.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-gear')">📷 Schede Prodotti Gear</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-gear')">🏷️ Codici Sconto & Link Affiliati</div>
+          </div>
+        </div>
+
+        <!-- PAGINA 7: BLOG & PUBBLICAZIONI -->
+        <div class="tree-node">
+          <div class="tree-page-title" onclick="selectPageNode('page-blog')">
+            <span>📰 Blog & Pubblicazioni (blog.html)</span>
+            <span>▶</span>
+          </div>
+          <div class="tree-sub-list" style="display: none;">
+            <div class="tree-sub-item" onclick="selectPageNode('page-blog')">✍️ Diario Fotografico</div>
+            <div class="tree-sub-item" onclick="selectPageNode('page-blog')">📰 Pubblicazioni Esterne</div>
+          </div>
+        </div>
+
+      </nav>
+    </aside>
+
+    <!-- RIGHT MAIN: EDITOR ISPETTORE SEZIONI (ELEMENTOR PROPERTY EDITOR) -->
+    <main class="editor-main">
+      
+      <div class="editor-toolbar">
+        <div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Pagina selezionata:</span>
+          <h2 id="active-page-title" style="font-size: 1.25rem; color: var(--accent-cyan);">🏠 Home Page (index.html)</h2>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <button id="save-all-btn" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">💾 Salva Tutte le Modifiche</button>
+        </div>
       </div>
-    </div>
 
-    <!-- TAB 2: WORKSHOP E VIAGGI (GESTIONE ED ENTITÀ CREAZIONE) -->
-    <div id="tab-workshops" class="admin-tab-content" style="display: none;">
-      <div class="admin-section">
-        <div class="admin-section-title">
-          <span>📅 Gestione Workshop 2026 & Viaggi 2027</span>
-          <button id="open-create-workshop-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Crea Nuovo Workshop / Viaggio</button>
-        </div>
-
-        <h3 style="font-size: 1.1rem; color: var(--accent-cyan); margin-bottom: 1rem;">Workshop 2026 Attivi</h3>
-        <div id="admin-workshops-list"></div>
-
-        <h3 style="font-size: 1.1rem; color: var(--accent-purple); margin: 2rem 0 1rem 0;">Viaggi Fotografici 2027</h3>
-        <div id="admin-trips-list"></div>
-      </div>
-    </div>
-
-    <!-- TAB 3: ARTICOLI BLOG -->
-    <div id="tab-blog" class="admin-tab-content" style="display: none;">
-      <div class="admin-section">
-        <div class="admin-section-title">
-          <span>📰 Articoli del Blog & Pubblicazioni</span>
-          <button id="open-create-blog-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Nuovo Articolo Blog</button>
-        </div>
-        <div id="admin-blog-list"></div>
-      </div>
-    </div>
-
-    <!-- TAB 4: GESTIONE GEAR -->
-    <div id="tab-gear" class="admin-tab-content" style="display: none;">
-      <div class="admin-section">
-        <div class="admin-section-title">
-          <span>📷 Prodotti Gear, Recensioni & Codici Sconto</span>
-          <button id="open-create-gear-modal" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">➕ Nuovo Prodotto Gear</button>
-        </div>
-        <div id="admin-gear-list"></div>
-      </div>
-    </div>
-
-    <!-- TAB 5: GESTORE UPLOAD ASSET PER PAGINA -->
-    <div id="tab-assets" class="admin-tab-content" style="display: none;">
-      <div class="admin-section">
-        <h2 class="admin-section-title"><span>🖼️ Upload & Gestione Asset per Pagina (sRGB Preserved)</span></h2>
+      <div class="editor-body" id="editor-body">
         
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-          <label class="form-label" for="asset-page-select">Seleziona Pagina / Sezione Target per i nuovi Upload</label>
-          <select id="asset-page-select" class="form-input" style="background: var(--bg-card);">
-            <option value="home">Pagina Home (index.html)</option>
-            <option value="friuli-2026">Workshop Friuli 2026</option>
-            <option value="cascate-appennino-2026">Workshop Cascate Appennino 2026</option>
-            <option value="canfaito-2026">Workshop Canfaito 2026</option>
-            <option value="foreste-casentinesi-2026">Workshop Foreste Casentinesi 2026</option>
-            <option value="viaggi-2027">Viaggi 2027 (Lapponia, Minorca, Azzorre, Islanda)</option>
-            <option value="gear">Pagina Gear & Attrezzatura (gear.html)</option>
-            <option value="blog">Pagina Blog & Pubblicazioni (blog.html)</option>
-          </select>
-        </div>
+        <!-- VISTA EDITOR HOME PAGE -->
+        <div id="panel-page-home" class="page-editor-panel">
+          
+          <!-- SEZIONE 1: HERO -->
+          <div class="section-card" id="home-hero">
+            <div class="section-card-title">🌄 Sezione Hero Principal</div>
+            
+            <div class="form-group">
+              <label class="form-label">Badge Animato Hero</label>
+              <input type="text" id="edit-hero-badge" class="form-input" />
+            </div>
 
-        <div class="dropzone" id="image-dropzone">
-          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Trascina qui le tue foto o clicca per selezionarle</h3>
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">
-            Se l'immagine supera i <strong>5MB</strong> o i <strong>2048px</strong> sul lato lungo, il backend la ridimensionerà mantenendo le proporzioni e <strong>preservando al 100% lo spazio colore sRGB senza alcuna alterazione cromatica</strong>.
-          </p>
-          <input type="file" id="file-input" accept="image/*" style="display: none;" multiple />
-        </div>
+            <div class="form-group">
+              <label class="form-label">Titolo Principale Hero (HTML)</label>
+              <input type="text" id="edit-hero-title" class="form-input" />
+            </div>
 
-        <div style="margin-top: 2.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h3 style="font-size: 1.1rem;">Asset Salvati per Pagina</h3>
-            <select id="asset-filter-select" class="form-input" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.85rem;">
-              <option value="all">Filtra: Tutte le Pagine</option>
-              <option value="home">Home Page</option>
-              <option value="friuli-2026">Friuli 2026</option>
-              <option value="cascate-appennino-2026">Cascate Appennino 2026</option>
-              <option value="canfaito-2026">Canfaito 2026</option>
-              <option value="foreste-casentinesi-2026">Foreste Casentinesi 2026</option>
-              <option value="viaggi-2027">Viaggi 2027</option>
-              <option value="gear">Gear</option>
-              <option value="blog">Blog</option>
-            </select>
+            <div class="form-group">
+              <label class="form-label">Sotto-Titolo & Descrizione</label>
+              <textarea id="edit-hero-desc" class="form-textarea" rows="3"></textarea>
+            </div>
           </div>
 
-          <div class="asset-list-grid" id="admin-assets-list"></div>
+          <!-- SEZIONE 2: WORKSHOP 2026 -->
+          <div class="section-card" id="home-workshops-2026">
+            <div class="section-card-title">
+              <span>🇮🇹 Entità Workshop 2026</span>
+              <button class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;" onclick="openCreateModal('workshop')">➕ Aggiungi Workshop</button>
+            </div>
+            <div id="admin-workshops-list"></div>
+          </div>
+
+          <!-- SEZIONE 3: VIAGGI 2027 -->
+          <div class="section-card" id="home-viaggi-2027">
+            <div class="section-card-title">
+              <span>✈️ Entità Viaggi Fotografici 2027</span>
+              <button class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;" onclick="openCreateModal('viaggio')">➕ Aggiungi Viaggio 2027</button>
+            </div>
+            <div id="admin-trips-list"></div>
+          </div>
+
+          <!-- SEZIONE 4: BIOGRAFIA -->
+          <div class="section-card" id="home-bio">
+            <div class="section-card-title">👤 Biografia & Storia Personale ("Chi Sono")</div>
+            <div id="bio-paragraphs-container"></div>
+          </div>
+
+          <!-- SEZIONE 5: ASSET FOTO HOME -->
+          <div class="section-card" id="home-assets">
+            <div class="section-card-title">🖼️ Upload Asset Immagini per Home Page (sRGB Preserved)</div>
+            
+            <div class="dropzone" id="home-dropzone">
+              <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem;">Trascina le foto per la Home Page</h4>
+              <p style="color: var(--text-secondary); font-size: 0.85rem;">
+                File >5MB o >2048px vengono riscalati mantenendo al 100% la fedeltà del profilo colore sRGB.
+              </p>
+              <input type="file" id="home-file-input" accept="image/*" style="display: none;" multiple />
+            </div>
+
+            <div class="asset-list-grid" id="home-assets-grid"></div>
+          </div>
+
         </div>
+
+        <!-- VISTA EDITOR ALTRE PAGINE (DINAMICA) -->
+        <div id="panel-page-generic" class="page-editor-panel" style="display: none;">
+          <div class="section-card">
+            <div class="section-card-title" id="generic-card-title">📄 Gestione Pagina Landing</div>
+            <div id="generic-editor-content"></div>
+          </div>
+        </div>
+
       </div>
-    </div>
+
+    </main>
 
   </div>
 
-  <!-- MODALE CREAZIONE NUOVO WORKSHOP / VIAGGIO -->
-  <div id="create-workshop-modal" class="modal-overlay">
+  <!-- MODALE CREAZIONE ELEMENTOR ENTITÀ -->
+  <div id="create-entity-modal" class="modal-overlay">
     <div class="modal-content" style="max-width: 650px;">
-      <button class="modal-close" onclick="closeModal('create-workshop-modal')">&times;</button>
-      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Crea Nuovo Workshop o Viaggio</h3>
-      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Crea l'entità ed il backend genererà automaticamente la pagina landing dedicata.</p>
+      <button class="modal-close" onclick="closeModal('create-entity-modal')">&times;</button>
+      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Crea Nuova Pagina / Entità</h3>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Il backend genererà automaticamente la relativa pagina HTML landing ed il nodo nell'albero.</p>
 
-      <form id="create-workshop-form">
+      <form id="create-entity-form">
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">Tipo Entità</label>
-            <select id="new-ws-type" class="form-input">
-              <option value="workshop">Workshop Nazionale 2026</option>
-              <option value="viaggio">Viaggio Fotografico 2027</option>
+            <label class="form-label">Tipologia Entità</label>
+            <select id="modal-entity-type" class="form-input">
+              <option value="workshop">Workshop 2026</option>
+              <option value="viaggio">Viaggio 2027</option>
+              <option value="blog">Articolo Blog</option>
+              <option value="gear">Prodotto Gear</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Slug / ID Unico (es. dolomiti-2027)</label>
-            <input type="text" id="new-ws-id" class="form-input" required />
+            <label class="form-label">ID / Slug Unico (es. dolomiti-2027)</label>
+            <input type="text" id="modal-entity-id" class="form-input" required />
           </div>
 
           <div class="form-group">
             <label class="form-label">Titolo Completo</label>
-            <input type="text" id="new-ws-title" class="form-input" required />
+            <input type="text" id="modal-entity-title" class="form-input" required />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Data (es. 15 - 17 Maggio 2027)</label>
-            <input type="text" id="new-ws-date" class="form-input" required />
+            <label class="form-label">Data (es. 10 - 11 Ottobre 2026)</label>
+            <input type="text" id="modal-entity-date" class="form-input" required />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Location</label>
-            <input type="text" id="new-ws-location" class="form-input" required />
+            <label class="form-label">Location / Brand</label>
+            <input type="text" id="modal-entity-location" class="form-input" required />
           </div>
 
           <div class="form-group">
-            <label class="form-label">Durata (es. 3 Giorni / 2 Notti)</label>
-            <input type="text" id="new-ws-duration" class="form-input" value="2 Giorni / 1 Notte" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Quota Partecipazione (es. €290)</label>
-            <input type="text" id="new-ws-price" class="form-input" value="€290" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Posti Disponibili</label>
-            <input type="number" id="new-ws-seats" class="form-input" value="8" />
+            <label class="form-label">Quota Partecipazione / Prezzo</label>
+            <input type="text" id="modal-entity-price" class="form-input" value="€290" />
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 1rem;">
           <label class="form-label">Percorso Immagine Copertina</label>
-          <input type="text" id="new-ws-image" class="form-input" value="assets/hero_milky_way.png" />
+          <input type="text" id="modal-entity-image" class="form-input" value="assets/hero_milky_way.png" />
         </div>
 
         <div class="form-group" style="margin-top: 1rem;">
           <label class="form-label">Descrizione Breve</label>
-          <textarea id="new-ws-desc" class="form-textarea" rows="3" required></textarea>
+          <textarea id="modal-entity-desc" class="form-textarea" rows="3" required></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Crea Entità & Genera Pagina Landing</button>
