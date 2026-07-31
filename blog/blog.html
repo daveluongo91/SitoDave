@@ -4,30 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pubblicazioni & Articoli • Davide Luongo</title>
-  <meta name="description" content="Raccolta completa di tutte le pubblicazioni scritte da Davide Luongo per Vanguard World, SIGMA Italia ed UniversoFoto con miniature ed anteprime ufficiali." />
+  <meta name="description" content="Raccolta completa delle 13 pubblicazioni ufficiali scritte da Davide Luongo per Vanguard World, SIGMA Italia ed UniversoFoto con miniature ed anteprime ufficiali." />
   <link rel="stylesheet" href="../style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    .category-filter-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-glass);
-      color: var(--text-secondary);
-      padding: 0.6rem 1.25rem;
-      border-radius: var(--radius-full);
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .publisher-section-title {
+      font-size: 1.8rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-glass);
+      padding-bottom: 0.75rem;
     }
-    .category-filter-btn:hover, .category-filter-btn.active {
-      background: var(--gradient-accent);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+    .pub-grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
     }
-    .pub-grid-card {
+    .pub-explicit-card {
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
@@ -36,23 +35,18 @@
       flex-direction: column;
       transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     }
-    .pub-grid-card:hover {
+    .pub-explicit-card:hover {
       transform: translateY(-6px);
       border-color: var(--accent-cyan);
       box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
     }
-    .pub-card-img-wrapper {
-      position: relative;
-      height: 220px;
-      overflow: hidden;
-    }
-    .pub-card-img-wrapper img {
+    .pub-explicit-card img {
       width: 100%;
-      height: 100%;
+      height: 210px;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
-    .pub-grid-card:hover .pub-card-img-wrapper img {
+    .pub-explicit-card:hover img {
       transform: scale(1.08);
     }
   </style>
@@ -83,7 +77,7 @@
   </header>
 
   <!-- HERO PUBBLICAZIONI -->
-  <section class="hero" style="min-height: 40vh; padding-top: 8rem; text-align: center;">
+  <section class="hero" style="min-height: 35vh; padding-top: 8rem; text-align: center;">
     <div class="container">
       <div class="hero-content" style="max-width: 840px; margin: 0 auto;">
         <div class="hero-tagline-badge" style="display: inline-block; margin-bottom: 1rem;">
@@ -91,113 +85,289 @@
         </div>
 
         <h1 class="hero-title" style="font-size: 2.8rem; line-height: 1.25; margin-bottom: 1rem;">
-          Tutte le <span class="gradient-text">Pubblicazioni Ufficiali</span>
+          Le 13 Pubblicazioni <span class="gradient-text">Ufficiali</span>
         </h1>
 
         <p class="hero-description" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto;">
-          Test tecnici, recensioni sul campo ed appunti di viaggio scritti per i portali ufficiali di <strong>Vanguard World</strong>, <strong>SIGMA Italia</strong> ed <strong>UniversoFoto</strong>.
+          Tutti i 13 articoli suddivisi per editore: <strong>Vanguard World</strong>, <strong>SIGMA Italia</strong> ed <strong>UniversoFoto</strong> con miniature ed anteprime originali. Cliccando verrai reindirizzato all'articolo in una nuova scheda.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- CAROSELLO ROTANTE 3D -->
-  <section class="publication-section section" id="carosello-pubblicazioni" data-carousel style="padding-top: 1rem; padding-bottom: 3rem;">
-    <div class="container">
-      <div class="publication-heading" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <div>
-          <span class="section-eyebrow" style="color: var(--accent-cyan);">✨ SELEZIONE ROTANTE 3D</span>
-          <h2 class="publication-title" style="font-size: 2rem;">In Evidenza nei Magazine</h2>
-        </div>
-        <div class="publication-nav" style="display: flex; gap: 0.5rem; align-items: center;">
-          <span class="carousel-status" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; margin-right: 1rem;">1 / 13</span>
-          <button class="carousel-btn" data-carousel-prev aria-label="Precedente" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: #fff; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;">←</button>
-          <button class="carousel-btn" data-carousel-next aria-label="Successivo" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: #fff; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;">→</button>
-        </div>
-      </div>
+  <div class="container" style="padding-bottom: 6rem;">
 
-      <div class="publication-carousel">
-        <div class="carousel-track">
-          
-          <!-- SLIDE 1: VANGUARD LBP-50S -->
-          <article class="publication-card" data-slide>
-            <div class="publication-image">
-              <img src="https://www.davideluongo.it/wp-content/uploads/2026/07/cover-image_blog-it_lbp50s_julio2026_3c3b3048-16a9-4369-8062-558d13e304b6_2048x-768x307.webp" alt="Vanguard LBP-50S" />
-            </div>
-            <div class="publication-content">
-              <span class="publisher-tag">🎒 VANGUARD WORLD OFFICIAL</span>
-              <h3>Vanguard LBP-50S: una testa a sfera compatta che non teme i carichi difficili</h3>
-              <p>Prima di entrare negli aspetti tecnici, però, voglio soffermarmi sul design. Non è soltanto una testa molto bella e curata nei dettagli: il contrasto tra il corpo nero e gli elementi arancioni mi ha...</p>
-              <a href="https://www.vanguardworld.it/blogs/articoli/vanguard-lbp-50s-una-testa-a-sfera-compatta-che-non-teme-i-carichi-difficili" target="_blank" rel="noopener noreferrer" class="publication-link">Leggi su Vanguard World <span>↗</span></a>
-            </div>
-          </article>
+    <!-- ==================== SEZIONE 1: VANGUARD WORLD (4 ARTICOLI) ==================== -->
+    <section id="vanguard-section" style="margin-top: 2rem;">
+      <h2 class="publisher-section-title">
+        <span>🎒 Vanguard World</span>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 400; margin-left: auto;">4 Articoli Ufficiali</span>
+      </h2>
 
-          <!-- SLIDE 2: SIGMA AMBASSADOR -->
-          <article class="publication-card" data-slide>
-            <div class="publication-image">
-              <img src="https://www.davideluongo.it/wp-content/uploads/2024/03/photo1710320834-768x512.jpeg" alt="SIGMA Ambassador Davide Luongo" />
-            </div>
-            <div class="publication-content">
-              <span class="publisher-tag">📷 SIGMA ITALIA BLOG</span>
-              <h3>Davide Luongo – Ambassador SIGMA</h3>
-              <p>Mi chiamo Davide. Sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino all'età di 20 anni. Sin da piccolo ho avuto a che fare con strumenti tecnologici grazie a mio padre...</p>
-              <a href="https://www.sigma-italia.it/blogs/la-nostra-community/davide-luongo" target="_blank" rel="noopener noreferrer" class="publication-link">Leggi su SIGMA Italia <span>↗</span></a>
-            </div>
-          </article>
-
-          <!-- SLIDE 3: UNIVERSOFOTO TENERIFE DAY -->
-          <article class="publication-card" data-slide>
-            <div class="publication-image">
-              <img src="https://www.davideluongo.it/wp-content/uploads/2025/08/A6700004-Edit-768x512.jpg" alt="Tenerife UniversoFoto" />
-            </div>
-            <div class="publication-content">
-              <span class="publisher-tag">📸 UNIVERSOFOTO MAGAZINE</span>
-              <h3>Tenerife: Il giorno che non finisce mai (se sei un fotografo)</h3>
-              <p>A Tenerife, per un fotografo, la giornata non termina mai. È un ciclo continuo di luce che cambia, si trasforma, si spegne e rinasce...</p>
-              <a href="https://www.universofoto.it/viaggio-fotografico-tenerife/" target="_blank" rel="noopener noreferrer" class="publication-link">Leggi su UniversoFoto <span>↗</span></a>
-            </div>
-          </article>
-
-          <!-- SLIDE 4: VANGUARD VEO ACTIVE LOW COST -->
-          <article class="publication-card" data-slide>
-            <div class="publication-image">
-              <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00098-Edit-768x512.jpg" alt="Vanguard VEO Active 53KG Low Cost" />
-            </div>
-            <div class="publication-content">
-              <span class="publisher-tag">🎒 VANGUARD WORLD OFFICIAL</span>
-              <h3>Viaggiare in low cost con il VEO Active 53KG: missione possibile</h3>
-              <p>Chi viaggia spesso per fotografare sa bene quanto sia importante avere uno zaino capiente, comodo e resistente. Il Vanguard VEO Active 53KG risponde perfettamente...</p>
-              <a href="https://www.vanguardworld.it/blogs/articoli/viaggiare-in-low-cost-con-il-veo-active-53kg-missione-possibile" target="_blank" rel="noopener noreferrer" class="publication-link">Leggi su Vanguard World <span>↗</span></a>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SEZIONE FILTRI E GRIGLIA COMPLETA ARTICOLI -->
-  <section class="section" id="tutti-articoli" style="background: var(--bg-secondary); padding-top: 4rem; padding-bottom: 6rem;">
-    <div class="container">
-      <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
-        <div class="sub-title" style="color: var(--accent-cyan);">Archivio Pubblicazioni</div>
-        <h2 class="section-title">Esplora per Editore & Categoria</h2>
+      <div class="pub-grid-container">
         
-        <!-- BOTTONI FILTRO CATEGORIE -->
-        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
-          <button class="category-filter-btn active" data-filter="all">Tutte le Pubblicazioni (13)</button>
-          <button class="category-filter-btn" data-filter="vanguard">🎒 Vanguard World (4)</button>
-          <button class="category-filter-btn" data-filter="sigma">📷 SIGMA Italia (1)</button>
-          <button class="category-filter-btn" data-filter="universofoto">📸 UniversoFoto (8)</button>
-        </div>
-      </div>
+        <!-- VANGUARD 1 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/07/cover-image_blog-it_lbp50s_julio2026_3c3b3048-16a9-4369-8062-558d13e304b6_2048x-768x307.webp" alt="Vanguard LBP-50S" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">Vanguard World</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">🎒 VANGUARD WORLD OFFICIAL</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Vanguard LBP-50S: una testa a sfera compatta che non teme i carichi difficili</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Prima di entrare negli aspetti tecnici, però, voglio soffermarmi sul design. Non è soltanto una testa molto bella e curata nei dettagli: il contrasto tra il corpo nero e gli elementi arancioni mi ha...
+            </p>
+            <a href="https://www.vanguardworld.it/blogs/articoli/vanguard-lbp-50s-una-testa-a-sfera-compatta-che-non-teme-i-carichi-difficili" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su Vanguard World ↗
+            </a>
+          </div>
+        </article>
 
-      <!-- GRIGLIA ARTICOLI COMPLETA -->
-      <div id="articles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 2rem;">
-        <!-- Le card vengono caricate e filtrate dinamicamente tramite JS -->
+        <!-- VANGUARD 2 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00098-Edit-768x512.jpg" alt="Vanguard VEO Active 53KG" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">Vanguard World</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">🎒 VANGUARD WORLD OFFICIAL</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Viaggiare in low cost con il VEO Active 53KG: missione possibile</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Chi viaggia spesso per fotografare sa bene quanto sia importante avere uno zaino capiente, comodo e resistente. Il Vanguard VEO Active 53KG risponde perfettamente a queste esigenze ma cosa succede...
+            </p>
+            <a href="https://www.vanguardworld.it/blogs/articoli/viaggiare-in-low-cost-con-il-veo-active-53kg-missione-possibile" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su Vanguard World ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- VANGUARD 3 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00012-Modifica-1-768x513.jpg" alt="Vanguard VEO SELECT" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">Vanguard World</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">🎒 VANGUARD WORLD OFFICIAL</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Alla scoperta dello zaino VEO SELECT 39RBM</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Se sei alla ricerca di uno zaino che combini design, funzionalità e versatilità, il Vanguard VEO SELECT 39RBM-BK è una scelta che non delude. Ho avuto il piacere di testarlo durante un'intensa...
+            </p>
+            <a href="https://www.vanguardworld.it/blogs/articoli/alla-scoperta-dello-zaino-veo-select-39rbm-bk" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su Vanguard World ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- VANGUARD 4 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/04/DSC00022-Pano-1-scaled.jpg" alt="Vanguard All Weather" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">Vanguard World</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">🎒 VANGUARD WORLD OFFICIAL</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Viaggiare nel mondo in tutte le condizioni atmosferiche con Vanguard VEO Active 53 KG</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Da fotografo paesaggista e timelapser mi trovo spesso a viaggiare. Di solito i miei spostamenti avvengono in aereo, ma, come è noto, l’utilizzo dell’aereo è vincolato al budget non sempre...
+            </p>
+            <a href="https://www.vanguardworld.it/blogs/articoli/viaggiare-nel-mondo-in-tutte-le-condizioni-atmosferiche-secondo-davide-luongo" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su Vanguard World ↗
+            </a>
+          </div>
+        </article>
+
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ==================== SEZIONE 2: SIGMA ITALIA (1 ARTICOLO) ==================== -->
+    <section id="sigma-section" style="margin-top: 2rem;">
+      <h2 class="publisher-section-title">
+        <span>📷 SIGMA Italia</span>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 400; margin-left: auto;">1 Articolo Ufficiale</span>
+      </h2>
+
+      <div class="pub-grid-container" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));">
+        
+        <!-- SIGMA 1 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/03/photo1710320834-768x512.jpeg" alt="SIGMA Ambassador Davide Luongo" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">SIGMA Italia</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📷 SIGMA ITALIA BLOG</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Davide Luongo – Ambassador SIGMA</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Mi chiamo Davide. Sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino all’età di 20 anni. Sin da piccolo ho avuto a che fare con strumenti tecnologici grazie a mio padre, appassionato...
+            </p>
+            <a href="https://www.sigma-italia.it/blogs/la-nostra-community/davide-luongo" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su SIGMA Italia ↗
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== SEZIONE 3: UNIVERSOFOTO (8 ARTICOLI) ==================== -->
+    <section id="universofoto-section" style="margin-top: 2rem;">
+      <h2 class="publisher-section-title">
+        <span>📸 UniversoFoto</span>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 400; margin-left: auto;">8 Articoli Ufficiali</span>
+      </h2>
+
+      <div class="pub-grid-container">
+
+        <!-- UNIVERSOFOTO 1 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/Immagine-2026-03-26-112416-768x777.jpg" alt="Astrofotografia Tenerife" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Prepararsi ad una sessione di astrofotografia a Tenerife</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Abbiamo parlato del ‘never ending day’ fotografico a Tenerife, ma focalizziamoci su quello che è uno dei motivi per cui un fotografo dovrebbe andarci almeno una volta nella vita...
+            </p>
+            <a href="https://www.universofoto.it/astrofotografia-a-tenerife/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 2 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2025/08/A6700004-Edit-768x512.jpg" alt="Tenerife Viaggio" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Tenerife: Il giorno che non finisce mai (se sei un fotografo)</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              A Tenerife, per un fotografo, la giornata non termina mai. È un ciclo continuo di luce che cambia, si trasforma, si spegne e rinasce...
+            </p>
+            <a href="https://www.universofoto.it/viaggio-fotografico-tenerife/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 3 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00317-Edit-768x512.jpg" alt="Cosa portare a Madeira" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Cosa portare a Madeira, l’isola dell’eterna primavera</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Madeira, un gioiello incastonato tra le acque dell’Oceano Atlantico, è conosciuta anche come l’isola dell’eterna primavera – e non a caso...
+            </p>
+            <a href="https://www.universofoto.it/cosa-portare-a-madeira/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 4 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00569-Edit-768x512.jpg" alt="Lunga esposizione Madeira" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Gestire una lunga esposizione a Madeira</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Rieccoci a parlare di Madeira! Voi mi direte: mare, acqua che si muove, luce radente, cieli colorati, nuvole che corrono che fai, non ti spari una lunga esposizione?...
+            </p>
+            <a href="https://www.universofoto.it/lunga-esposizione-a-madeira/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 5 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2026/03/BF_01482-Edit-768x512.jpg" alt="Appunti viaggio Madeira" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Madeira: Appunti di un viaggio fotografico</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Viaggio fotografico a Madeira, l’isola dell’eterna primavera. Non sono solito visitare destinazioni così ‘marittime’...
+            </p>
+            <a href="https://www.universofoto.it/viaggio-fotografico-madeira/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 6 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/09/IMG00004-Pano-2-Modifica-scaled.jpg" alt="Viaggio Friuli" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Viaggio Fotografico in Friuli: 17-18 Maggio 2025</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Scopri la bellezza selvaggia del Friuli in un viaggio fotografico unico! Il 17 e 18 Maggio 2025 Davide Luongo ti guiderà attraverso paesaggi mozzafiato...
+            </p>
+            <a href="https://www.universofoto.it/viaggio-fotografico-in-friuli-17-18-maggio-2025/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 7 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00246-2-768x512.jpg" alt="Colle Nivolet" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Workshop Fotografico al Colle del Nivolet: 28-29 Giugno 2025</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Nel cuore del Parco Nazionale del Gran Paradiso, il Colle del Nivolet è un altopiano sospeso tra terra e cielo, dove l’uomo è solo un ospite di passaggio...
+            </p>
+            <a href="https://www.universofoto.it/workshop-fotografico-al-colle-del-nivolet-28-29-giugno-2025/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- UNIVERSOFOTO 8 -->
+        <article class="pub-explicit-card">
+          <div style="overflow: hidden; position: relative;">
+            <img src="https://www.davideluongo.it/wp-content/uploads/2024/10/IMG00003-768x512.jpg" alt="Cinque Terre" />
+            <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">UniversoFoto</span>
+          </div>
+          <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">📸 UNIVERSOFOTO MAGAZINE</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">Primavera alle Cinque Terre – 22 marzo 2025</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
+              Se ami la fotografia paesaggistica e vuoi perfezionare le tue tecniche, ecco un workshop alle Cinque Terre che fa per te! Davide Luongo ti aspetta...
+            </p>
+            <a href="https://www.universofoto.it/workshop-di-fotografia-alle-cinque-terre-22-marzo-2025/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
+              Leggi su UniversoFoto ↗
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </div>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -206,68 +376,6 @@
     </div>
   </footer>
 
-  <script src="../blog.js"></script>
   <script src="../main.js"></script>
-  <script>
-    // Caricamento dinamico e filtraggio articoli da content.json
-    document.addEventListener('DOMContentLoaded', async () => {
-      const grid = document.getElementById('articles-grid');
-      const filterBtns = document.querySelectorAll('.category-filter-btn');
-
-      try {
-        const res = await fetch('../data/content.json');
-        const data = await res.json();
-        const articles = data.blog || [];
-
-        const renderGrid = (filter = 'all') => {
-          grid.innerHTML = '';
-          const filtered = filter === 'all' ? articles : articles.filter(a => a.category === filter);
-
-          filtered.forEach(item => {
-            const card = document.createElement('article');
-            card.className = 'pub-grid-card';
-            card.setAttribute('data-category', item.category);
-
-            card.innerHTML = `
-              <div class="pub-card-img-wrapper">
-                <img src="${item.image}" alt="${item.title}" loading="lazy" />
-                <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">
-                  ${item.readTime}
-                </span>
-              </div>
-              <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
-                <div style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">
-                  ${item.publisherTag}
-                </div>
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--text-primary); line-height: 1.35;">
-                  ${item.title}
-                </h3>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1;">
-                  ${item.excerpt}
-                </p>
-                <a href="${item.actionUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.825rem; padding: 0.5rem 1.25rem; align-self: flex-start; margin-top: auto;">
-                  Leggi l'Articolo ↗
-                </a>
-              </div>
-            `;
-            grid.appendChild(card);
-          });
-        };
-
-        renderGrid('all');
-
-        filterBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderGrid(btn.getAttribute('data-filter'));
-          });
-        });
-
-      } catch (err) {
-        console.error("Errore caricamento articoli:", err);
-      }
-    });
-  </script>
 </body>
 </html>
