@@ -3,9 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gear & Attrezzatura Fotografica • Davide Luongo</title>
-  <meta name="description" content="Guida all'attrezzatura di Davide Luongo: Obiettivi SIGMA Art, Zaini e Treppiedi Vanguard, Astroinsegritore Move Shoot Move e Codici Sconto Esclusivi." />
+  <title>Il Kit Ufficial e Attrezzatura Fotografica • Davide Luongo</title>
+  <meta name="description" content="Il kit ufficiale dell'attrezzatura fotografica di Davide Luongo: Obiettivi SIGMA Art Ambassador, Zaini Vanguard e Astroinseguitori." />
   <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .gear-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .gear-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gear-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
+    }
+    .gear-img-wrap {
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.05) 0%, rgba(10, 15, 25, 0.8) 100%);
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 240px;
+    }
+    .gear-img-wrap img {
+      max-height: 200px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    .gear-card:hover .gear-img-wrap img {
+      transform: scale(1.05);
+    }
+    .gear-card-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .gear-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.65rem;
+      line-height: 1.35;
+    }
+    .gear-desc {
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+      flex: 1;
+    }
+    .gear-tag {
+      display: inline-block;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      align-self: flex-start;
+    }
+    @media (max-width: 1024px) {
+      .gear-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .gear-grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -19,8 +106,8 @@
 
       <ul class="nav-links">
         <li><a href="../index.html#home">Home</a></li>
-        <li><a href="../index.html#workshops">Workshop & Tour</a></li>
-        <li><a href="../index.html#corsi">Formazione 1-to-1</a></li>
+        <li><a href="../workshops_2026/friuli-2026.html">Workshop 2026</a></li>
+        <li><a href="../viaggi_2027/lapponia-2027.html">Viaggi 2027</a></li>
         <li><a href="gear.html" class="nav-current">Gear & Attrezzatura</a></li>
         <li><a href="../blog/blog.html">Blog & Pubblicazioni</a></li>
         <li><a href="../index.html#chi-sono">Chi Sono</a></li>
@@ -33,38 +120,187 @@
   </header>
 
   <!-- HERO GEAR -->
-  <section class="hero" style="min-height: 65vh; padding-top: 8rem;">
-    <img src="../assets/hero_gear_dark.png" alt="Gear Attrezzatura" class="hero-bg" />
-    <div class="hero-overlay"></div>
-
+  <section class="hero" style="min-height: 35vh; padding-top: 8rem; text-align: center;">
     <div class="container">
-      <div class="hero-content">
-        <div class="hero-tagline-badge">
-          <span>📷 TEST SUL CAMPO & AFFILAZIONI UFFICIALI</span>
+      <div class="hero-content" style="max-width: 840px; margin: 0 auto;">
+        <div class="hero-tagline-badge" style="display: inline-block; margin-bottom: 1rem;">
+          <span>📷 IL KIT UFFICIALE</span>
         </div>
 
-        <h1 class="hero-title">
-          La Mia Attrezzatura per <span class="gradient-text">Paesaggio & Astrofotografia</span>
+        <h1 class="hero-title" style="font-size: 2.8rem; line-height: 1.25; margin-bottom: 1rem;">
+          Attrezzatura per <span class="gradient-text">Paesaggio & Astrofotografia</span>
         </h1>
-
-        <p class="hero-description">
-          Gli strumenti che utilizzo sul campo in condizioni estreme, dai deserti di ghiaccio artici ai cieli notturni più bui d'Europa. Con recensioni tecniche e codici sconto riservati.
-        </p>
       </div>
     </div>
   </section>
 
   <!-- LISTA PRODOTTI GEAR -->
-  <section class="section" id="gear-catalog">
+  <section class="section" id="gear-catalog" style="padding-top: 1rem; padding-bottom: 5rem;">
     <div class="container">
-      <div class="section-title">
-        <h2>🔬 Il Kit Ufficiale & Recensioni</h2>
-        <p>Ottiche SIGMA Art, Sistemi di Supporto Vanguard, Astroinseguitori MSM e Filtri Kase.</p>
+
+      <!-- SEZIONE 1: OBIETTIVI (GRIGLIA 4 ENTITÀ PER RIGA) -->
+      <div class="publisher-section-heading" style="margin-bottom: 2rem;">
+        <div class="publisher-title-text">
+          <span>📷 Obiettivi</span>
+        </div>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 600;">Ottiche Ufficiali SIGMA Art</span>
       </div>
 
-      <div id="gear-grid-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-        <!-- Dynamically rendered via main.js or static fallback -->
+      <div class="gear-grid-4">
+
+        <!-- CARTA 1: SIGMA 14MM F1.4 ART (CLICCABILE ALL'ARTICOLO NATIVO) -->
+        <article class="gear-card">
+          <a href="../blog/test-sigma-14mm-art.html" style="text-decoration: none; display: block;" title="Leggi la recensione completa del Sigma 14mm F1.4 DG DN Art">
+            <div class="gear-img-wrap">
+              <img src="../assets/gear_sigma_14mm_vertical.png" alt="Sigma 14mm F1.4 DG DN Art (Ambassador) baionetta verso il basso" />
+              <span style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(0, 240, 255, 0.2); backdrop-filter: blur(6px); border: 1px solid var(--accent-cyan); color: #fff; padding: 0.2rem 0.55rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 700;">Clicca per l'Articolo ↗</span>
+            </div>
+          </a>
+          <div class="gear-card-body">
+            <span class="gear-tag">SIGMA ART SERIES</span>
+            <h3 class="gear-title">Sigma 14mm F1.4 DG DN Art (Ambassador)</h3>
+            <p class="gear-desc">
+              Dopo tre anni di utilizzo continuo, posso dire che il Sigma 14mm F1.4 Art è l'obiettivo che ha cambiato il mio modo di fotografare. Scelto per raccogliere la massima luce possibile in astrofotografia ambientata, offre una nitidezza straordinaria da centro a bordo già a f/1.4 con un coma ben controllato. La resa della sunstar a f/11 è estremamente pulita ed il collare Arca Swiss integrato è un vantaggio concreto nelle panoramiche notturne.
+            </p>
+            <a href="../blog/test-sigma-14mm-art.html" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1rem; text-align: center;">Leggi la Recensione →</a>
+          </div>
+        </article>
+
+        <!-- CARTA 2: SIGMA 24-70MM F2.8 ART -->
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_sigma_2470.png" alt="Sigma 24-70mm F2.8 DG DN Art (Ambassador)" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">SIGMA ART SERIES</span>
+            <h3 class="gear-title">Sigma 24-70mm F2.8 DG DN Art (Ambassador)</h3>
+            <p class="gear-desc">
+              Lo zoom standard di riferimento per la fotografia di paesaggio diurna e reportage. Nitidezza impeccabile a tutte le focali, sfocato morbido e costruzione tropicalizzata a prova di intemperie.
+            </p>
+          </div>
+        </article>
+
+        <!-- CARTA 3: SIGMA 100-400MM CONTEMPORARY -->
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_sigma_100400.png" alt="Sigma 100-400mm F5-6.3 DG DN OS Contemporary (Ambassador)" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">SIGMA CONTEMPORARY</span>
+            <h3 class="gear-title">Sigma 100-400mm F5-6.3 OS (Ambassador)</h3>
+            <p class="gear-desc">
+              Teleobiettivo ultra compatto e leggero, ideale nei trekking in montagna per isolare vette alpine, dettagli di ghiacciai e fauna selvatica mantenendo uno stabilizzatore ottico potente.
+            </p>
+          </div>
+        </article>
+
+        <!-- CARTA 4: SIGMA 14-24MM F2.8 ART -->
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_sigma_14mm.png" alt="Sigma 14-24mm F2.8 DG DN Art (Ambassador)" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">SIGMA ART SERIES</span>
+            <h3 class="gear-title">Sigma 14-24mm F2.8 DG DN Art (Ambassador)</h3>
+            <p class="gear-desc">
+              Grandangolo zoom di estrema precisione. Perfetto per composizioni prospettiche ampie, architettura ed escursioni dove la flessibilità di focale grandangolare è fondamentale.
+            </p>
+          </div>
+        </article>
+
       </div>
+
+      <!-- SEZIONE 2: ZAINI & SUPPORTI VANGUARD -->
+      <div class="publisher-section-heading" style="margin-bottom: 2rem;">
+        <div class="publisher-title-text">
+          <span>🎒 Zaini & Supporti Vanguard</span>
+        </div>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 600;">Supporto Ufficiale Vanguard World</span>
+      </div>
+
+      <div class="gear-grid-4">
+
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_vanguard_active53.png" alt="Vanguard VEO Active 53KG" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">VANGUARD OFFICIAL</span>
+            <h3 class="gear-title">Vanguard VEO Active 53KG</h3>
+            <p class="gear-desc">
+              Lo zaino da spedizione per contenere tutto il kit astrofotografico, corpo macchina, 3 ottiche pesanti, astroinseguitore e sacco a pelo per le notti all'aperto.
+            </p>
+          </div>
+        </article>
+
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_vanguard_active46.png" alt="Vanguard VEO Active 46" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">VANGUARD OFFICIAL</span>
+            <h3 class="gear-title">Vanguard VEO Active 46</h3>
+            <p class="gear-desc">
+              Zaino compatto ed ergonomico da cabina, ideale per i viaggi in aereo e le uscite giornaliere dove la massima agilità è prioritaria.
+            </p>
+          </div>
+        </article>
+
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_vanguard_lbp.png" alt="Vanguard LBP-50S" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">VANGUARD OFFICIAL</span>
+            <h3 class="gear-title">Vanguard LBP-50S Ball Head</h3>
+            <p class="gear-desc">
+              Testa a sfera compatta ma estremamente solida che non teme i carichi pesanti di ottiche f/1.4 e cieli inseguiti con astroinseguitore.
+            </p>
+          </div>
+        </article>
+
+        <article class="gear-card">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_vanguard_alta.png" alt="Vanguard Alta Pro Tripod" />
+          </div>
+          <div class="gear-card-body">
+            <span class="gear-tag">VANGUARD OFFICIAL</span>
+            <h3 class="gear-title">Vanguard Alta Pro Tripod</h3>
+            <p class="gear-desc">
+              Treppiede in carbonio ad alta rigidità con colonna centrale multi-angolo per inquadrature radenti al suolo ed estrema stabilità al vento.
+            </p>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- SEZIONE 3: ASTROINSEGUITORI & ACCESSORI -->
+      <div class="publisher-section-heading" style="margin-bottom: 2rem;">
+        <div class="publisher-title-text">
+          <span>🌌 Astroinseguitori & Accessori</span>
+        </div>
+        <span style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 600;">Move Shoot Move Partnership</span>
+      </div>
+
+      <div style="max-width: 600px; margin: 0 auto;">
+        <article class="gear-card" style="text-align: center;">
+          <div class="gear-img-wrap">
+            <img src="../assets/gear_nomad_msm.png" alt="Move Shoot Move Nomad Tracker" style="max-height: 220px;" />
+          </div>
+          <div class="gear-card-body" style="align-items: center;">
+            <span class="gear-tag">MSM OFFICIAL PARTNER</span>
+            <h3 class="gear-title">Move Shoot Move Nomad Tracker</h3>
+            <p class="gear-desc" style="max-width: 480px;">
+              L'astroinseguitore portatile ultra leggero per compensare la rotazione terrestre ed inserire tempi di esposizione prolungati mantenendo le stelle perfettamente puntiformi.
+            </p>
+            <div style="background: rgba(0, 240, 255, 0.08); border: 1px border var(--accent-cyan); border-radius: var(--radius-md); padding: 0.75rem 1.5rem; margin-top: 0.5rem;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">Codice Sconto Riservato:</span>
+              <strong style="color: var(--accent-cyan); font-size: 1.1rem; display: block; margin-top: 0.25rem;">MSM5DAVE</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+
     </div>
   </section>
 
