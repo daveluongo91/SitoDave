@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sigma 28-105mm F2.8 DG DN Art: Luce o Range Focale? Il Test sul Campo • Davide Luongo</title>
+  <meta name="description" content="Recensione completa e test sul campo del Sigma 28-105mm F2.8 DG DN Art di Davide Luongo: il dilemma tra 24-70mm e 24-105mm risolto sul campo." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .article-container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+    .article-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .article-title {
+      font-size: 2.6rem;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    .article-subtitle {
+      font-size: 1.3rem;
+      color: var(--accent-cyan);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .article-meta-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-glass);
+      padding-bottom: 1.5rem;
+    }
+    .article-section {
+      margin-bottom: 2.75rem;
+    }
+    .article-section h2 {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--accent-cyan);
+      padding-left: 0.75rem;
+    }
+    .article-text {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+    .article-img-box {
+      margin: 2rem 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-glass);
+      background: var(--bg-card);
+    }
+    .article-img-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-img-caption {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 0.85rem 1.2rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-glass);
+      font-size: 0.95rem;
+    }
+    .comparison-table th {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+    .pro-con-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .pro-box {
+      background: rgba(0, 255, 128, 0.05);
+      border: 1px solid rgba(0, 255, 128, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+    .con-box {
+      background: rgba(255, 0, 100, 0.05);
+      border: 1px solid rgba(255, 0, 100, 0.2);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+    .pro-box h3 { color: #00ff80; margin-bottom: 0.75rem; font-size: 1.1rem; }
+    .con-box h3 { color: #ff0064; margin-bottom: 0.75rem; font-size: 1.1rem; }
+    .pro-box ul, .con-box ul { padding-left: 1.25rem; }
+    .pro-box li, .con-box li { margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.95rem; }
+    .quote-box {
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.08) 0%, rgba(10, 20, 35, 0.6) 100%);
+      border: 1px solid var(--accent-cyan);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      text-align: center;
+      margin: 3rem 0;
+    }
+    .quote-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+    }
+    @media (max-width: 600px) {
+      .pro-con-grid { grid-template-columns: 1fr; }
+      .article-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <img src="../assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html#home">Home</a></li>
+        <li><a href="../workshops_2026/friuli-2026.html">Workshop 2026</a></li>
+        <li><a href="../viaggi_2027/lapponia-2027.html">Viaggi 2027</a></li>
+        <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="blog.html" class="nav-current">Blog & Pubblicazioni</a></li>
+        <li><a href="../index.html#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="../index.html#contatti" class="btn btn-primary">Contatti</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENUTO ARTICOLO NATIVO -->
+  <main style="padding-top: 6rem;">
+    <article class="article-container">
+
+      <!-- HEADER ARTICOLO -->
+      <header class="article-header">
+        <div style="display: inline-block; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.25rem 0.85rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;">
+          📷 TEST SUL CAMPO & ANALISI DILEMMA FOCALE
+        </div>
+
+        <h1 class="article-title">Sigma 28-105mm F2.8 DG DN Art</h1>
+        <div class="article-subtitle">Luce o range focale? L'analisi del primo zoom tuttofare F2.8 spinto fino a 105mm</div>
+
+        <div class="article-meta-bar">
+          <span>✍️ Di <strong>Davide Luongo</strong></span>
+          <span>📅 Agosto 2026</span>
+          <span>📷 SIGMA Art Series</span>
+        </div>
+      </header>
+
+      <!-- SEZIONE 1: INTRODUZIONE -->
+      <section class="article-section">
+        <h2>Introduzione</h2>
+        <p class="article-text">
+          Era da tempo che desideravo iniziare a scrivere articoli anche sul mio sito e non soltanto per realtà esterne. Devo molto ai ragazzi di Toscana Photo Service e a Vanguard, che mi supportano fin dall'inizio di questo percorso, ma è arrivato il momento di raccontare anche qui la mia esperienza sul campo. E quale miglior modo se non affrontando uno degli interrogativi più stimolanti nel panorama delle ottiche moderne?
+        </p>
+        <p class="article-text">
+          SIGMA ha inoltre avuto un ruolo cruciale nel mio percorso di crescita professionale: mi hanno guidato costantemente nello sviluppo sui canali social, dandomi tantissimi spunti, idee e soprattutto tantissime occasioni sul campo.
+        </p>
+      </section>
+
+      <!-- SEZIONE 2: IL GRANDE DILEMMA STORICO -->
+      <section class="article-section">
+        <h2>Perché proprio lui? Il grande dilemma storico</h2>
+        <p class="article-text">
+          Fino a prima dell'uscita di questa lente, ogni fotografo di viaggio, reportage o paesaggio doveva rispondere ad un dilemma annoso quando componeva il proprio corredo: <strong>"Scelgo un 24-105mm f/4 per la portata focale o un 24-70mm f/2.8 per la luminosità?"</strong>. In sintesi: preferire la luce o la flessibilità dello zoom?
+        </p>
+        <p class="article-text">
+          SIGMA ha quasi totalmente risolto questa storica questione presentando un incredibile zoom ad apertura costante f/2.8 che spinge l'escursione fino a 105mm. Ma perché dico <em>'quasi'</em>? Perché non abbiamo un 24-105mm, bensì un 28-105mm...
+        </p>
+
+        <!-- IMMAGINE 1: RITRATTO DELL'OBIETTIVO -->
+        <div class="article-img-box">
+          <img src="../assets/sigma_28105_f2-8dn_01.jpg" alt="Ritratto del Sigma 28-105mm F2.8 DG DN Art" />
+          <div class="article-img-caption">📷 Immagine 1: Ritratto del Sigma 28-105mm F2.8 DG DN Art</div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 3: L'ANALISI DEI 4MM IN MENO -->
+      <section class="article-section">
+        <h2>L'analisi del campo: 28mm vs 24mm</h2>
+        <p class="article-text">
+          A me questi 4mm in meno a 28mm sono pesati sul campo? La risposta è: <strong>dipende dal contesto di scatto</strong>.
+        </p>
+        <p class="article-text">
+          In ambito di <strong>eventi, cerimonie, ritrattistica e reportage dinamico</strong>, assolutamente <strong>NO</strong>. Anzi, la possibilità di passare da un 28mm luminoso ad un 105mm f/2.8 sfocando lo sfondo in modo pazzesco rende questo obiettivo una macchina da guerra imbattibile che permette di non cambiare mai lente.
+        </p>
+        <p class="article-text">
+          In ambito <strong>landscape e fotografia di paesaggio puro</strong>, invece, <strong>SPESSO SÌ</strong>. Quei 4mm in più compresi tra 24mm e 28mm fanno una differenza enorme nella composizione quando si cerca di includere un primo piano imponente o cieli drammatici.
+        </p>
+
+        <!-- TABELLA: CONFRONTO FOCALI & COPERTURA -->
+        <div style="margin: 1.5rem 0;">
+          <h3 style="font-size: 1.1rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">📊 Tabella: Copertura Focale & Utilizzo Specifico</h3>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Focale</th>
+                <th>Angolo di Campo (Diagonale)</th>
+                <th>Resa & Valutazione sul Campo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>28 mm</strong></td>
+                <td><strong>75.4°</strong></td>
+                <td>Grandangolo moderato: eccezionale nei reportage, stretto per primi piani imponenti nel paesaggio</td>
+              </tr>
+              <tr>
+                <td><strong>50 mm</strong></td>
+                <td><strong>46.8°</strong></td>
+                <td>Prospettiva naturale perfetta con tridimensionalità e micro-contrasto elevatissimo</td>
+              </tr>
+              <tr>
+                <td><strong>70 mm</strong></td>
+                <td><strong>34.3°</strong></td>
+                <td>Passaggio fluido verso il medio-tele mantenendo la massima luminosità f/2.8</td>
+              </tr>
+              <tr>
+                <td><strong>105 mm</strong></td>
+                <td><strong>23.3°</strong></td>
+                <td>Teleobiettivo puro a f/2.8: isolamento straordinario dei soggetti, vette e ritratti con bokeh morbido</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SEZIONE 4: PERCHÉ SI COMPRA UN 28-105 MM F2.8? -->
+      <section class="article-section">
+        <h2>Perché si compra un 28-105 mm F2.8?</h2>
+        <p class="article-text">
+          Si acquista per avere un unico obiettivo professionale per eventi, viaggi e ritrattistica capace di sostituire sia uno zoom standard sia un medio-teleobiettivo, senza mai rinunciare alla luminosità costante f/2.8.
+        </p>
+
+        <div style="margin: 1rem 0;">
+          <a href="https://www.sigma-italia.it/products/art-28-105mm-f2-8-dg-dn" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.45rem 1rem;">
+            🔗 Visita la Pagina Ufficiale Sigma Italia ↗
+          </a>
+        </div>
+
+        <!-- IMMAGINE 2: SCATTO REALE SU CORPO MACCHINA -->
+        <div class="article-img-box">
+          <img src="../assets/sigma_28105_f2-8dn_03.jpg" alt="Sigma 28-105mm F2.8 Art montato su macchina fotografica" />
+          <div class="article-img-caption">📷 Immagine 2: Il Sigma 28-105mm F2.8 DG DN Art pronto allo scatto sul corpo macchina</div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 5: PRESTAZIONI DIURNE -->
+      <section class="article-section">
+        <h2>Prestazioni diurne & nitidezza ad 82mm</h2>
+        <p class="article-text">
+          La qualità ottica della serie Art è evidente fin dai primi scatti. Nonostante l'ampia escursione zoom fino a 105mm, la nitidezza a tutta apertura f/2.8 è uniforme da centro a bordo su sensori ad alta risoluzione. La ghiera del diaframma con click/de-click ed il diametro filtri da 82mm completano un profilo d'eccellenza.
+        </p>
+
+        <!-- GALLERIA DIURNA -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+          <div class="article-img-box" style="margin:0;">
+            <img src="../assets/cinque_terre_workshop.png" alt="Reportage alle Cinque Terre" style="max-height: 520px; object-fit: cover;" />
+            <div class="article-img-caption">🌊 Cinque Terre (Reportage a 28mm)</div>
+          </div>
+          <div class="article-img-box" style="margin:0;">
+            <img src="../assets/friuli_workshop.png" alt="Teleobiettivo a 105mm in Friuli" style="max-height: 520px; object-fit: cover;" />
+            <div class="article-img-caption">🏔️ Alpi Giulie (Isolamento a 105mm f/2.8)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 6: PRESTAZIONI NOTTURNE -->
+      <section class="article-section">
+        <h2>Prestazioni notturne & flessibilità f/2.8</h2>
+        <p class="article-text">
+          In notturna l'apertura costante f/2.8 garantisce un passaggio fluido tra la panoramica grandangolare ed i dettagli a 105mm mantenendo sempre gli stessi ISO e tempi di esposizione.
+        </p>
+
+        <!-- GALLERIA NOTTURNA -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+          <div class="article-img-box" style="margin:0;">
+            <img src="../assets/blog_sigma_14mm_milkyway_real.jpg" alt="Castelluccio di Norcia" style="max-height: 520px; object-fit: cover;" />
+            <div class="article-img-caption">🌌 Castelluccio di Norcia</div>
+          </div>
+          <div class="article-img-box" style="margin:0;">
+            <img src="../assets/blog_sigma_14mm_serru_lake_real.jpg" alt="Lago Serrù" style="max-height: 520px; object-fit: cover;" />
+            <div class="article-img-caption">🌌 Lago Serrù</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 7: DIFFRAZIONE -->
+      <section class="article-section">
+        <h2>Diffrazione & controllo delle aberrazioni</h2>
+        <p class="article-text">
+          La tenuta tra f/2.8 ed f/11 è di altissimo livello. Le lenti FLD e SLD correggono in modo impeccabile l'aberrazione cromatica ed il vignettamento anche a 105mm a tutta apertura.
+        </p>
+      </section>
+
+      <!-- SEZIONE 8: PREGI E COMPROMESSI - IL CONFRONTO CON IL 24-70MM -->
+      <section class="article-section">
+        <h2>Pregi, compromessi & perché preferisco il 24-70mm nel paesaggio</h2>
+        <p class="article-text">
+          Il Sigma 28-105mm F2.8 Art è un'ottica eccellente e rivoluzionaria, ma nel mio lavoro di fotografo paesaggista preferisco comunque dare la precedenza al <strong>Sigma 24-70mm F2.8 Art II</strong>.
+        </p>
+        <p class="article-text">
+          Questo non soltanto per i 4mm in più di angolo grandangolare a 24mm (cruciali nel paesaggio), ma anche per <strong>peso ed ingombri</strong>: nei trekking alpini impegnativi ogni grammo conta, ed il 24-70mm Mark II offre il bilanciamento perfetto per lo zaino da montagna.
+        </p>
+
+        <!-- IMMAGINE 3: PROFILO CON PARALUCE -->
+        <div class="article-img-box">
+          <img src="../assets/sigma_28105_f2-8dn_02.jpg" alt="Sigma 28-105mm F2.8 Art con paraluce montato" />
+          <div class="article-img-caption">📷 Immagine 3: Sigma 28-105mm F2.8 DG DN Art con paraluce montato</div>
+        </div>
+
+        <!-- TABELLA PRO / CONTRO -->
+        <div class="pro-con-grid">
+          <div class="pro-box">
+            <h3>✅ PRO</h3>
+            <ul>
+              <li><strong>Range 28-105mm ad apertura costante F2.8</strong> unico sul mercato</li>
+              <li><strong>Sostituisce zoom standard e medio-tele</strong> per eventi e reportage</li>
+              <li><strong>Sfocato eccezionale a 105mm f/2.8</strong> per ritratti ed isolamento soggetti</li>
+              <li><strong>Qualità ottica della serie Art</strong> impeccabile da centro a bordo</li>
+              <li><strong>Ghiera diaframmi fisica con de-click</strong> e pulsanti AFL personalizzabili</li>
+            </ul>
+          </div>
+
+          <div class="con-box">
+            <h3>❌ CONTRO</h3>
+            <ul>
+              <li><strong>Partenza da 28mm invece di 24mm</strong> (limite per il paesaggio puro)</li>
+              <li><strong>Peso ed ingombro superiori</strong> al 24-70mm Art II nei trekking</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 9: CONCLUSIONI -->
+      <section class="article-section">
+        <h2>Conclusioni</h2>
+        <p class="article-text">
+          Il Sigma 28-105mm F2.8 Art rappresenta uno snodo fondamentale nell'evoluzione delle ottiche zoom. Per chi lavora con eventi, cerimonie o reportage di viaggio è uno strumento magnifico che libera dalla necessità di cambiare lente. Per il paesaggista puro, il 24-70mm f/2.8 rimane il compagno d'avventura ideale per respiro grandangolare e leggerezza.
+        </p>
+
+        <p class="article-text">
+          Se vuoi provarli entrambi sul campo durante i miei workshop, sarà un piacere metterli a confronto direttamente sul tuo corpo macchina!
+        </p>
+
+        <div class="quote-box">
+          <div class="quote-text">Hike. Shoot. Print. Repeat.</div>
+        </div>
+      </section>
+
+      <!-- TORNA AI BLOG -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="blog.html" class="btn btn-primary" style="padding: 0.75rem 2rem;">← Torna a Blog & Pubblicazioni</a>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <script src="../main.js"></script>
+</body>
+</html>
