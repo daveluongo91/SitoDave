@@ -86,8 +86,8 @@ function setupInfoModal() {
         <button id="info-modal-close" class="modal-close">&times;</button>
 
         <div style="text-align: center; margin-bottom: 1.5rem;">
-          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Richiedi Informazioni via Email</h3>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia le tue domande direttamente alla casella <strong>info@davideluongo.it</strong>.</p>
+          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Chiedimi Informazioni</h3>
+          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia la tua richiesta direttamente alla casella <strong>info@davideluongo.it</strong>.</p>
         </div>
 
         <form id="info-request-form">
@@ -99,24 +99,16 @@ function setupInfoModal() {
           </div>
 
           <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-email-input">La Tua Email per la Risposta *</label>
+            <label class="form-label" for="info-email-input">Indirizzo Email *</label>
             <input type="email" id="info-email-input" class="form-input" placeholder="nome@esempio.com" required />
           </div>
 
           <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-phone-input">Numero di Telefono (Facoltativo)</label>
-            <input type="tel" id="info-phone-input" class="form-input" placeholder="Es. +39 333 1234567 (opzionale)" />
-            <div style="font-size: 0.775rem; color: var(--accent-cyan); margin-top: 0.35rem;">
-              ℹ️ Il telefono è <strong>facoltativo</strong>: inseriscilo solo se preferisci essere ricontattato direttamente via <strong>WhatsApp</strong>.
-            </div>
+            <label class="form-label" for="info-message-input">Messaggio / Richiesta *</label>
+            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui le tue domande su workshop, corsi 1-to-1, attrezzatura o collaborazioni..." required></textarea>
           </div>
 
-          <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-message-input">Messaggio / Domande Esterne</label>
-            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui qualsiasi dubbio su programma, attrezzatura necessaria o logistica..."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem;">✉️ Invia Richiesta a info@davideluongo.it</button>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem;">✉️ Invia Messaggio a info@davideluongo.it</button>
         </form>
       </div>
     `;
