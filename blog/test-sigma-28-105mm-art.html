@@ -158,6 +158,45 @@
       </ul>
 
       <div class="nav-actions">
+        <div class="lang-toggle-wrapper" id="lang-toggle-wrapper">
+          <button type="button" class="lang-btn lang-ita active" id="btn-lang-ita" onclick="switchLanguage('it')" title="Italiano">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <rect x="0" width="9.33" height="20" fill="#009246"/>
+              <rect x="9.33" width="9.33" height="20" fill="#ffffff"/>
+              <rect x="18.66" width="9.34" height="20" fill="#ce2b37"/>
+            </svg>
+            <span>ITA</span>
+          </button>
+          <button type="button" class="lang-btn lang-en" id="btn-lang-en" onclick="switchLanguage('en')" title="English (UK/USA)">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <defs>
+                <clipPath id="uk-clip">
+                  <polygon points="0,0 28,0 0,20"/>
+                </clipPath>
+                <clipPath id="usa-clip">
+                  <polygon points="28,0 28,20 0,20"/>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#uk-clip)">
+                <rect width="28" height="20" fill="#012169"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#fff" stroke-width="4"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#C8102E" stroke-width="2"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#fff" stroke-width="6"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#C8102E" stroke-width="3.5"/>
+              </g>
+              <g clip-path="url(#usa-clip)">
+                <rect width="28" height="20" fill="#B22234"/>
+                <path d="M0,3 H28 M0,6 H28 M0,9 H28 M0,12 H28 M0,15 H28 M0,18 H28" stroke="#fff" stroke-width="1.5"/>
+                <rect width="12" height="10" fill="#3C3B6E"/>
+                <circle cx="3" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="9" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="6" cy="5" r="0.6" fill="#fff"/>
+              </g>
+              <line x1="0" y1="20" x2="28" y2="0" stroke="#040914" stroke-width="1.5"/>
+            </svg>
+            <span>ENG</span>
+          </button>
+        </div>
         <a href="../index.html#contatti" class="btn btn-primary">Contatti</a>
       </div>
     </div>

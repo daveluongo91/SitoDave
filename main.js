@@ -472,3 +472,81 @@ function copyPromoCode(code) {
     setTimeout(() => toast.classList.remove('show'), 3000);
   });
 }
+
+/* ==========================================================================
+   Multilingual Engine (ITA / ENG Toggle Switcher)
+   ========================================================================== */
+
+const DICT_EN = {
+  "Home": "Home",
+  "Workshop & Tour": "Workshops & Tours",
+  "Formazione 1-to-1": "1-on-1 Mentorship",
+  "Gear & Attrezzatura": "Gear & Equipment",
+  "Blog & Pubblicazioni": "Blog & Articles",
+  "Chi Sono": "About Me",
+  "Chiedimi Informazioni": "Ask Me Anything",
+  "Scegli la tua prossima avventura": "Choose Your Next Adventure",
+  "Impara a leggere la luce anche dove sembra non esserci": "Learn to read the light even where it seems absent",
+  "Esperienze fotografiche immersive in location straordinarie, viaggi guidati e corsi di formazione One-to-One. Dalla pianificazione sul campo alla stampa Fine Art.": "Immersive photography experiences in extraordinary locations, guided tours, and 1-on-1 coaching. From field planning to Fine Art printing.",
+  "Recensioni Google Verificate": "Verified Google Reviews",
+  "Vedi tutte su Google ↗": "View all on Google ↗",
+  "Esperienze sul campo": "Field Experiences",
+  "Workshop & Viaggi Fotografici": "Workshops & Photo Tours",
+  "Piccoli gruppi, location selezionate per alba, tramonto e notte, con supporto didattico continuo e pianificazione approfondita.": "Small groups, curated locations for sunrise, sunset and night, with continuous guidance and deep planning.",
+  "CALENDARIO 2026": "2026 CALENDAR",
+  "Workshop 2026": "2026 Workshops",
+  "ANTEPRIMA ESTERO 2027": "2027 OVERSEAS PREVIEW",
+  "Viaggi Fotografici 2027": "2027 Photo Tours",
+  "🤝 L'UNIONE FA LA FORZA!": "🤝 STRENGTH IN UNITY!",
+  "Vi Presento il Team": "Meet the Team",
+  "Le cose belle non si fanno mai da soli.": "Great things are never done alone.",
+  "Pubblicazioni & Articoli": "Publications & Articles",
+  "I miei articoli tecnici su SIGMA Italia, Vanguard World ed UniversoFoto Magazine per approfondire l'attrezzatura ed il flusso di lavoro.": "My technical articles on SIGMA Italia, Vanguard World, and UniversoFoto Magazine covering gear and workflow.",
+  "Vedi Tutti gli Articoli": "View All Articles",
+  "La Mia Storia": "My Story",
+  "Navigazione": "Navigation",
+  "Partner Tecnologici": "Tech Partners",
+  "Social & Contatti": "Social & Contacts"
+};
+
+let currentLang = localStorage.getItem('site_lang') || 'it';
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (currentLang === 'en') {
+    applyLanguage('en');
+  }
+});
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('site_lang', lang);
+  applyLanguage(lang);
+}
+
+function applyLanguage(lang) {
+  const btnIta = document.getElementById('btn-lang-ita');
+  const btnEn = document.getElementById('btn-lang-en');
+
+  if (btnIta && btnEn) {
+    if (lang === 'en') {
+      btnIta.classList.remove('active');
+      btnEn.classList.add('active');
+    } else {
+      btnEn.classList.remove('active');
+      btnIta.classList.add('active');
+    }
+  }
+
+  const textElements = document.querySelectorAll('h1, h2, h3, h4, p, a, span, button');
+  textElements.forEach(el => {
+    if (el.children.length === 0) {
+      const text = el.innerText.trim();
+      if (lang === 'en' && DICT_EN[text]) {
+        if (!el.dataset.origText) el.dataset.origText = el.innerText;
+        el.innerText = DICT_EN[text];
+      } else if (lang === 'it' && el.dataset.origText) {
+        el.innerText = el.dataset.origText;
+      }
+    }
+  });
+}

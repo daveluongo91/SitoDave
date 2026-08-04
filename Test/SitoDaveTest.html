@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Davide Luongo • Fotografia Paesaggistica & Astrofotografia</title>
+  <meta name="description" content="Sito ufficiale di Davide Luongo — Fotografo di paesaggio e astrofotografia, Ambassador SIGMA Italia. Workshop fotografici, viaggi, lezioni One-to-One e recensioni attrezzatura." />
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="Davide Luongo • Landscape & Astrophotography" />
+  <meta property="og:description" content="Workshop fotografici sul campo, viaggi di astrofotografia e corsi di formazione One-to-One." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Stylesheets -->
+  <style>
+/* ==========================================================================
+   Davide Luongo — Design System & Stylesheet (Dark Sky & Astrophotography Theme)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Color Tokens - Corporate Brand LAB(20, 0, -20) Palette (#17324D) */
+  --bg-main: #0B1929;         /* LAB 20, 0, -20 Deep Midnight Slate */
+  --bg-secondary: #12243B;    /* Lighter slate container */
+  --bg-card: rgba(23, 50, 77, 0.75); /* LAB(20,0,-20) Glass opacity */
+  --bg-card-hover: rgba(30, 65, 100, 0.85);
+  --bg-glass: rgba(19, 41, 64, 0.7);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(0, 240, 255, 0.35);
+
+  --accent-cyan: #00F0FF;
+  --accent-blue: #38BDF8;
+  --accent-purple: #A855F7;
+  --accent-amber: #F59E0B;
+  --accent-emerald: #10B981;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  /* Typography */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing & Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows & Glows */
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --glow-cyan: 0 0 25px rgba(0, 240, 255, 0.25);
+  --glow-purple: 0 0 25px rgba(168, 85, 247, 0.25);
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sub-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.75rem;
+}
+
+.sub-title::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+/* Header & Navigation */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.25rem 0;
+  background: rgba(7, 9, 14, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition-fast);
+}
+
+.navbar .nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  flex: 0 0 auto;
+}
+
+.brand-logo .logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.3));
+  transition: var(--transition-fast);
+}
+
+.brand-logo:hover .logo-img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.5));
+}
+
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.85rem, 1.6vw, 2rem);
+  list-style: none;
+  margin-inline: auto;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 0 0 auto;
+}
+
+.nav-current {
+  color: var(--accent-cyan) !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 1180px) {
+  .navbar .container {
+    width: min(96%, var(--container-width));
+  }
+
+  .brand-logo {
+    font-size: 1.1rem;
+  }
+
+  .brand-logo .logo-img {
+    height: 38px;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem;
+  }
+
+  .nav-actions .btn {
+    padding-inline: 1rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition-normal);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-cyan), #00A3FF);
+  color: #040914;
+  box-shadow: var(--glow-cyan);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.btn-outline-purple {
+  background: transparent;
+  color: var(--accent-purple);
+  border: 1px solid var(--accent-purple);
+}
+
+.btn-outline-purple:hover {
+  background: rgba(168, 85, 247, 0.15);
+  box-shadow: var(--glow-purple);
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 9rem;
+  padding-bottom: 5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg,
+.hero-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  object-fit: cover;
+  filter: brightness(0.78) contrast(1.15);
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.12), transparent 70%),
+              linear-gradient(to bottom, rgba(7, 9, 14, 0.2), rgba(7, 9, 14, 0.85));
+}
+
+.hero-content {
+  max-width: 780px;
+}
+
+.hero-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1.1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.hero-brand-logo {
+  display: block;
+  max-width: 440px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.75rem;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.4));
+  transition: var(--transition-normal);
+}
+
+.hero-brand-logo:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.6));
+}
+
+
+.hero-title {
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.25rem;
+  max-width: 660px;
+}
+
+/* Hero Auto-scrolling Reviews Carousel */
+.hero-reviews-carousel {
+  margin-top: 2.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.reviews-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.slider-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.slider-badge .g-star {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #FFB800;
+}
+
+.slider-badge .g-label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.reviews-slider-header .g-link {
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.reviews-slider-header .g-link:hover {
+  text-decoration: underline;
+  color: #00F0FF;
+}
+
+.reviews-track-wrap {
+  position: relative;
+  min-height: 80px;
+  overflow: hidden;
+}
+
+.hero-review-slide {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hero-review-slide.active {
+  display: block;
+  opacity: 1;
+}
+
+.slide-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.slide-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  color: #040914;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-family: var(--font-heading);
+  flex-shrink: 0;
+}
+
+.slide-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.slide-name .stars {
+  color: #FFB800;
+  font-size: 0.8rem;
+  margin-left: 0.4rem;
+}
+
+.slide-tag {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+.slide-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.reviews-slider-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.reviews-slider-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.reviews-slider-dots .dot.active {
+  background: var(--accent-cyan);
+  width: 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+/* Partner Ticker */
+.partner-ticker {
+  background: rgba(13, 18, 31, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.25rem 0;
+  overflow: hidden;
+}
+
+.partner-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.partner-item-link,
+.partner-item-btn {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  transition: var(--transition-normal);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.partner-item-link:hover,
+.partner-item-btn:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  transform: translateY(-2px);
+}
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Section Styling */
+.section {
+  padding: 6rem 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 3.5rem;
+}
+
+.section-header.center {
+  text-align: center;
+}
+
+.section-title {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 640px;
+}
+
+.section-header.center .section-desc {
+  margin: 0 auto;
+}
+
+/* Workshop Cards & Grid */
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-card), 0 0 20px rgba(0, 240, 255, 0.15);
+  background: var(--bg-card-hover);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.card:hover .card-img-wrapper img {
+  transform: scale(1.06);
+}
+
+.badge-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+}
+
+.badge-status.active {
+  background: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.badge-status.limited {
+  background: rgba(245, 158, 11, 0.25);
+  color: #FBBF24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.badge-status.upcoming {
+  background: rgba(168, 85, 247, 0.25);
+  color: #C084FC;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+}
+
+.card-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: auto;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.meta-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+/* Course Cards Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.course-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  transition: var(--transition-normal);
+  position: relative;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-purple);
+  box-shadow: var(--glow-purple);
+}
+
+.course-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--accent-purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+/* Interactive Behind the Shot Showcase */
+.showcase-container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.raw-slider-wrapper {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+
+.raw-slider-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.exif-badge-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.exif-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+.exif-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.exif-val {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent-cyan);
+}
+
+/* Modal Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-normal);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  max-width: 540px;
+  width: 100%;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), var(--glow-cyan);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.modal-close:hover {
+  color: var(--accent-cyan);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-secondary);
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+/* Footer */
+.footer {
+  background: #04060A;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4rem 0 2rem 0;
+  margin-top: 4rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+.footer-brand p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  max-width: 320px;
+}
+
+.footer-heading {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.footer-bottom {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 992px) {
+  .showcase-container {
+    grid-template-columns: 1fr;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== GEAR PAGE STYLES ==================== */
+.gear-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.gear-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.gear-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-card), 0 0 25px rgba(0, 240, 255, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.gear-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: radial-gradient(circle at center, rgba(23, 50, 77, 0.9), #0B1929);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.gear-img-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+}
+
+.gear-card:hover .gear-img-wrapper img {
+  transform: scale(1.08);
+}
+
+.badge-ambassador {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.35rem 0.85rem;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(56, 189, 248, 0.35));
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.badge-affiliate {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #FBBF24;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+}
+
+.gear-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.gear-brand-tag {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.4rem;
+}
+
+.gear-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.3;
+}
+
+.gear-micro-article {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.gear-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.spec-pill {
+  padding: 0.25rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.discount-callout {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px dashed rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discount-code {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #FBBF24;
+  letter-spacing: 0.05em;
+}
+
+.copy-code-btn {
+  background: rgba(245, 158, 11, 0.2);
+  border: none;
+  color: #FBBF24;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.copy-code-btn:hover {
+  background: rgba(245, 158, 11, 0.4);
+}
+
+.gear-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.gear-actions .btn {
+  width: 100%;
+}
+
+/* ==================== BLOG & PUBBLICAZIONI STYLES ==================== */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-card), 0 0 25px rgba(0, 240, 255, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.blog-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.blog-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-img-wrapper img {
+  transform: scale(1.06);
+}
+
+.badge-blog-type {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(10px);
+}
+
+.badge-blog-type.personal {
+  background: rgba(0, 240, 255, 0.25);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.badge-blog-type.external {
+  background: rgba(168, 85, 247, 0.25);
+  border: 1px solid var(--accent-purple);
+  color: #D8B4FE;
+}
+
+.publisher-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.blog-body {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blog-title {
+  font-size: 1.35rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.blog-excerpt {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.blog-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: auto;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ==================== EDITORIAL CAROUSELS ==================== */
+.blog-hero {
+  min-height: 58vh;
+  padding-top: 10rem;
+  padding-bottom: 4rem;
+}
+
+.publication-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.publication-jump a {
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+  background: rgba(11, 25, 41, 0.62);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: var(--transition-normal);
+}
+
+.publication-jump a:hover {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.publications-page {
+  overflow: hidden;
+}
+
+.publication-section {
+  scroll-margin-top: 5rem;
+}
+
+.publication-section-alt {
+  background: rgba(6, 18, 31, 0.65);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.publication-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.publication-heading h2 {
+  margin-top: 0.3rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.publication-heading p {
+  max-width: 34rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.section-eyebrow {
+  color: var(--accent-cyan);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.publication-carousel {
+  position: relative;
+  min-height: 540px;
+}
+
+.carousel-track {
+  position: relative;
+  width: min(100%, 1120px);
+  height: 520px;
+  margin: 0 auto;
+}
+
+.publication-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(38vw, 390px);
+  min-height: 455px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.76);
+  transition: transform 0.55s cubic-bezier(.22,.61,.36,1), opacity 0.4s ease, filter 0.4s ease;
+}
+
+.publication-card.is-active {
+  z-index: 3;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1.08);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-card), 0 0 36px rgba(0, 240, 255, 0.18);
+}
+
+.publication-card.is-previous,
+.publication-card.is-next {
+  z-index: 2;
+  opacity: 0.72;
+  pointer-events: auto;
+  filter: saturate(0.72);
+  cursor: pointer;
+}
+
+.publication-card.is-previous {
+  transform: translate(calc(-50% - 345px), -50%) scale(0.82);
+}
+
+.publication-card.is-next {
+  transform: translate(calc(-50% + 345px), -50%) scale(0.82);
+}
+
+.publication-card.is-hidden {
+  visibility: hidden;
+}
+
+.publication-image {
+  display: block;
+  height: 235px;
+  overflow: hidden;
+  background: #081522;
+}
+
+.publication-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.publication-card:hover .publication-image img {
+  transform: scale(1.045);
+}
+
+.publication-content {
+  min-height: 220px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.publication-content h3 {
+  margin: 0.35rem 0 0.9rem;
+  font-size: 1.24rem;
+  line-height: 1.35;
+}
+
+.publication-content p {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.publication-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--accent-cyan);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.publication-link span {
+  font-size: 1.1rem;
+}
+
+.carousel-status {
+  margin-top: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+}
+
+@media (max-width: 992px) {
+  .publication-card { width: min(46vw, 370px); }
+  .publication-card.is-previous { transform: translate(calc(-50% - 275px), -50%) scale(0.76); }
+  .publication-card.is-next { transform: translate(calc(-50% + 275px), -50%) scale(0.76); }
+}
+
+@media (max-width: 768px) {
+  .blog-hero { padding-top: 8rem; }
+  .publication-heading { align-items: flex-start; flex-direction: column; gap: 1rem; }
+  .publication-carousel { min-height: 530px; }
+  .carousel-track { height: 500px; }
+  .publication-card { width: min(78vw, 360px); min-height: 435px; }
+  .publication-card.is-active { transform: translate(-50%, -50%) scale(1); }
+  .publication-card.is-previous { transform: translate(calc(-50% - 75vw), -50%) scale(0.72); opacity: 0.34; }
+  .publication-card.is-next { transform: translate(calc(-50% + 75vw), -50%) scale(0.72); opacity: 0.34; }
+  .publication-image { height: 215px; }
+  .carousel-status { margin-top: 0.8rem; }
+}
+
+/* Gear Product Card Hover & Image Zoom Animation */
+.gear-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  cursor: pointer;
+}
+
+.gear-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
+}
+
+.gear-card-img-container {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.gear-card-img-container img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gear-card:hover .gear-card-img-container img,
+.gear-card-img-container:hover img {
+  transform: scale(1.09);
+}
+
+/* Google Reviews & Trustindex Section */
+.reviews-section {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-main) 0%, rgba(7, 9, 14, 0.95) 100%);
+  padding: 6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.reviews-summary-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+}
+
+.reviews-summary-rating {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.reviews-score {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.reviews-score span {
+  color: #FFB800;
+}
+
+.reviews-stars-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reviews-stars {
+  color: #FFB800;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.reviews-badge-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.reviews-badge-text strong {
+  color: var(--accent-cyan);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.75rem;
+}
+
+.review-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  backdrop-filter: blur(16px);
+  transition: var(--transition-normal);
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 10px 25px rgba(0, 240, 255, 0.12);
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-author-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.review-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  color: #040914;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.review-author-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.review-course-tag {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+.review-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.75rem;
+}
+
+/* ==========================================================================
+   Team Section Styles
+   ========================================================================== */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.team-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.team-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 15px 35px rgba(0, 240, 255, 0.15);
+}
+
+.team-avatar-link {
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+}
+
+.team-avatar-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  margin: 0 auto 1.25rem auto;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.team-card:hover .team-avatar-ring,
+.team-avatar-link:hover .team-avatar-ring {
+  transform: scale(1.08) rotate(4deg);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+}
+
+.team-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00F0FF, #7000FF);
+  color: #040914;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.team-link-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid var(--accent-cyan);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.75rem;
+  transition: var(--transition-fast);
+}
+
+.team-avatar-link:hover .team-link-badge {
+  background: var(--accent-cyan);
+  color: #040914;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.team-name {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.team-role {
+  font-size: 0.825rem;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.team-bio {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   Multilingual Language Switcher (ITA / UK+USA) & Mobile/Tablet Optimization
+   ========================================================================== */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lang-toggle-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.35rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  filter: grayscale(85%) opacity(0.45);
+}
+
+.lang-btn.active {
+  filter: grayscale(0%) opacity(1);
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+}
+
+.lang-btn:hover {
+  filter: grayscale(0%) opacity(0.9);
+}
+
+.flag-svg {
+  display: block;
+  border-radius: 3px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+}
+
+/* Tablet & Mobile Responsiveness (992px and down) */
+@media (max-width: 992px) {
+  .nav-container {
+    padding: 0.75rem 1.25rem;
+  }
+  .nav-actions {
+    gap: 0.5rem;
+  }
+  .lang-btn {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-brand-logo {
+    max-width: 290px;
+  }
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-reviews-carousel {
+    padding: 0.75rem;
+  }
+}
+
+
+</style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <img src="../assets/pittogramma.png" alt="Davide Luongo Pictogram" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#workshops">Workshop & Tour</a></li>
+        <li><a href="#corsi">Formazione 1-to-1</a></li>
+        <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="../blog/blog.html">Blog & Pubblicazioni</a></li>
+        <li><a href="#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-toggle-wrapper" id="lang-toggle-wrapper">
+          <button type="button" class="lang-btn lang-ita active" id="btn-lang-ita" onclick="switchLanguage('it')" title="Italiano">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <rect x="0" width="9.33" height="20" fill="#009246"/>
+              <rect x="9.33" width="9.33" height="20" fill="#ffffff"/>
+              <rect x="18.66" width="9.34" height="20" fill="#ce2b37"/>
+            </svg>
+            <span>ITA</span>
+          </button>
+          <button type="button" class="lang-btn lang-en" id="btn-lang-en" onclick="switchLanguage('en')" title="English (UK/USA)">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <defs>
+                <clipPath id="uk-clip">
+                  <polygon points="0,0 28,0 0,20"/>
+                </clipPath>
+                <clipPath id="usa-clip">
+                  <polygon points="28,0 28,20 0,20"/>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#uk-clip)">
+                <rect width="28" height="20" fill="#012169"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#fff" stroke-width="4"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#C8102E" stroke-width="2"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#fff" stroke-width="6"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#C8102E" stroke-width="3.5"/>
+              </g>
+              <g clip-path="url(#usa-clip)">
+                <rect width="28" height="20" fill="#B22234"/>
+                <path d="M0,3 H28 M0,6 H28 M0,9 H28 M0,12 H28 M0,15 H28 M0,18 H28" stroke="#fff" stroke-width="1.5"/>
+                <rect width="12" height="10" fill="#3C3B6E"/>
+                <circle cx="3" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="9" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="6" cy="5" r="0.6" fill="#fff"/>
+              </g>
+              <line x1="0" y1="20" x2="28" y2="0" stroke="#040914" stroke-width="1.5"/>
+            </svg>
+            <span>ENG</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary open-info-modal" data-subject="Informazioni Generali">Chiedimi Informazioni</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="home" class="hero">
+    <video autoplay loop muted playsinline poster="assets/hero_milky_way.png" class="hero-video-bg">
+      <source src="../assets/hero_background_timelapse.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tagline-badge">
+          <span>HIKE • SHOOT • PRINT • REPEAT</span>
+        </div>
+
+        <img src="../assets/logo_esteso.png" alt="Davide Luongo Logo Esteso" class="hero-brand-logo" />
+
+        <h1 class="hero-title">
+          Impara a leggere la luce <span class="gradient-text">anche dove sembra non esserci</span>
+        </h1>
+
+
+        <p class="hero-description">
+          Esperienze fotografiche immersive in location straordinarie, viaggi guidati e corsi di formazione One-to-One. Dalla pianificazione sul campo alla stampa Fine Art.
+        </p>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="#workshops" class="btn btn-primary">Scegli la tua prossima avventura</a>
+          <a href="#corsi" class="btn btn-secondary">Corsi One-to-One</a>
+        </div>
+
+        <!-- ==================== AUTO-SCROLLING GOOGLE REVIEWS CAROUSEL ==================== -->
+        <div class="hero-reviews-carousel" id="hero-reviews-slider">
+          <div class="reviews-slider-header">
+            <div class="slider-badge">
+              <span class="g-star">5.0 ★</span>
+              <span class="g-label">Recensioni Google Verificate</span>
+            </div>
+            <a href="https://share.google/cxLf6DH2ZKHvENaJ0" target="_blank" rel="noopener noreferrer" class="g-link">
+              Vedi tutte su Google ↗
+            </a>
+          </div>
+
+          <div class="reviews-track-wrap">
+            <div class="reviews-track" id="hero-reviews-track">
+              
+              <!-- Review 1: Giada Berni -->
+              <div class="hero-review-slide active">
+                <div class="slide-author">
+                  <div class="slide-avatar">GB</div>
+                  <div>
+                    <div class="slide-name">Giada Berni <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Partecipante Workshop & Viaggi</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Davide non è solo un ottimo fotografo - competente, tecnico ed estremamente pignolo. È anche un grande insegnante e compagno di avventure! Spinto in primis dalla sua passione è capace di guidarti nel suo modo di vedere le cose..."
+                </p>
+              </div>
+
+              <!-- Review 2: Luca S -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">LS</div>
+                  <div>
+                    <div class="slide-name">Luca S <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Workshop Notturno al Nivolet</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Ho partecipato al workshop notturno al Nivolet: esperienza bellissima, location bellissima, ottima compagnia, insegnanti competenti. Da fare!..."
+                </p>
+              </div>
+
+              <!-- Review 3: Dillia Pissarello -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">DP</div>
+                  <div>
+                    <div class="slide-name">Dillia Pissarello <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Viaggi Fotografici con Davide</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Ho avuto il piacere di fare 2 viaggi con Davide guida mi sono trovata benissimo, preciso, molto attento e preparato, non smetterò mai di ringraziarlo... spero in altre occasioni..."
+                </p>
+              </div>
+
+              <!-- Review 4: Stefano Marchetti -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">SM</div>
+                  <div>
+                    <div class="slide-name">Stefano Marchetti <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Partecipante Workshop</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Serio e professionale, ti segue passo a passo dall'inizio fino alla fine e anche oltre, allego due foto che ho fatto ai suoi workshop e grazie alle sue dritte..."
+                </p>
+              </div>
+
+              <!-- Review 5: Francesco D'Ambra -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">FD</div>
+                  <div>
+                    <div class="slide-name">Francesco D'Ambra <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Partecipante Workshop</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "I suoi workshop sono molto coinvolgenti e conviviali. Davide punta molto sul fare gruppo e l’esperienza di apprendimento è sciolta e divertente. 🔝..."
+                </p>
+              </div>
+
+              <!-- Review 6: Federica Castana -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">FC</div>
+                  <div>
+                    <div class="slide-name">Federica Castana <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Partecipante Workshop</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Davide è una persona molto preparata e si vede che ama quello che fa. Ho apprezzato molto il suo modo di spiegare che è stato esaustivo e coinvolgente. Lo raccomando vivamente!..."
+                </p>
+              </div>
+
+            </div>
+          </div>
+          
+          <div class="reviews-slider-dots" id="hero-reviews-dots"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PARTNER TICKER ==================== -->
+  <div class="partner-ticker">
+    <div class="container">
+      <div class="partner-grid" style="justify-content: center; gap: 2rem;">
+        <a href="https://www.sigma-italia.it/blogs/la-nostra-community/davide-luongo" target="_blank" rel="noopener noreferrer" class="partner-item-link">📷 SIGMA Italia Ambassador ↗</a>
+        <button type="button" class="partner-item-btn open-promo-modal" data-promo="vanguard">🎒 Vanguard Ambassador (Codice Sconto)</button>
+        <button type="button" class="partner-item-btn open-promo-modal" data-promo="rce">🛍️ RCE Foto Partner (Codice Sconto)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WORKSHOP & PHOTO TOUR ==================== -->
+  <!-- ==================== WORKSHOP & PHOTO TOUR ==================== -->
+  <section id="workshops" class="section publications-page">
+    <div class="container">
+      <div class="section-header center">
+        <div class="sub-title">Esperienze sul campo</div>
+        <h2 class="section-title">Workshop & Viaggi Fotografici</h2>
+        <p class="section-desc">Piccoli gruppi, location selezionate per alba, tramonto e notte, con supporto didattico continuo e pianificazione approfondita.</p>
+      </div>
+    </div>
+
+    <!-- SEZIONE 1: WORKSHOP 2026 (Carosello 3D Rotante) -->
+    <div class="publication-section section" id="workshops-2026" data-carousel>
+      <div class="container">
+        <div class="publication-heading">
+          <div>
+            <span class="section-eyebrow">🇮🇹 CALENDARIO 2026</span>
+            <h2>Workshop 2026</h2>
+          </div>
+          <p>Passa sulle card o usa le frecce della tastiera per esplorare i workshop sul campo in Italia con iscrizioni aperte per l'autunno 2026.</p>
+        </div>
+
+        <div class="publication-carousel">
+          <div class="carousel-track">
+            
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="../workshops_2026/friuli-2026.html"><img src="../assets/friuli_workshop.png" alt="Workshop Friuli" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag">📅 10 - 11 OTTOBRE 2026</span>
+                <h3>Workshop Friuli: Tagliamento, Laghi & Astrofotografia</h3>
+                <p>Fiume Tagliamento, laghi alpini di Fusine e cieli notturni incontaminati per sessioni di paesaggio ed astro.</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.75rem;">
+                  <a class="publication-link" href="../workshops_2026/friuli-2026.html">Dettagli <span>↗</span></a>
+                  <button class="btn btn-primary open-modal-btn" data-subject="Workshop Friuli 2026" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">💳 Prenota Ora</button>
+                  <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20info%20Workshop%20Friuli!" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;">💬 WhatsApp</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="../workshops_2026/cascate-appennino-2026.html"><img src="../assets/cascate_appennino_workshop.png" alt="Workshop Cascate Appennino" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag">📅 24 - 25 OTTOBRE 2026</span>
+                <h3>Workshop Cascate Appennino: Acque & Lunga Esposizione</h3>
+                <p>Fotografia di paesaggio fluviale, effetto seta sull'acqua ed uso intensivo di filtri ND/GND Kase.</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.75rem;">
+                  <a class="publication-link" href="../workshops_2026/cascate-appennino-2026.html">Dettagli <span>↗</span></a>
+                  <button class="btn btn-primary open-modal-btn" data-subject="Workshop Cascate Appennino 2026" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">💳 Prenota Ora</button>
+                  <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20info%20Workshop%20Cascate%20Appennino!" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;">💬 WhatsApp</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="../workshops_2026/canfaito-2026.html"><img src="../assets/canfaito_workshop.png" alt="Workshop Canfaito" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag">📅 7 - 8 NOVEMBRE 2026</span>
+                <h3>Workshop Faggeta di Canfaito: Foliage & Luce d'Autunno</h3>
+                <p>L'esplosione dei colori autunnali nella monumentale faggeta di Canfaito con nebbie e faggi plurisecolari.</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.75rem;">
+                  <a class="publication-link" href="../workshops_2026/canfaito-2026.html">Dettagli <span>↗</span></a>
+                  <button class="btn btn-primary open-modal-btn" data-subject="Workshop Faggeta di Canfaito 2026" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">💳 Prenota Ora</button>
+                  <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20info%20Workshop%20Canfaito!" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;">💬 WhatsApp</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="../workshops_2026/foreste-casentinesi-2026.html"><img src="../assets/foreste_casentinesi_workshop.png" alt="Workshop Foreste Casentinesi" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag">📅 28 - 29 NOVEMBRE 2026</span>
+                <h3>Workshop Foreste Casentinesi: Il Grande Foliage</h3>
+                <p>Immersione in una delle foreste più antiche d'Europa nel momento del picco cromatico del foliage.</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.75rem;">
+                  <a class="publication-link" href="../workshops_2026/foreste-casentinesi-2026.html">Dettagli <span>↗</span></a>
+                  <button class="btn btn-primary open-modal-btn" data-subject="Workshop Foreste Casentinesi 2026" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">💳 Prenota Ora</button>
+                  <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20info%20Workshop%20Foreste%20Casentinesi!" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; border-color: #25D366; color: #25D366;">💬 WhatsApp</a>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+        <div class="carousel-status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- SEZIONE 2: VIAGGI 2027 (Carosello 3D Rotante) -->
+    <div class="publication-section section publication-section-alt" id="viaggi-2027" data-carousel>
+      <div class="container">
+        <div class="publication-heading">
+          <div>
+            <span class="section-eyebrow">✈️ ANTEPRIMA ESTERO 2027</span>
+            <h2>Viaggi Fotografici 2027</h2>
+          </div>
+          <p>I grandi viaggi fotografici nel mondo per il 2027. Iscriviti alla lista d'attesa per ricevere il programma ufficiale non appena pronto.</p>
+        </div>
+
+        <div class="publication-carousel">
+          <div class="carousel-track">
+            
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="#"><img src="../assets/lapponia_photo_tour.png" alt="Photo Tour Lapponia" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag" style="color: var(--accent-purple);">📅 GENNAIO 2027</span>
+                <h3>Photo Tour Lapponia: Caccia all'Aurora & Paesaggi Polari</h3>
+                <p>Un'avventura artica alla ricerca dell'Aurora Boreale tra foreste innevate, laghi ghiacciati e luci polari.</p>
+                <a class="publication-link open-modal-btn" data-subject="Interesse Lapponia 2027" href="#">Lista d'Attesa <span>↗</span></a>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="#"><img src="../assets/minorca_photo_tour.png" alt="Photo Tour Minorca" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag" style="color: var(--accent-purple);">📅 MAGGIO 2027</span>
+                <h3>Photo Tour Minorca: Scogliere & Starlight Reserve</h3>
+                <p>Faraglioni, fari e cieli notturni incontaminati in Riserva della Biosfera UNESCO per astrofotografia ed outdoor.</p>
+                <a class="publication-link open-modal-btn" data-subject="Interesse Minorca 2027" href="#">Lista d'Attesa <span>↗</span></a>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="#"><img src="../assets/azzorre_photo_tour.png" alt="Photo Tour Azzorre" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag" style="color: var(--accent-purple);">📅 LUGLIO 2027</span>
+                <h3>Photo Tour Azzorre: Natura Incontaminata & Cieli Atlantici</h3>
+                <p>Vulcani, crateri vulcanici azzurri, scogliere a picco sull'Atlantico e cieli stellati nel cuore dell'Oceano.</p>
+                <a class="publication-link open-modal-btn" data-subject="Interesse Azzorre 2027" href="#">Lista d'Attesa <span>↗</span></a>
+              </div>
+            </article>
+
+            <article class="publication-card" data-slide>
+              <a class="publication-image" href="#"><img src="../assets/islanda_photo_tour.png" alt="Photo Tour Islanda" /></a>
+              <div class="publication-content">
+                <span class="publisher-tag" style="color: var(--accent-purple);">📅 OTTOBRE 2027</span>
+                <h3>Photo Tour Islanda: Aurore Boreali & Paesaggi Vulcanici</h3>
+                <p>Cascate imponenti, spiagge di sabbia nera, ghiacciai e lo spettacolo dell'Aurora Boreale nei cieli d'autunno.</p>
+                <a class="publication-link open-modal-btn" data-subject="Interesse Islanda 2027" href="#">Lista d'Attesa <span>↗</span></a>
+              </div>
+            </article>
+
+          </div>
+        </div>
+        <div class="carousel-status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- SEZIONE 3: WORKSHOP 2027 (Coming Soon) -->
+    <div class="publication-section section" id="workshops-2027">
+      <div class="container">
+        <div style="background: var(--bg-card); border: 1px dashed var(--accent-cyan); border-radius: var(--radius-lg); padding: 3.5rem 2rem; text-align: center; max-width: 840px; margin: 0 auto; backdrop-filter: blur(16px);">
+          <span class="badge-status upcoming" style="position: static; display: inline-block; margin-bottom: 1.25rem;">COMING SOON</span>
+          <h2 style="font-size: 2rem; margin-bottom: 1rem;" class="gradient-text">Workshop Nazionali 2027</h2>
+          <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; max-width: 620px; margin: 0 auto 2rem auto;">
+            Le date e le nuove location dei Workshop Nazionali in Italia per la stagione 2027 verranno pubblicate prossimamente. Vuoi ricevere la prima notifica prima di tutti?
+          </p>
+          <button class="btn btn-primary open-modal-btn" data-subject="Richiesta Avviso Workshop 2027">Rimani Aggiornato per il 2027</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+
+  <!-- ==================== IL TEAM DAVIDE LUONGO ==================== -->
+  <section id="team" class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      
+      <div class="section-header center">
+        <div class="sub-title">🤝 L'UNIONE FA LA FORZA!</div>
+        <h2 class="section-title">Vi Presento il Team</h2>
+        <p class="section-desc">Le cose belle non si fanno mai da soli.</p>
+      </div>
+
+      <div class="team-grid">
+
+        <!-- 1. Loris Ferrini -->
+        <article class="team-card">
+          <a href="https://lorisferriniastrofoto.it/" target="_blank" rel="noopener noreferrer" class="team-avatar-link" title="Visita il sito di Loris Ferrini ↗">
+            <div class="team-avatar-ring">
+              <div class="team-avatar-img">LF</div>
+            </div>
+          </a>
+          <div class="team-info">
+            <h3 class="team-name">Loris Ferrini</h3>
+            <div class="team-role">Aka "Signore Oscuro" • Didattica Cielo Notturno</div>
+            <p class="team-bio">
+              Astrofotografo professionista e divulgatore. Gestisce la didattica della gestione e dell'elaborazione digitale profonda del cielo notturno nei nostri workshop. Clicca sull'avatar per prenotare direttamente con lui una sessione!
+            </p>
+            <a href="https://lorisferriniastrofoto.it/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.45rem 1rem; width: 100%; text-align: center; margin-top: auto;">
+              Visita lorisferriniastrofoto.it ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. Manuel Linari -->
+        <article class="team-card">
+          <div class="team-avatar-ring">
+            <div class="team-avatar-img" style="background: linear-gradient(135deg, #FFB800, #FF5500);">ML</div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Manuel Linari</h3>
+            <div class="team-role">Aka "Lino" • Mago della Logistica & Supporto Canon</div>
+            <p class="team-bio">
+              Lino è il mago della logistica: preciso e meticoloso, organizza i workshop al minuto per consentirci di portare a casa non solo scatti memorabili, ma anche un'esperienza fantastica e cene pazzesche! Se avete bisogno con macchine Canon c'è lui... (purtroppo nessuno è perfetto! 😉). E non dimenticate: Lino gira sempre con la Romagna appresso!
+            </p>
+          </div>
+        </article>
+
+        <!-- 3. Elia Marcon -->
+        <article class="team-card">
+          <div class="team-avatar-ring">
+            <div class="team-avatar-img" style="background: linear-gradient(135deg, #A855F7, #EC4899);">EM</div>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Elia Marcon</h3>
+            <div class="team-role">Aka "L'Ingegnere" • Special Projects & Outdoor</div>
+            <p class="team-bio">
+              Uniti dalla passione per i motori e dalla pochissima voglia di dormire, ne combineremo davvero delle belle! Per ora è tutto top secret, ma vedrete molto presto cosa stiamo preparando per voi!
+            </p>
+          </div>
+        </article>
+
+        <!-- 4. Luca Sensoli -->
+        <article class="team-card">
+          <a href="https://www.lucasensoli.com/" target="_blank" rel="noopener noreferrer" class="team-avatar-link" title="Visita il sito di Luca Sensoli ↗">
+            <div class="team-avatar-ring">
+              <div class="team-avatar-img" style="background: linear-gradient(135deg, #00F0FF, #3B82F6);">LS</div>
+            </div>
+          </a>
+          <div class="team-info">
+            <h3 class="team-name">Luca Sensoli</h3>
+            <div class="team-role">Aka "Birky" • Video Maker Official & Content Creator</div>
+            <p class="team-bio">
+              Il perché di "Birky" lo scoprirete al primo viaggio con noi! Luca è il nostro videomaker ufficiale: mentre noi docenti ci concentriamo al 100% sui clienti sul campo, ci pensa Birky a realizzare foto e video straordinari. Esageratamente bravo negli eventi e nella food photography. Clicca sull'avatar per sbirciare il suo sito!
+            </p>
+            <a href="https://www.lucasensoli.com/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.45rem 1rem; width: 100%; text-align: center; margin-top: auto;">
+              Visita lucasensoli.com ↗
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== BEHIND THE SHOT SHOWCASE ==================== -->
+  <section id="behind-the-shot" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="sub-title">Analisi dello Scatto</div>
+        <h2 class="section-title">Behind the Shot</h2>
+        <p class="section-desc">Ogni immagine nasce da una pianificazione rigorosa. Ecco la scheda tecnica e le condizioni di ripresa dietro uno scatto iconico.</p>
+      </div>
+
+      <div class="showcase-container">
+        <div class="raw-slider-wrapper">
+          <img src="../assets/hero_milky_way.png" alt="Astrofotografia Nivolet" />
+        </div>
+
+        <div>
+          <span style="display: inline-block; padding: 0.25rem 0.75rem; background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;">COLLE DEL NIVOLET • GRAN PARADISO</span>
+          <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">La Via Lattea sul Lago Serrù</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">
+            Uno scatto pianificato mesi prima valutando la fase lunare e la posizione del nucleo galattico. Utilizzato un tracciatore stellare per mantenere i dettagli e gli ISO bassi su 5 scatti integrati.
+          </p>
+
+          <div class="exif-badge-list">
+            <div class="exif-item">
+              <div class="exif-label">Ottica</div>
+              <div class="exif-val">SIGMA 20mm F1.4 DG DN Art</div>
+            </div>
+            <div class="exif-item">
+              <div class="exif-label">Tempo / ISO</div>
+              <div class="exif-val">25 sec • ISO 3200</div>
+            </div>
+            <div class="exif-item">
+              <div class="exif-label">Apertura</div>
+              <div class="exif-val">f/1.4</div>
+            </div>
+            <div class="exif-item">
+              <div class="exif-label">Supporto</div>
+              <div class="exif-val">Vanguard Tripod + Star Tracker</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- ==================== BLOG & PUBBLICAZIONI SHOWCASE ==================== -->
+  <section id="blog-preview" class="section">
+    <div class="container">
+      <div class="section-header" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+          <div class="sub-title">Articoli & Pubblicazioni</div>
+          <h2 class="section-title">Dal Blog & Dai Portali Terzi</h2>
+          <p class="section-desc">Pensieri personali, guide tecniche sul campo e articoli scriti per SIGMA Italia, Vanguard World, Kase e RCE Foto.</p>
+        </div>
+        <a href="../blog/blog.html" class="btn btn-secondary">Vedi Tutti gli Articoli</a>
+      </div>
+
+      <div class="blog-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+        
+        <!-- Card 1: Scrivo per Me -->
+        <div class="blog-card">
+          <div class="blog-img-wrapper">
+            <img src="../assets/blog_nivolet_guide.png" alt="Pianificare la Via Lattea in Quota" />
+            <span class="badge-blog-type personal">Scrivo per Me</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</div>
+            <h3 class="blog-title">Pianificare la Via Lattea in Quota: Guida al Tracciamento al Nivolet</h3>
+            <p class="blog-excerpt">Come preparare uno scatto di astrofotografia a 2.500m di quota analizzando fase lunare, calcolo dell'inclinazione polare e ISO nativi.</p>
+            <div class="blog-meta">
+              <span>📅 15 Luglio 2026</span>
+              <a href="../blog/blog.html" class="btn btn-secondary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi l'Articolo</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Scrivo per gli Altri (SIGMA Italia) -->
+        <div class="blog-card">
+          <div class="blog-img-wrapper">
+            <img src="../assets/gear_sigma_14mm.png" style="object-fit: contain; background: #0B1929;" alt="SIGMA 14mm Art Test" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">📷 SIGMA ITALIA BLOG</div>
+            <h3 class="blog-title">Test sul Campo: SIGMA 14mm f/1.4 Art sotto il Cielo del Gran Paradiso</h3>
+            <p class="blog-excerpt">Articolo tecnico sul blog ufficiale SIGMA Italia. Analisi del comportamento ottico del 14mm f/1.4 Art e correzione del coma ai bordi.</p>
+            <div class="blog-meta">
+              <span>📅 22 Giugno 2026</span>
+              <a href="https://www.sigma-foto.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su SIGMA</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Scrivo per gli Altri (Vanguard World) -->
+        <div class="blog-card">
+          <div class="blog-img-wrapper">
+            <img src="../assets/gear_vanguard_active53.png" style="object-fit: contain; background: #0B1929;" alt="Vanguard Backpack Guide" />
+            <span class="badge-blog-type external">Scrivo per gli Altri</span>
+          </div>
+          <div class="blog-body">
+            <div class="publisher-tag">🎒 VANGUARD WORLD</div>
+            <h3 class="blog-title">Guida alla Scelta dello Zaino Fotografico per Trekking e Bivacco</h3>
+            <p class="blog-excerpt">Articolo guida su Vanguard World per bilanciare i carichi dello zaino VEO Active 53KG durante spedizioni e pernotti in quota.</p>
+            <div class="blog-meta">
+              <span>📅 10 Maggio 2026</span>
+              <a href="https://www.vanguardworld.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su Vanguard</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHI SONO ==================== -->
+  <section id="chi-sono" class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: flex-start;">
+        <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-glass); position: sticky; top: 6rem;">
+          <img src="../assets/hero_milky_way.png" alt="Davide Luongo fotografo" style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+
+        <div>
+          <div class="sub-title">La Mia Storia</div>
+          <h2 class="section-title">Davide Luongo</h2>
+
+          <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7;">
+            Mi chiamo Davide e sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino ai vent’anni. Fin da bambino ho avuto modo di avvicinarmi alla tecnologia grazie a mio padre, grande appassionato di innovazione e fotografia: la mia prima macchina fotografica, infatti, era la sua.
+          </p>
+
+          <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7;">
+            Durante gli anni universitari, nel 2016, ho riscoperto la fotografia come hobby grazie al mio coinquilino Franz. Insieme realizzammo uno dei miei primi scatti notturni a Boccadasse, un luogo che negli anni è diventato per me particolarmente significativo e che continuo a frequentare, quasi fosse un ritorno alle origini.
+          </p>
+
+          <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7;">
+            Nel 2017 mi sono trasferito a Padova per motivi di lavoro. Qui ho vissuto un periodo di solitudine che ha contribuito in modo decisivo alla maturazione della mia passione per la fotografia, diventata uno strumento di crescita personale e di espressione.
+          </p>
+
+          <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7;">
+            Nel tempo ho avuto l’opportunità di studiare con importanti figure del panorama fotografico nazionale e, grazie ai social network, di entrare in contatto con fotografi di rilievo internazionale. Da qualche tempo collaboro con brand fotografici di primo piano come <strong>SIGMA Lenses</strong>, <strong>Kase Filters</strong> e <strong>Vanguard</strong>.
+          </p>
+
+          <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1rem; line-height: 1.7;">
+            La fotografia rappresenta per me anche il punto d’incontro con la mia passione per l’outdoor, in particolare la montagna e i paesaggi del grande Nord. Attraverso l’obiettivo ho avuto modo di scoprire e apprezzare luoghi sorprendenti e lontani, come l’Australia e la Nuova Zelanda. Vivo la fotografia come un motore di esplorazione, sia di terre remote sia dei miei spazi interiori: lo stupore di fronte alla grandezza della natura è la principale fonte della mia ispirazione.
+          </p>
+
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <a href="#workshops" class="btn btn-primary">Iscriviti a un Workshop</a>
+            <span style="font-style: italic; color: var(--accent-cyan); font-size: 0.95rem; font-family: var(--font-heading); font-weight: 600;">"Hike – Shoot – Print – Repeat"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL FORM PRENOTAZIONE ==================== -->
+  <div id="reservation-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">&times;</button>
+      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Richiesta Informazioni & Prenotazione</h3>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Compila il modulo sottostante per riservare il tuo posto o chiedere maggiori informazioni.</p>
+
+      <form id="reservation-form">
+        <div class="form-group">
+          <label class="form-label" for="modal-subject">Oggetto / Evento</label>
+          <input type="text" id="modal-subject" class="form-input" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-name">Nome e Cognome *</label>
+          <input type="text" id="form-name" class="form-input" placeholder="Es. Mario Rossi" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-email">Indirizzo Email *</label>
+          <input type="email" id="form-email" class="form-input" placeholder="nome@esempio.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-message">Messaggio / Note</label>
+          <textarea id="form-message" class="form-textarea" rows="4" placeholder="Indica eventuali domande sulla logistica o attrezzatura..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Invia Richiesta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <img src="../assets/pittogramma.png" alt="Davide Luongo Pictogram" class="logo-img" />
+            <span>Davide Luongo</span>
+          </a>
+          <p>Landscape & Astrophotography. Workshop, viaggi fotografici e lezioni su misura per trasformare la tua visione in scatti d'arte.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigazione</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#workshops">Workshop 2026</a></li>
+            <li><a href="#corsi">Corsi One-to-One</a></li>
+            <li><a href="gear.html">Gear & Attrezzatura</a></li>
+            <li><a href="#behind-the-shot">Behind the Shot</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Partner Tecnologici</h4>
+          <ul class="footer-links">
+            <li><a href="#">SIGMA Italia</a></li>
+            <li><a href="#">Vanguard World</a></li>
+            <li><a href="#">RCE Foto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Social & Contatti</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/" target="_blank">Instagram (@davepics_91)</a></li>
+            <li><a href="https://www.youtube.com/" target="_blank">Canale YouTube</a></li>
+            <li><a href="mailto:info@davideluongo.it">info@davideluongo.it</a></li>
+            <li><a href="https://wa.me/393735096237" target="_blank" rel="noopener noreferrer">Tel / WhatsApp: +39 373 5096237</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Davide Luongo. P.IVA 03024030185. Tutti i diritti riservati.</div>
+        <div>Designed for High Performance & Conversion.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../main.js"></script>
+  <script src="blog.js"></script>
+</body>
+</html>
