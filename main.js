@@ -342,3 +342,141 @@ function setupReservationModal() {
     });
   }
 }
+
+/* ==========================================================================
+   Hero Auto-scrolling Review Slider & Promo Modals (Vanguard / RCE Foto)
+   ========================================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupHeroReviewSlider();
+  setupPromoModals();
+});
+
+function setupHeroReviewSlider() {
+  const slides = document.querySelectorAll('.hero-review-slide');
+  const dotsContainer = document.getElementById('hero-reviews-dots');
+  if (!slides.length || !dotsContainer) return;
+
+  let currentIndex = 0;
+  let intervalId = null;
+
+  // Create dots
+  dotsContainer.innerHTML = '';
+  slides.forEach((_, idx) => {
+    const dot = document.createElement('div');
+    dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+    dot.addEventListener('click', () => {
+      goToSlide(idx);
+      resetTimer();
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll('.dot');
+
+  function goToSlide(index) {
+    slides[currentIndex].classList.remove('active');
+    dots[currentIndex].classList.remove('active');
+
+    currentIndex = index;
+
+    slides[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+  }
+
+  function nextSlide() {
+    const nextIdx = (currentIndex + 1) % slides.length;
+    goToSlide(nextIdx);
+  }
+
+  function startTimer() {
+    intervalId = setInterval(nextSlide, 4000);
+  }
+
+  function resetTimer() {
+    if (intervalId) clearInterval(intervalId);
+    startTimer();
+  }
+
+  startTimer();
+}
+
+function setupPromoModals() {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.open-promo-modal');
+    if (!btn) return;
+    
+    e.preventDefault();
+    const promoType = btn.getAttribute('data-promo');
+    openPromoModal(promoType);
+  });
+}
+
+function openPromoModal(type) {
+  let modal = document.getElementById('promo-modal-overlay');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'promo-modal-overlay';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+
+  let title = '';
+  let code = '';
+  let desc = '';
+  let siteUrl = '';
+
+  if (type === 'vanguard') {
+    title = '🎒 Vanguard World Ambassador';
+    code = 'DAVIPRO2026';
+    desc = 'Risparmia il 20% su tutto il catalogo ufficiale Vanguard World (zaini, treppiedi e borse interne).';
+    siteUrl = 'https://www.vanguardworld.it/';
+  } else if (type === 'rce') {
+    title = '🛍️ RCE Foto Partner Ufficiale';
+    code = 'LUONGO5';
+    desc = 'Risparmia un ulteriore 5% sull\'acquisto di fotocamere, obiettivi ed attrezzatura usata garantita su RCE Foto.';
+    siteUrl = 'https://www.rcefoto.com/';
+  }
+
+  modal.innerHTML = `
+    <div class="modal-content" style="max-width: 520px; text-align: center; padding: 2.5rem 2rem;">
+      <button class="modal-close" onclick="closePromoModal()">&times;</button>
+      
+      <h3 style="font-size: 1.6rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">${title}</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">${desc}</p>
+      
+      <div style="background: rgba(0, 240, 255, 0.08); border: 2px dashed var(--accent-cyan); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+        <span style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #FFFFFF; letter-spacing: 2px;">${code}</span>
+        <button type="button" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="copyPromoCode('${code}')">📋 Copia Codice</button>
+      </div>
+
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="${siteUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%;">
+          Vai al Sito Ufficiale ↗
+        </a>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+}
+
+function closePromoModal() {
+  const modal = document.getElementById('promo-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
+
+function copyPromoCode(code) {
+  navigator.clipboard.writeText(code).then(() => {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      toast.className = 'toast';
+      document.body.appendChild(toast);
+    }
+    toast.innerText = `Codice ${code} copiato negli appunti!`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  });
+}

@@ -68,23 +68,95 @@
           <a href="#corsi" class="btn btn-secondary">Corsi One-to-One</a>
         </div>
 
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-number">5.0<span style="color: #FFB800;">★</span></div>
-            <div class="stat-label">Recensioni Google</div>
+        <!-- ==================== AUTO-SCROLLING GOOGLE REVIEWS CAROUSEL ==================== -->
+        <div class="hero-reviews-carousel" id="hero-reviews-slider">
+          <div class="reviews-slider-header">
+            <div class="slider-badge">
+              <span class="g-star">5.0 ★</span>
+              <span class="g-label">Recensioni Google Verificate</span>
+            </div>
+            <a href="https://share.google/cxLf6DH2ZKHvENaJ0" target="_blank" rel="noopener noreferrer" class="g-link">
+              Vedi tutte su Google ↗
+            </a>
           </div>
-          <div class="stat-item">
-            <div class="stat-number">15<span>+</span></div>
-            <div class="stat-label">Workshop Organizzati</div>
+
+          <div class="reviews-track-wrap">
+            <div class="reviews-track" id="hero-reviews-track">
+              
+              <!-- Review 1 -->
+              <div class="hero-review-slide active">
+                <div class="slide-author">
+                  <div class="slide-avatar">M</div>
+                  <div>
+                    <div class="slide-name">Marco Rossi <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Workshop Nivolet & Gran Paradiso</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Esperienza indimenticabile! Davide ha un'enorme pazienza e competenza sia per l'allineamento polare dell'astroinseguitore che per la composizione. Consigliatissimo a chiunque..."
+                </p>
+              </div>
+
+              <!-- Review 2 -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">E</div>
+                  <div>
+                    <div class="slide-name">Elena Guidi <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Mentorship 1-to-1 Astrofotografia</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Ho fatto la formazione 1-to-1 online per l'editing delle foto notturne. In sole 2 ore mi ha spiegato tecniche di stacking e blending che non avevo mai compreso..."
+                </p>
+              </div>
+
+              <!-- Review 3 -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">S</div>
+                  <div>
+                    <div class="slide-name">Stefano Belli <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Workshop Faggeta di Canfaito</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Organizzazione impeccabile nei minimi dettagli. Davide segue ciascun partecipante ad uno ad uno sul campo garantendo massima attenzione anche negli scatti più complessi..."
+                </p>
+              </div>
+
+              <!-- Review 4 -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">A</div>
+                  <div>
+                    <div class="slide-name">Andrea Paoli <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Photo Tour & Workshop Outdoor</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Davide non è soltanto un fotografo straordinario (SIGMA Ambassador), ma una persona squisita che condivide tutto il suo sapere senza riserve. La sua passione è contagiosa..."
+                </p>
+              </div>
+
+              <!-- Review 5 -->
+              <div class="hero-review-slide">
+                <div class="slide-author">
+                  <div class="slide-avatar">G</div>
+                  <div>
+                    <div class="slide-name">Giulia M. <span class="stars">★★★★★</span></div>
+                    <div class="slide-tag">Workshop Cascate dell'Appennino</div>
+                  </div>
+                </div>
+                <p class="slide-text">
+                  "Workshop straordinario. Imparare a leggere la luce con le spiegazioni di Davide sul campo ha trasformato completamente il mio modo di scattare..."
+                </p>
+              </div>
+
+            </div>
           </div>
-          <div class="stat-item">
-            <div class="stat-number">SIGMA<span></span></div>
-            <div class="stat-label">Official Ambassador</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">100<span>%</span></div>
-            <div class="stat-label">Assistenza sul Campo</div>
-          </div>
+          
+          <div class="reviews-slider-dots" id="hero-reviews-dots"></div>
         </div>
       </div>
     </div>
@@ -94,11 +166,11 @@
   <div class="partner-ticker">
     <div class="container">
       <div class="partner-grid">
-        <div class="partner-item">📷 SIGMA Italia</div>
-        <div class="partner-item">🎒 Vanguard World</div>
-        <div class="partner-item">🔍 Kase Filters</div>
-        <div class="partner-item">🛍️ RCE Foto</div>
-        <div class="partner-item">🌌 Star Adventurer</div>
+        <a href="https://blog.sigma-foto.it/" target="_blank" rel="noopener noreferrer" class="partner-item-link">📷 SIGMA Italia Ambassador ↗</a>
+        <button type="button" class="partner-item-btn open-promo-modal" data-promo="vanguard">🎒 Vanguard Ambassador (Codice Sconto)</button>
+        <button type="button" class="partner-item-btn open-promo-modal" data-promo="rce">🛍️ RCE Foto Partner (Codice Sconto)</button>
+        <a href="gear/gear.html" class="partner-item-link">🔍 Kase Filters</a>
+        <a href="gear/gear.html" class="partner-item-link">🌌 Move Shoot Move</a>
       </div>
     </div>
   </div>
