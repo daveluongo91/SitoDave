@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — Davide Luongo CMS</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- Skip navigation link (accessibilità) -->
+  <a href="#main-content" class="skip-link">Vai al contenuto principale</a>
+
+  <!-- Sidebar navigazione -->
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Navigazione principale admin">
+    <div class="sidebar-header">
+      <div class="sidebar-logo" aria-hidden="true">📷</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-title">CMS Admin</span>
+        <span class="sidebar-subtitle">Davide Luongo</span>
+      </div>
+    </div>
+
+    <ul class="nav-list" role="list">
+      <li><a href="#dashboard" class="nav-item active" data-section="dashboard" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">📊</span> Dashboard
+      </a></li>
+      <li><a href="#pages" class="nav-item" data-section="pages">
+        <span class="nav-icon" aria-hidden="true">📄</span> Pagine
+      </a></li>
+      <li><a href="#media" class="nav-item" data-section="media">
+        <span class="nav-icon" aria-hidden="true">🖼️</span> Media
+      </a></li>
+      <li><a href="#workshops" class="nav-item" data-section="workshops">
+        <span class="nav-icon" aria-hidden="true">🏕️</span> Workshop
+      </a></li>
+      <li><a href="#participants" class="nav-item" data-section="participants">
+        <span class="nav-icon" aria-hidden="true">👥</span> Partecipanti
+      </a></li>
+      <li><a href="#coupons" class="nav-item" data-section="coupons">
+        <span class="nav-icon" aria-hidden="true">🎟️</span> Coupon
+      </a></li>
+      <li><a href="#costs" class="nav-item" data-section="costs">
+        <span class="nav-icon" aria-hidden="true">💰</span> Costi
+      </a></li>
+      <li><a href="#reports" class="nav-item" data-section="reports">
+        <span class="nav-icon" aria-hidden="true">📈</span> Report
+      </a></li>
+      <li><a href="#logs" class="nav-item" data-section="logs">
+        <span class="nav-icon" aria-hidden="true">📋</span> Log Audit
+      </a></li>
+      <li><a href="#settings" class="nav-item" data-section="settings">
+        <span class="nav-icon" aria-hidden="true">⚙️</span> Configurazione
+      </a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-info" id="userInfo" aria-live="polite">
+        <span class="user-avatar" aria-hidden="true">👤</span>
+        <div>
+          <div class="user-name" id="userName">Caricamento...</div>
+          <div class="user-role" id="userRole"></div>
+        </div>
+      </div>
+      <button class="btn-logout" id="logoutBtn" aria-label="Disconnetti">
+        <span aria-hidden="true">🚪</span> Esci
+      </button>
+    </div>
+  </nav>
+
+  <!-- Contenuto principale -->
+  <div class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar" role="banner">
+      <button class="menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false" aria-controls="sidebar">
+        ☰
+      </button>
+      <h1 class="topbar-title" id="pageTitle">Dashboard</h1>
+      <div class="topbar-actions">
+        <div class="notifications" aria-live="polite" id="notificationArea"></div>
+        <button class="btn-icon" id="refreshBtn" aria-label="Aggiorna dati" title="Aggiorna">🔄</button>
+      </div>
+    </header>
+
+    <!-- Area messaggi globale (loading, success, error) -->
+    <div id="globalMessage" class="global-message" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+    <main id="main-content" class="content-area" tabindex="-1">
+
+      <!-- ── DASHBOARD ────────────────────────────────────────────────── -->
+      <section id="section-dashboard" class="section active" aria-label="Dashboard">
+        <div class="section-header">
+          <h2>Panoramica</h2>
+          <p class="section-desc">Stato del sito e metriche principali</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <!-- Popolato da JS -->
+          <div class="stat-card skeleton" aria-busy="true"></div>
+          <div class="stat-card skeleton" aria-busy="true"></div>
+          <div class="stat-card skeleton" aria-busy="true"></div>
+          <div class="stat-card skeleton" aria-busy="true"></div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <h3 class="dash-card-title">🔔 Prossimi Cutoff</h3>
+            <div id="upcomingCutoffs" aria-live="polite">Caricamento...</div>
+          </div>
+          <div class="dash-card">
+            <h3 class="dash-card-title">📊 Partecipanti per Workshop</h3>
+            <div id="participantsByWorkshop" aria-live="polite">Caricamento...</div>
+          </div>
+          <div class="dash-card">
+            <h3 class="dash-card-title">🎟️ Coupon Attivi</h3>
+            <div id="activeCoupons" aria-live="polite">Caricamento...</div>
+          </div>
+          <div class="dash-card">
+            <h3 class="dash-card-title">📋 Contenuti in Bozza</h3>
+            <div id="draftPages" aria-live="polite">Caricamento...</div>
+          </div>
+          <div class="dash-card">
+            <h3 class="dash-card-title">📈 Report Disponibili</h3>
+            <div id="availableReports" aria-live="polite">Caricamento...</div>
+          </div>
+          <div class="dash-card">
+            <h3 class="dash-card-title">⚠️ Errori Job</h3>
+            <div id="jobErrors" aria-live="polite">Nessun errore</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── WORKSHOP ─────────────────────────────────────────────────── -->
+      <section id="section-workshops" class="section" aria-label="Gestione Workshop" hidden>
+        <div class="section-header">
+          <h2>Workshop</h2>
+          <button class="btn-primary" id="newWorkshopBtn" aria-label="Crea nuovo workshop">
+            + Nuovo Workshop
+          </button>
+        </div>
+        <div id="workshopsList" class="cards-list" aria-live="polite">Caricamento...</div>
+
+        <!-- Modal Workshop -->
+        <dialog id="workshopModal" class="modal" aria-modal="true" aria-labelledby="workshopModalTitle">
+          <div class="modal-header">
+            <h3 id="workshopModalTitle">Workshop</h3>
+            <button class="modal-close" aria-label="Chiudi" onclick="document.getElementById('workshopModal').close()">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="workshopForm" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="ws-title">Titolo *</label>
+                  <input type="text" id="ws-title" required aria-required="true">
+                </div>
+                <div class="form-group">
+                  <label for="ws-key">Workshop Key *</label>
+                  <input type="text" id="ws-key" required aria-required="true" pattern="[a-z0-9\-]+" placeholder="es. friuli-2026">
+                </div>
+                <div class="form-group">
+                  <label for="ws-startDate">Data Inizio</label>
+                  <input type="date" id="ws-startDate">
+                </div>
+                <div class="form-group">
+                  <label for="ws-endDate">Data Fine</label>
+                  <input type="date" id="ws-endDate">
+                </div>
+                <div class="form-group">
+                  <label for="ws-price">Prezzo (centesimi) *</label>
+                  <input type="number" id="ws-price" min="0" required aria-required="true" aria-describedby="ws-price-hint">
+                  <span id="ws-price-hint" class="field-hint">Es: 35000 = €350,00</span>
+                </div>
+                <div class="form-group">
+                  <label for="ws-seats">Posti Totali</label>
+                  <input type="number" id="ws-seats" min="1" value="8">
+                </div>
+                <div class="form-group">
+                  <label for="ws-cutoff">Data/Ora Cutoff</label>
+                  <input type="datetime-local" id="ws-cutoff">
+                </div>
+                <div class="form-group">
+                  <label for="ws-status">Stato</label>
+                  <select id="ws-status">
+                    <option value="draft">Bozza</option>
+                    <option value="active" selected>Attivo</option>
+                    <option value="soldout">Sold Out</option>
+                    <option value="cancelled">Annullato</option>
+                    <option value="completed">Completato</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label for="ws-location">Location</label>
+                  <input type="text" id="ws-location">
+                </div>
+                <div class="form-group full">
+                  <label for="ws-description">Descrizione</label>
+                  <textarea id="ws-description" rows="3"></textarea>
+                </div>
+                <div class="form-group full">
+                  <label for="ws-notes">Note operative (solo admin)</label>
+                  <textarea id="ws-notes" rows="2"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" onclick="document.getElementById('workshopModal').close()">Annulla</button>
+            <button class="btn-primary" id="saveWorkshopBtn">Salva</button>
+          </div>
+        </dialog>
+      </section>
+
+      <!-- ── PARTECIPANTI ─────────────────────────────────────────────── -->
+      <section id="section-participants" class="section" aria-label="Gestione Partecipanti" hidden>
+        <div class="section-header">
+          <h2>Partecipanti</h2>
+          <div class="filters-row">
+            <label for="participantWorkshopFilter" class="sr-only">Filtra per workshop</label>
+            <select id="participantWorkshopFilter" aria-label="Filtra per workshop">
+              <option value="">Tutti i workshop</option>
+            </select>
+            <label for="participantStatusFilter" class="sr-only">Filtra per stato</label>
+            <select id="participantStatusFilter" aria-label="Filtra per stato">
+              <option value="">Tutti gli stati</option>
+              <option value="paid">Pagato</option>
+              <option value="pending">In attesa</option>
+              <option value="cancelled">Annullato</option>
+            </select>
+            <button class="btn-secondary" id="exportParticipantsBtn">📥 Esporta XLSX</button>
+          </div>
+        </div>
+        <div class="table-wrapper" role="region" aria-label="Lista partecipanti" tabindex="0">
+          <table id="participantsTable" class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Workshop</th>
+                <th scope="col">Formula</th>
+                <th scope="col">Importo</th>
+                <th scope="col">Stato</th>
+                <th scope="col">Saldo</th>
+                <th scope="col">Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="participantsBody" aria-live="polite">
+              <tr><td colspan="9" class="table-empty">Caricamento...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── COUPON ───────────────────────────────────────────────────── -->
+      <section id="section-coupons" class="section" aria-label="Gestione Coupon" hidden>
+        <div class="section-header">
+          <h2>Codici Sconto</h2>
+          <button class="btn-primary" id="newCouponBtn">+ Nuovo Coupon</button>
+        </div>
+        <div id="couponsList" class="cards-list" aria-live="polite">Caricamento...</div>
+
+        <dialog id="couponModal" class="modal" aria-modal="true" aria-labelledby="couponModalTitle">
+          <div class="modal-header">
+            <h3 id="couponModalTitle">Coupon</h3>
+            <button class="modal-close" aria-label="Chiudi" onclick="document.getElementById('couponModal').close()">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="couponForm" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="cp-code">Codice *</label>
+                  <input type="text" id="cp-code" required aria-required="true" placeholder="ES. DAVEPRO10">
+                </div>
+                <div class="form-group">
+                  <label for="cp-type">Tipo *</label>
+                  <select id="cp-type" required aria-required="true" aria-describedby="cp-type-hint">
+                    <option value="percentage">Percentuale (%)</option>
+                    <option value="final_price">Prezzo Finale (€)</option>
+                  </select>
+                  <span id="cp-type-hint" class="field-hint" aria-live="polite">
+                    Percentuale: sconto dal prezzo originale. Prezzo Finale: prezzo fisso da applicare.
+                  </span>
+                </div>
+                <div class="form-group">
+                  <label for="cp-value" id="cp-value-label">Valore *</label>
+                  <input type="text" id="cp-value" required aria-required="true" aria-labelledby="cp-value-label" aria-describedby="cp-value-preview">
+                  <span id="cp-value-preview" class="field-hint" aria-live="polite"></span>
+                </div>
+                <div class="form-group">
+                  <label for="cp-maxUses">Limite utilizzi globale</label>
+                  <input type="number" id="cp-maxUses" min="1" placeholder="Nessun limite">
+                </div>
+                <div class="form-group">
+                  <label for="cp-startDate">Data inizio</label>
+                  <input type="date" id="cp-startDate">
+                </div>
+                <div class="form-group">
+                  <label for="cp-endDate">Data fine</label>
+                  <input type="date" id="cp-endDate">
+                </div>
+                <div class="form-group full">
+                  <label for="cp-desc">Descrizione amministrativa</label>
+                  <input type="text" id="cp-desc" placeholder="Note interne, non visibili al pubblico">
+                </div>
+              </div>
+
+              <!-- Anteprima calcolo -->
+              <div class="preview-box" id="couponPreview" aria-live="polite">
+                <strong>Anteprima calcolo:</strong>
+                <div id="couponPreviewContent">Inserisci tipo e valore per vedere l'anteprima.</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" onclick="document.getElementById('couponModal').close()">Annulla</button>
+            <button class="btn-primary" id="saveCouponBtn">Salva</button>
+          </div>
+        </dialog>
+      </section>
+
+      <!-- ── COSTI ────────────────────────────────────────────────────── -->
+      <section id="section-costs" class="section" aria-label="Gestione Costi Workshop" hidden>
+        <div class="section-header">
+          <h2>Costi Workshop</h2>
+          <label for="costsWorkshopSelect" class="sr-only">Seleziona workshop</label>
+          <select id="costsWorkshopSelect" aria-label="Workshop per costi">
+            <option value="">Seleziona un workshop...</option>
+          </select>
+        </div>
+
+        <div id="costsPanel" hidden>
+          <div class="costs-grid">
+            <div class="cost-section">
+              <h3>🏨 Pernottamento</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="cost-nights">Notti</label>
+                  <input type="number" id="cost-nights" min="0" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-nightRate">Costo per notte (€)</label>
+                  <input type="text" id="cost-nightRate" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-rooms">Camere/Persone</label>
+                  <input type="number" id="cost-rooms" min="1" value="1">
+                </div>
+                <div class="form-group">
+                  <label>Totale pernottamento</label>
+                  <div class="calc-result" id="totalAccomm" aria-live="polite">€ 0,00</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cost-section">
+              <h3>🚗 Viaggio</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="cost-departure">Partenza</label>
+                  <input type="text" id="cost-departure" placeholder="Es. Milano">
+                </div>
+                <div class="form-group">
+                  <label for="cost-destination">Destinazione</label>
+                  <input type="text" id="cost-destination" placeholder="Es. Friuli">
+                </div>
+                <div class="form-group full">
+                  <label for="cost-viamichelin">Link ViaMichelin</label>
+                  <div class="input-with-btn">
+                    <input type="url" id="cost-viamichelin" placeholder="https://www.viamichelin.it/...">
+                    <button type="button" class="btn-secondary" id="openViaMichelinBtn" aria-label="Apri su ViaMichelin">
+                      🗺️ Apri
+                    </button>
+                  </div>
+                  <span class="field-hint">Incolla il link ViaMichelin. Inserisci manualmente carburante e pedaggi sotto.</span>
+                </div>
+                <div class="form-group">
+                  <label for="cost-fuel">Carburante (€)</label>
+                  <input type="text" id="cost-fuel" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-tolls">Pedaggi (€)</label>
+                  <input type="text" id="cost-tolls" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-parking">Parcheggi (€)</label>
+                  <input type="text" id="cost-parking" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-ferries">Traghetti (€)</label>
+                  <input type="text" id="cost-ferries" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-otherTravel">Altre spese viaggio (€)</label>
+                  <input type="text" id="cost-otherTravel" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="cost-verifiedAt">Data verifica stima</label>
+                  <input type="date" id="cost-verifiedAt">
+                </div>
+              </div>
+            </div>
+
+            <div class="cost-section">
+              <h3>📦 Altre spese</h3>
+              <div class="form-group">
+                <label for="cost-otherOrg">Altre spese organizzative (€)</label>
+                <input type="text" id="cost-otherOrg" value="0">
+              </div>
+              <div class="form-group">
+                <label for="cost-notes">Note</label>
+                <textarea id="cost-notes" rows="3"></textarea>
+              </div>
+            </div>
+
+            <div class="cost-section cost-summary">
+              <h3>💹 Riepilogo</h3>
+              <div class="summary-grid">
+                <span>Totale pernottamento</span> <span id="sum-accomm">€ 0,00</span>
+                <span>Totale viaggio</span>        <span id="sum-travel">€ 0,00</span>
+                <span>Altre spese</span>            <span id="sum-other">€ 0,00</span>
+                <span class="sum-total">Totale costi</span> <span class="sum-total" id="sum-total">€ 0,00</span>
+                <span>Costo per partecipante</span> <span id="sum-cpp">€ 0,00</span>
+                <span>Margine stimato</span>         <span id="sum-margin" aria-live="polite">€ 0,00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-actions">
+            <button class="btn-primary" id="saveCostsBtn">💾 Salva Costi</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── REPORT ───────────────────────────────────────────────────── -->
+      <section id="section-reports" class="section" aria-label="Report e Cutoff" hidden>
+        <div class="section-header">
+          <h2>Report & Cutoff</h2>
+          <div class="filters-row">
+            <select id="reportWorkshopFilter" aria-label="Filtra report per workshop">
+              <option value="">Tutti i workshop</option>
+            </select>
+            <button class="btn-primary" id="generateReportBtn">📊 Genera Report</button>
+          </div>
+        </div>
+        <div id="reportsList" aria-live="polite">Caricamento...</div>
+      </section>
+
+      <!-- ── LOG AUDIT ────────────────────────────────────────────────── -->
+      <section id="section-logs" class="section" aria-label="Log Audit" hidden>
+        <div class="section-header">
+          <h2>Audit Log</h2>
+          <input type="search" id="logSearch" placeholder="Cerca azione..." aria-label="Cerca nel log">
+        </div>
+        <div class="table-wrapper" role="region" aria-label="Log audit" tabindex="0">
+          <table class="data-table" id="logsTable">
+            <thead>
+              <tr>
+                <th scope="col">Timestamp</th>
+                <th scope="col">Utente</th>
+                <th scope="col">Azione</th>
+                <th scope="col">Risorsa</th>
+                <th scope="col">IP</th>
+              </tr>
+            </thead>
+            <tbody id="logsBody" aria-live="polite">
+              <tr><td colspan="5" class="table-empty">Caricamento...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── MEDIA ────────────────────────────────────────────────────── -->
+      <section id="section-media" class="section" aria-label="Libreria Media" hidden>
+        <div class="section-header">
+          <h2>Libreria Media</h2>
+          <div class="filters-row">
+            <input type="search" id="mediaSearch" placeholder="Cerca..." aria-label="Cerca media">
+            <label class="upload-drop-label btn-secondary" for="mediaUploadInput" tabindex="0"
+                   role="button" aria-label="Carica immagine">
+              📤 Carica Immagine
+              <input type="file" id="mediaUploadInput" accept="image/*" class="sr-only" aria-hidden="true">
+            </label>
+          </div>
+        </div>
+        <div id="uploadProgress" hidden aria-live="assertive">
+          <div class="progress-bar" role="progressbar" aria-label="Upload in corso">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p id="uploadStatus"></p>
+        </div>
+        <div id="mediaGrid" class="media-grid" aria-live="polite">Caricamento...</div>
+      </section>
+
+      <!-- ── CONFIGURAZIONE ──────────────────────────────────────────── -->
+      <section id="section-settings" class="section" aria-label="Configurazione" hidden>
+        <div class="section-header">
+          <h2>Configurazione</h2>
+        </div>
+        <div class="settings-grid">
+          <div class="dash-card">
+            <h3>🔐 Cambio Password</h3>
+            <form id="changePasswordForm" novalidate>
+              <div class="form-group">
+                <label for="curr-pass">Password corrente</label>
+                <input type="password" id="curr-pass" autocomplete="current-password">
+              </div>
+              <div class="form-group">
+                <label for="new-pass">Nuova password (min. 12 caratteri)</label>
+                <input type="password" id="new-pass" autocomplete="new-password" minlength="12"
+                       aria-describedby="pass-strength">
+                <span id="pass-strength" class="field-hint" aria-live="polite"></span>
+              </div>
+              <button type="submit" class="btn-primary">Aggiorna Password</button>
+            </form>
+          </div>
+          <div class="dash-card">
+            <h3>📧 SMTP Status</h3>
+            <p class="text-muted">Configura ARUBA_SMTP_PASS nel file .env per abilitare l'invio email.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Dialog di conferma distruttiva -->
+  <dialog id="confirmDialog" class="modal confirm-modal" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-header">
+      <h3 id="confirmTitle">Conferma Operazione</h3>
+    </div>
+    <div class="modal-body">
+      <p id="confirmMessage"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="confirmCancel">Annulla</button>
+      <button class="btn-danger" id="confirmOk">Conferma</button>
+    </div>
+  </dialog>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

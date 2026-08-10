@@ -52,7 +52,8 @@ function selectPageNode(pageId) {
     'page-casentinesi': '🌲 Workshop Foreste Casentinesi 2026 (workshops_2026/foreste-casentinesi-2026.html)',
     'page-gear': '📷 Pagina Gear & Attrezzatura (gear/gear.html)',
     'page-blog': '📰 Pagina Blog & Pubblicazioni (blog/blog.html)',
-    'page-participants': '📊 Lista Partecipanti & Export Report Excel'
+    'page-participants': '📊 Lista Partecipanti & Export Report Excel',
+    'page-coupons': '🎟️ Gestione & Generatore Codici Sconto'
   };
 
   const titleEl = document.getElementById('active-page-title');
@@ -78,57 +79,203 @@ function renderActivePageEditor() {
   const panelHome = document.getElementById('panel-page-home');
   const panelGeneric = document.getElementById('panel-page-generic');
   const panelParticipants = document.getElementById('panel-page-participants');
+  const panelCoupons = document.getElementById('panel-page-coupons');
 
   if (activePage === 'page-home') {
     if (panelHome) panelHome.style.display = 'block';
     if (panelGeneric) panelGeneric.style.display = 'none';
     if (panelParticipants) panelParticipants.style.display = 'none';
+    if (panelCoupons) panelCoupons.style.display = 'none';
     renderHomeEditor();
   } else if (activePage === 'page-participants') {
     if (panelHome) panelHome.style.display = 'none';
     if (panelGeneric) panelGeneric.style.display = 'none';
     if (panelParticipants) panelParticipants.style.display = 'block';
+    if (panelCoupons) panelCoupons.style.display = 'none';
     renderParticipantsEditor();
+  } else if (activePage === 'page-coupons') {
+    if (panelHome) panelHome.style.display = 'none';
+    if (panelGeneric) panelGeneric.style.display = 'none';
+    if (panelParticipants) panelParticipants.style.display = 'none';
+    if (panelCoupons) panelCoupons.style.display = 'block';
+    renderCouponsEditor();
   } else {
     if (panelHome) panelHome.style.display = 'none';
     if (panelGeneric) panelGeneric.style.display = 'block';
     if (panelParticipants) panelParticipants.style.display = 'none';
+    if (panelCoupons) panelCoupons.style.display = 'none';
     renderGenericPageEditor(activePage);
   }
 }
 
 // Render Participants Table
 function renderParticipantsEditor() {
-  fetch('/api/participants')
+  // Load from new bookings API (falls back to old participants if empty)
+  const panel = document.getElementById('panel-page-participants');
+  if (!panel) return;
+
+  // Show header with export button
+  const header = panel.querySelector('#bookings-list-header');
+  if (!header) {
+    const h = document.createElement('div');
+    h.id = 'bookings-list-header';
+    h.style.cssText = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;';
+    h.innerHTML = `
+      <h3 style="color:var(--accent-cyan); margin:0;">📋 Prenotazioni & Pagamenti</h3>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button onclick="downloadBookingsCsv()" class="btn btn-secondary" style="font-size:0.8rem; padding:0.4rem 0.8rem;">
+          📥 Esporta CSV
+        </button>
+        <button onclick="renderParticipantsEditor()" class="btn btn-secondary" style="font-size:0.8rem; padding:0.4rem 0.8rem;">
+          🔄 Aggiorna
+        </button>
+      </div>
+    `;
+    panel.insertBefore(h, panel.firstChild);
+  }
+
+  fetch('/api/bookings')
     .then(res => res.json())
-    .then(participants => {
+    .then(bookings => {
       const tbody = document.getElementById('participants-table-body');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      if (!participants || participants.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="padding: 1.5rem; text-align: center; color: var(--text-muted);">Nessuna prenotazione registrata al momento.</td></tr>';
+      if (!bookings || bookings.length === 0) {
+        // Fallback: try legacy /api/participants
+        fetch('/api/participants')
+          .then(r => r.json())
+          .then(parts => {
+            if (!parts || parts.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="10" style="padding:1.5rem; text-align:center; color:var(--text-muted);">Nessuna prenotazione registrata.</td></tr>';
+            } else {
+              renderLegacyParticipants(parts, tbody);
+            }
+          });
         return;
       }
 
-      participants.forEach(p => {
+      // Status badge helper
+      function statusBadge(status) {
+        const map = {
+          paid:               ['#4ade80', '✅ Pagato'],
+          pending:            ['#facc15', '⏳ In Attesa'],
+          approved:           ['#60a5fa', '👍 Approvato'],
+          failed:             ['#f87171', '❌ Fallito'],
+          cancelled:          ['#9ca3af', '🚫 Annullato'],
+          refunded:           ['#a78bfa', '↩️ Rimborsato'],
+          partially_refunded: ['#f59e0b', '↩️ Rim. Parziale'],
+          already_paid:       ['#4ade80', '✅ Pagato'],
+        };
+        const [color, label] = map[status] || ['#9ca3af', status];
+        return `<span style="color:${color}; font-size:0.8rem; font-weight:700;">${label}</span>`;
+      }
+
+      bookings.forEach(b => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+        const finalEur = (b.finalCents || 35000) / 100;
+        const balEur   = (b.balanceCents || 30000) / 100;
+        const dueEur   = (b.amountDueCents || 5000) / 100;
+        const formulaLabel = b.formula === 'caparra' ? '💳 Caparra €50' : '💰 Saldo Completo';
+        const couponTag    = b.couponCode ? `<span style="color:#4ade80; font-size:0.75rem;">🏷️ ${b.couponCode}</span>` : '—';
+        const balanceBadge = b.formula === 'caparra'
+          ? (b.balancePaid
+              ? `<span style="color:#4ade80; font-size:0.75rem;">✅ Saldo pagato (${b.balancePaidMethod})</span>`
+              : `<button onclick="adminMarkBalancePaid('${b.id}')"
+                         style="font-size:0.72rem; padding:0.25rem 0.5rem; background:transparent; border:1px solid #facc15;
+                                color:#facc15; border-radius:4px; cursor:pointer; white-space:nowrap;">
+                   Segna Saldo Pagato
+                 </button>`)
+          : '<span style="color:var(--text-muted); font-size:0.75rem;">—</span>';
+
         tr.innerHTML = `
-          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-cyan);">${p.id}</td>
-          <td style="padding: 0.75rem; color: var(--text-muted);">${p.bookingDate}</td>
-          <td style="padding: 0.75rem;">${p.workshop}</td>
-          <td style="padding: 0.75rem; font-weight: 700;">${p.firstName} ${p.lastName}</td>
-          <td style="padding: 0.75rem; color: var(--text-secondary);">${p.email}</td>
-          <td style="padding: 0.75rem;"><a href="https://wa.me/${p.phone.replace(/[^0-9]/g, '')}" target="_blank" style="color: #25D366; text-decoration: underline;">💬 ${p.phone}</a></td>
-          <td style="padding: 0.75rem;"><span style="color: var(--accent-purple);">${p.paymentFormula}</span></td>
-          <td style="padding: 0.75rem; font-weight: 700; color: var(--accent-emerald);">${p.amountPaid}</td>
+          <td style="padding:0.65rem; font-weight:700; color:var(--accent-cyan); font-size:0.8rem;">${b.id}</td>
+          <td style="padding:0.65rem; color:var(--text-muted); font-size:0.75rem;">${(b.createdAt || '').slice(0,16).replace('T',' ')}</td>
+          <td style="padding:0.65rem;">${statusBadge(b.status)}</td>
+          <td style="padding:0.65rem; font-weight:700;">${b.firstName} ${b.lastName}</td>
+          <td style="padding:0.65rem; color:var(--text-secondary); font-size:0.8rem;">${b.email}<br>
+            <a href="https://wa.me/${(b.phone||'').replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366; font-size:0.75rem;">💬 ${b.phone}</a>
+          </td>
+          <td style="padding:0.65rem; font-size:0.8rem;">${formulaLabel}<br>${couponTag}</td>
+          <td style="padding:0.65rem; font-size:0.8rem;">
+            Finale: <strong>€${finalEur.toFixed(2)}</strong><br>
+            Pagato: <strong style="color:var(--accent-cyan);">€${dueEur.toFixed(2)}</strong><br>
+            ${b.formula === 'caparra' ? `In loco: €${balEur.toFixed(2)}` : ''}
+          </td>
+          <td style="padding:0.65rem; font-size:0.75rem;">${balanceBadge}</td>
+          <td style="padding:0.65rem; font-size:0.7rem; color:var(--text-muted);">
+            ${b.paypalOrderId ? b.paypalOrderId.slice(0,12)+'…' : '—'}<br>
+            ${b.paypalCaptureId ? b.paypalCaptureId.slice(0,12)+'…' : ''}
+          </td>
         `;
         tbody.appendChild(tr);
       });
+
+      // Update table headers if not already done
+      const thead = tbody.closest('table')?.querySelector('thead tr');
+      if (thead && thead.children.length < 9) {
+        thead.innerHTML = `
+          <th style="padding:0.75rem; text-align:left;">ID</th>
+          <th style="padding:0.75rem; text-align:left;">Data</th>
+          <th style="padding:0.75rem; text-align:left;">Stato</th>
+          <th style="padding:0.75rem; text-align:left;">Nome</th>
+          <th style="padding:0.75rem; text-align:left;">Contatti</th>
+          <th style="padding:0.75rem; text-align:left;">Formula</th>
+          <th style="padding:0.75rem; text-align:left;">Importi</th>
+          <th style="padding:0.75rem; text-align:left;">Saldo</th>
+          <th style="padding:0.75rem; text-align:left;">PayPal IDs</th>
+        `;
+      }
     })
-    .catch(err => console.error('Fetch participants error:', err));
+    .catch(err => console.error('Fetch bookings error:', err));
 }
+
+function renderLegacyParticipants(parts, tbody) {
+  parts.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+    tr.innerHTML = `
+      <td style="padding:0.75rem; font-weight:700; color:var(--accent-cyan);">${p.id}</td>
+      <td style="padding:0.75rem; color:var(--text-muted);">${p.bookingDate}</td>
+      <td>—</td>
+      <td style="padding:0.75rem; font-weight:700;">${p.firstName} ${p.lastName}</td>
+      <td style="padding:0.75rem; color:var(--text-secondary);">${p.email}</td>
+      <td><a href="https://wa.me/${(p.phone||'').replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366;">💬 ${p.phone}</a></td>
+      <td style="padding:0.75rem;">${p.paymentFormula}</td>
+      <td style="padding:0.75rem; font-weight:700; color:var(--accent-emerald);">${p.amountPaid}</td>
+      <td>—</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function adminMarkBalancePaid(bookingId) {
+  const method = prompt('Metodo pagamento saldo (contanti / bonifico / paypal):', 'contanti');
+  if (!method) return;
+  try {
+    const res = await fetch('/api/mark-balance-paid', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookingId, method }),
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      showToast('✅ Saldo segnato come pagato!');
+      renderParticipantsEditor();
+    } else {
+      alert('Errore: ' + data.message);
+    }
+  } catch (e) {
+    alert('Errore di rete: ' + e.message);
+  }
+}
+
+function downloadBookingsCsv() {
+  window.open('/api/download-excel', '_blank');
+}
+
+
 
 function sendExcelEmail() {
   showToast('✉️ Invio report Excel in corso a info@davideluongo.com...');
@@ -656,4 +803,113 @@ function showToast(msg) {
   setTimeout(() => {
     toast.style.display = 'none';
   }, 3500);
+}
+
+// ----------------------------------------------------
+// GESTORE CODICI SCONTO (COUPONS)
+// ----------------------------------------------------
+let adminCoupons = [];
+
+function renderCouponsEditor() {
+  const container = document.getElementById('admin-coupons-container');
+  if (!container) return;
+
+  adminCoupons = globalData.coupons || [];
+  container.innerHTML = '';
+
+  if (adminCoupons.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Nessun codice sconto presente. Clicca su "+ Nuovo Codice Sconto" per crearne uno.</p>';
+    return;
+  }
+
+  adminCoupons.forEach((c, idx) => {
+    const card = document.createElement('div');
+    card.className = 'entity-card';
+    card.style.marginBottom = '1.25rem';
+    card.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.1rem; color: var(--accent-cyan); font-family: var(--font-heading); font-weight: 800; letter-spacing: 1px;">🎟️ ${c.code || 'NUOVO_CODICE'}</h3>
+        <button class="delete-btn" onclick="deleteCoupon(${idx})">🗑️ Elimina</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Codice Sconto (es. DAVEPRO10)</label>
+          <input type="text" class="form-input coupon-code-input" data-idx="${idx}" value="${c.code || ''}" style="text-transform: uppercase; font-family: var(--font-heading); font-weight: 700;" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tipologia Sconto</label>
+          <select class="form-input coupon-type-input" data-idx="${idx}">
+            <option value="percentage" ${c.type === 'percentage' ? 'selected' : ''}>Sconto Percentuale (%)</option>
+            <option value="fixed_price" ${c.type === 'fixed_price' ? 'selected' : ''}>Prezzo Finale Fisso (€)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Valore Sconto (es. 15 per -15% oppure 300 per €300 fisso)</label>
+          <input type="number" class="form-input coupon-value-input" data-idx="${idx}" value="${c.value || 0}" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Stato Codice</label>
+          <select class="form-input coupon-active-input" data-idx="${idx}">
+            <option value="true" ${c.active !== false ? 'selected' : ''}>Attivo</option>
+            <option value="false" ${c.active === false ? 'selected' : ''}>Disattivato</option>
+          </select>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function addNewCoupon() {
+  if (!globalData.coupons) globalData.coupons = [];
+  const newCode = `PROMO${Math.floor(Math.random()*1000)}`;
+  globalData.coupons.push({
+    id: `CP-${Date.now()}`,
+    code: newCode,
+    type: 'percentage',
+    value: 10,
+    active: true
+  });
+  renderCouponsEditor();
+}
+
+function deleteCoupon(idx) {
+  if (confirm('Sei sicuro di voler eliminare questo codice sconto?')) {
+    globalData.coupons.splice(idx, 1);
+    renderCouponsEditor();
+  }
+}
+
+function saveCouponsFromAdmin() {
+  const codes = document.querySelectorAll('.coupon-code-input');
+  const types = document.querySelectorAll('.coupon-type-input');
+  const values = document.querySelectorAll('.coupon-value-input');
+  const actives = document.querySelectorAll('.coupon-active-input');
+
+  const updatedCoupons = [];
+  codes.forEach((input, idx) => {
+    updatedCoupons.push({
+      id: globalData.coupons[idx] ? globalData.coupons[idx].id : `CP-${idx}`,
+      code: input.value.trim().toUpperCase(),
+      type: types[idx].value,
+      value: parseFloat(values[idx].value) || 0,
+      active: actives[idx].value === 'true'
+    });
+  });
+
+  fetch('/api/save-coupons', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ coupons: updatedCoupons })
+  })
+    .then(res => res.json())
+    .then(data => {
+      globalData.coupons = updatedCoupons;
+      showToast('Codici sconto salvati con successo!');
+    })
+    .catch(err => alert('Errore nel salvataggio dei codici sconto.'));
 }

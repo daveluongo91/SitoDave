@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin — Davide Luongo</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050d18;
+      --bg-card: #0b1929;
+      --border: rgba(56, 139, 253, 0.15);
+      --accent: #38bdf8;
+      --accent-dim: #0ea5e9;
+      --text: #e2e8f0;
+      --text-muted: #64748b;
+      --error: #f87171;
+      --success: #34d399;
+      --radius: 12px;
+      --shadow: 0 0 40px rgba(56, 189, 248, 0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+    }
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .logo h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .logo p { font-size: 0.85rem; color: var(--text-muted); }
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+    input[aria-invalid="true"] { border-color: var(--error); }
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.875rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 0.5rem;
+    }
+    .btn:hover:not(:disabled) { opacity: 0.9; }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .alert {
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      display: none;
+    }
+    .alert.error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--error); }
+    .alert.success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--success); }
+    .alert[aria-live] { display: block; }
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-msg { font-size: 0.8rem; color: var(--error); margin-top: 0.25rem; display: none; }
+  </style>
+</head>
+<body>
+  <main class="login-card" role="main">
+    <div class="logo" aria-hidden="true">
+      <div class="logo-icon">📷</div>
+      <h1>CMS Admin</h1>
+      <p>Davide Luongo Photography</p>
+    </div>
+
+    <form id="loginForm" novalidate aria-label="Modulo di accesso amministrativo">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          autocomplete="username"
+          required
+          aria-required="true"
+          aria-describedby="username-error"
+          spellcheck="false"
+        >
+        <span id="username-error" class="error-msg" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          autocomplete="current-password"
+          required
+          aria-required="true"
+          aria-describedby="password-error"
+        >
+        <span id="password-error" class="error-msg" role="alert"></span>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn">
+        Accedi
+      </button>
+
+      <div id="alertMsg" class="alert" role="alert" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script>
+    // Recupera CSRF token dal cookie
+    function getCookie(name) {
+      const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return v ? v.pop() : '';
+    }
+
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertMsg = document.getElementById('alertMsg');
+
+    function showAlert(msg, type = 'error') {
+      alertMsg.textContent = msg;
+      alertMsg.className = `alert ${type}`;
+      alertMsg.setAttribute('aria-live', 'polite');
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<span class="spinner" aria-hidden="true"></span>Accesso in corso...'
+        : 'Accedi';
+    }
+
+    function validateField(input, errorEl) {
+      if (!input.value.trim()) {
+        input.setAttribute('aria-invalid', 'true');
+        errorEl.textContent = 'Campo obbligatorio.';
+        errorEl.style.display = 'block';
+        return false;
+      }
+      input.removeAttribute('aria-invalid');
+      errorEl.textContent = '';
+      errorEl.style.display = 'none';
+      return true;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertMsg.className = 'alert';
+
+      const usernameEl = document.getElementById('username');
+      const passwordEl = document.getElementById('password');
+      const usernameErr = document.getElementById('username-error');
+      const passwordErr = document.getElementById('password-error');
+
+      const v1 = validateField(usernameEl, usernameErr);
+      const v2 = validateField(passwordEl, passwordErr);
+      if (!v1 || !v2) return;
+
+      setLoading(true);
+
+      try {
+        const res = await fetch('/api/admin/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            username: usernameEl.value.trim(),
+            password: passwordEl.value,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          showAlert('Accesso effettuato. Reindirizzamento...', 'success');
+          setTimeout(() => { window.location.href = '/admin/dashboard.html'; }, 800);
+        } else {
+          showAlert(data.detail || 'Credenziali non valide.');
+          passwordEl.value = '';
+          passwordEl.focus();
+        }
+      } catch (err) {
+        showAlert('Errore di connessione. Riprova.');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Se già autenticato, redirect diretto
+    fetch('/api/admin/auth/me', { credentials: 'include' })
+      .then(r => { if (r.ok) window.location.href = '/admin/dashboard.html'; })
+      .catch(() => {});
+  </script>
+</body>
+</html>

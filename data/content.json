@@ -1,469 +1,501 @@
-{
-  "home": {
-    "badge": "HIKE • SHOOT • PRINT • REPEAT",
-    "title": "Cattura la magia della <span class=\"gradient-text\">luce e del cielo notturno</span>",
-    "description": "Esperienze fotografiche immersive in location straordinarie, viaggi guidati e corsi di formazione One-to-One. Dalla pianificazione sul campo alla stampa Fine Art.",
-    "stats": [
-      {
-        "number": "15+",
-        "label": "Workshop Organizzati"
-      },
-      {
-        "number": "100%",
-        "label": "Assistenza sul Campo"
-      },
-      {
-        "number": "SIGMA",
-        "label": "Official Ambassador"
-      },
-      {
-        "number": "Fine Art",
-        "label": "Stampa di Qualità"
-      }
-    ],
-    "bio": {
-      "title": "Davide Luongo",
-      "subtitle": "La Mia Storia",
-      "paragraphs": [
-        "Mi chiamo Davide e sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino ai vent’anni. Fin da bambino ho avuto modo di avvicinarmi alla tecnologia grazie a mio padre, grande appassionato di innovazione e fotografia: la mia prima macchina fotografica, infatti, era la sua.",
-        "Durante gli anni universitari, nel 2016, ho riscoperto la fotografia come hobby grazie al mio coinquilino Franz. Insieme realizzammo uno dei miei primi scatti notturni a Boccadasse, un luogo che negli anni è diventato per me particolarmente significativo.",
-        "Nel 2017 mi sono trasferito a Padova per motivi di lavoro. Qui ho vissuto un periodo di solitudine che ha contribuito in modo decisivo alla maturazione della mia passione per la fotografia, diventata uno strumento di crescita personale ed espressione.",
-        "Da qualche tempo collaboro con brand fotografici di primo piano come SIGMA Lenses, Kase Filters e Vanguard. La fotografia rappresenta per me il punto d’incontro con la mia passione per l'outdoor, la montagna e i paesaggi del grande Nord."
-      ]
-    }
-  },
-  "workshops": [
-    {
-      "id": "friuli-2026",
-      "title": "Workshop Friuli: Tagliamento, Laghi & Astrofotografia",
-      "category": "nazionale",
-      "date": "10 - 11 Ottobre 2026",
-      "location": "Friuli-Venezia Giulia (Tagliamento & Laghi di Fusine)",
-      "description": "Esplorazione fotografica tra il maestoso fiume Tagliamento, i laghi alpini di Fusine e cieli notturni incontaminati per sessioni di paesaggio e astrofotografia.",
-      "duration": "2 Giorni / 1 Notte",
-      "price": "€290",
-      "availableSeats": 5,
-      "totalSeats": 8,
-      "status": "active",
-      "statusLabel": "Iscrizioni Aperte",
-      "image": "assets/friuli_workshop.png",
-      "detailsUrl": "friuli-2026.html"
-    },
-    {
-      "id": "cascate-appennino-2026",
-      "title": "Workshop Cascate dell'Appennino: Acque & Lunga Esposizione",
-      "category": "nazionale",
-      "date": "24 - 25 Ottobre 2026",
-      "location": "Appennino Tosco-Emiliano",
-      "description": "Fotografia di paesaggio fluviale e boschivo. Uso intensivo di filtri ND/GND Kase per effetti seta, dinamica dell'acqua e composizione nell'Appennino.",
-      "duration": "2 Giorni / 1 Notte",
-      "price": "€280",
-      "availableSeats": 4,
-      "totalSeats": 8,
-      "status": "active",
-      "statusLabel": "Iscrizioni Aperte",
-      "image": "assets/cascate_appennino_workshop.png",
-      "detailsUrl": "cascate-appennino-2026.html"
-    },
-    {
-      "id": "canfaito-2026",
-      "title": "Workshop Faggeta di Canfaito: Foliage & Luce d'Autunno",
-      "category": "nazionale",
-      "date": "7 - 8 Novembre 2026",
-      "location": "Riserva Monte San Vicino e Canfaito (Marche)",
-      "description": "L'esplosione dei colori autunnali nella monumentale faggeta di Canfaito. Nebbie mattutine, quinte alberate e studio delle luci d'atmosfera.",
-      "duration": "2 Giorni / 1 Notte",
-      "price": "€270",
-      "availableSeats": 6,
-      "totalSeats": 8,
-      "status": "active",
-      "statusLabel": "Iscrizioni Aperte",
-      "image": "assets/canfaito_workshop.png",
-      "detailsUrl": "canfaito-2026.html"
-    },
-    {
-      "id": "foreste-casentinesi-2026",
-      "title": "Workshop Foreste Casentinesi: Il Grande Foliage",
-      "category": "nazionale",
-      "date": "28 - 29 Novembre 2026",
-      "location": "Parco Nazionale Foreste Casentinesi (Toscana/Romagna)",
-      "description": "Immersione in una delle foreste più antiche d'Europa nel momento del picco cromatico del foliage. Tecnica fotografica, lettura del paesaggio e post-produzione.",
-      "duration": "2 Giorni / 1 Notte",
-      "price": "€290",
-      "availableSeats": 5,
-      "totalSeats": 8,
-      "status": "active",
-      "statusLabel": "Iscrizioni Aperte",
-      "image": "assets/foreste_casentinesi_workshop.png",
-      "detailsUrl": "foreste-casentinesi-2026.html"
-    }
-  ],
-  "trips_2027": [
-    {
-      "id": "lapponia-2027",
-      "title": "Photo Tour Lapponia: Caccia all'Aurora & Paesaggi Fiabeschi",
-      "category": "viaggio-2027",
-      "date": "Gennaio 2027",
-      "location": "Lapponia (Finlandia / Norvegia)",
-      "description": "Un'avventura artica alla ricerca dell'Aurora Boreale tra foreste innevate, laghi ghiacciati e la magia della luce polare invernale. Dettagli operativi in corso di definizione con l'agenzia di viaggi partner.",
-      "duration": "7 Giorni / 6 Notti",
-      "price": "In Definizione",
-      "status": "upcoming",
-      "statusLabel": "Anteprima 2027 - Lista d'Attesa",
-      "image": "assets/lapponia_photo_tour.png",
-      "actionUrl": "#modal-lapponia-2027"
-    },
-    {
-      "id": "minorca-2027",
-      "title": "Photo Tour Minorca: Scogliere & Cieli Bui (Starlight Reserve)",
-      "category": "viaggio-2027",
-      "date": "Maggio 2027",
-      "location": "Isola di Minorca (Spagna)",
-      "description": "Esplorazione fotografica tra i faraglioni e i fari di Minorca, riserva della biosfera UNESCO e Starlight Reserve per l'osservazione notturna della Via Lattea. Programma in fase di rifinitura.",
-      "duration": "5 Giorni / 4 Notti",
-      "price": "In Definizione",
-      "status": "upcoming",
-      "statusLabel": "Anteprima 2027 - Lista d'Attesa",
-      "image": "assets/minorca_photo_tour.png",
-      "actionUrl": "#modal-minorca-2027"
-    },
-    {
-      "id": "azzorre-2027",
-      "title": "Photo Tour Azzorre: Natura Incontaminata & Cieli Atlantici",
-      "category": "viaggio-2027",
-      "date": "Luglio 2027",
-      "location": "Arcipelago delle Azzorre (Portogallo)",
-      "description": "Vulcani, crateri vulcanici azzurri, scogliere a picco sull'Atlantico e cieli stellati unici nel cuore dell'Oceano. In attesa delle quotazioni ufficiali dell'agenzia.",
-      "duration": "7 Giorni / 6 Notti",
-      "price": "In Definizione",
-      "status": "upcoming",
-      "statusLabel": "Anteprima 2027 - Lista d'Attesa",
-      "image": "assets/azzorre_photo_tour.png",
-      "actionUrl": "#modal-azzorre-2027"
-    },
-    {
-      "id": "islanda-2027",
-      "title": "Photo Tour Islanda: Aurore Boreali & Paesaggi Vulcanici",
-      "category": "viaggio-2027",
-      "date": "Ottobre 2027",
-      "location": "Islanda (Sud & Snaefellsnes)",
-      "description": "Cascate imponenti, spiagge di sabbia nera, ghiacciai e lo spettacolo danzante dell'Aurora Boreale nei cieli d'autunno. Dettagli in aggiornamento.",
-      "duration": "8 Giorni / 7 Notti",
-      "price": "In Definizione",
-      "status": "upcoming",
-      "statusLabel": "Anteprima 2027 - Lista d'Attesa",
-      "image": "assets/islanda_photo_tour.png",
-      "actionUrl": "#modal-islanda-2027"
-    }
-  ],
-  "gear": [
-    {
-      "id": "sigma-14mm",
-      "title": "SIGMA 14mm f/1.4 DG DN Art",
-      "brand": "SIGMA LENSES • OBIETTIVO FISSO",
-      "category": "sigma",
-      "microArticle": "L'obiettivo definitivo per l'astrofotografia ambientata e la fotografia di paesaggio notturno in alta quota. Il SIGMA 14mm f/1.4 DG DN Art rappresenta una pietra miliare dell'ottica moderna: è il primo 14mm al mondo con apertura nativa f/1.4 per fotocamere mirrorless full-frame.\n\nRaccogliendo il 200% di luce in più rispetto ad un classico f/2.8, permette di lavorare a ISO 1600 anziché 6400, riducendo drasticamente il rumore e conservando una gamma dinamica ed una fedeltà cromatica eccezionali sia sulla Via Lattea che sul primo piano.\n\nIl sofisticato schema ottico a 19 elementi corregge in modo impeccabile il coma ed i bagliori ai bordi del fotogramma, mantenendo le stelle perfettamente sferiche ed incise a tutta apertura. Completo di blocco del fuoco MFL Switch e supporto per fasce anticondensa, è lo strumento di lavoro fondamentale nei miei workshop.",
-      "specs": [
-        "Sony E / L-Mount",
-        "Apertura Nativa: f/1.4",
-        "MFL Manual Focus Lock",
-        "Holder Anti-Condensa"
-      ],
-      "ambassadorBadge": "SIGMA Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Leggi l'Articolo Completo nel Blog →",
-      "actionUrl": "../blog/test-sigma-14mm-art.html",
-      "image": "assets/gear_sigma_14mm_vertical.jpg"
-    },
-    {
-      "id": "sigma-24-70mm",
-      "title": "SIGMA 24-70mm f/2.8 DG DN Art (Sony E)",
-      "brand": "SIGMA LENSES • ZOOM STANDARD",
-      "category": "sigma",
-      "microArticle": "Lo zoom di lavoro quotidiano per eccellenza. Estremamente nitido da bordo a bordo a qualsiasi focale, è la lente ideale per la fotografia di paesaggio diurno, ritratti ambientati e scatti durante i trekking in montagna dove occorre rapidità di composizione e versatilità senza cambiare ottica.",
-      "specs": [
-        "Sony E",
-        "Apertura Costante: f/2.8",
-        "Vetri FLD / SLD",
-        "Tropicalizzato"
-      ],
-      "ambassadorBadge": "SIGMA Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su SIGMA Italia",
-      "actionUrl": "https://www.sigma-foto.it/",
-      "image": "assets/gear_sigma_2470.png"
-    },
-    {
-      "id": "sigma-100-400mm",
-      "title": "SIGMA 100-400mm f/5-6.3 DG DN OS (Sony E)",
-      "brand": "SIGMA LENSES • TELEOBIETTIVO",
-      "category": "sigma",
-      "microArticle": "Il teleobiettivo leggero per isolare dettagli di creste montuose, giochi di luce sulle nubi e strati di paesaggio compresso. Offre un'incisione ottica straordinaria in un corpo compatto che non pesa nello zaino durante le lunghe salite in quota.",
-      "specs": [
-        "Sony E",
-        "Stabilizzazione Ottica OS",
-        "Dual Action Zoom",
-        "Peso Ridotto"
-      ],
-      "ambassadorBadge": "SIGMA Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su SIGMA Italia",
-      "actionUrl": "https://www.sigma-foto.it/",
-      "image": "assets/gear_sigma_100400.png"
-    },
-    {
-      "id": "nomad-msm",
-      "title": "Nomad Move Shoot Move Star Tracker",
-      "brand": "ASTROPHOTOGRAPHY • STAR TRACKER",
-      "category": "astro",
-      "microArticle": "Il tracciatore stellare ultra-compatto per chi ama viaggiare leggero senza rinunciare alla qualità. Compensando la rotazione terrestre, permette di effettuare lunghe esposizioni del cielo notturno mantenendo le stelle perfettamente puntiformi e il rumore digitale al minimo.",
-      "specs": [
-        "Formato Tascabile",
-        "Batteria USB Ricaricabile",
-        "Allineamento Polare Laser",
-        "Payload fino a 3kg"
-      ],
-      "ambassadorBadge": null,
-      "affiliateBadge": "Codice Sconto & Affiliato",
-      "discountCode": "MSM5DAVE",
-      "actionLabel": "Acquista con Link Affiliato",
-      "actionUrl": "https://www.moveshootmove.com/",
-      "image": "assets/gear_nomad_msm.png"
-    },
-    {
-      "id": "vanguard-alta-pro",
-      "title": "Vanguard Alta Pro 3VL 264CT",
-      "brand": "VANGUARD • TREPPIEDE CARBONIO",
-      "category": "vanguard",
-      "microArticle": "Treppiede in fibra di carbonio ad alte prestazioni con mezza sfera di livellamento integrata. Garantisce una stabilità incrollabile per l'astrofotografia in presenza di vento forte e un livellamento istantaneo su pendenze montuose o scogliere impervie.",
-      "specs": [
-        "Fibra di Carbonio 8X",
-        "Mezza Sfera di Livellamento",
-        "Testa Fluida Video/Foto",
-        "Piedini Chiodati"
-      ],
-      "ambassadorBadge": "Vanguard Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su Vanguard World",
-      "actionUrl": "https://www.vanguardworld.it/",
-      "image": "assets/gear_vanguard_alta.png"
-    },
-    {
-      "id": "vanguard-lbp50s",
-      "title": "Vanguard LBP-50S Lens Pouch",
-      "brand": "VANGUARD • ACCESSORI & CUSTODIE",
-      "category": "vanguard",
-      "microArticle": "Custodia protettiva imbottita e tropicalizzata per l'alloggiamento e il trasporto in sicurezza di ottiche pregiate, filtri a lastra e accessori delicati. Perfetta da agganciare all'esterno o all'interno dello zaino durante i trekking.",
-      "specs": [
-        "Imbottitura Anti-Urto",
-        "Tessuto Idrorepellente",
-        "Attacco Modulare MOLLE"
-      ],
-      "ambassadorBadge": "Vanguard Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su Vanguard World",
-      "actionUrl": "https://www.vanguardworld.it/",
-      "image": "assets/gear_vanguard_lbp.png"
-    },
-    {
-      "id": "vanguard-veo-active-53kg",
-      "title": "Vanguard VEO Active 53KG",
-      "brand": "VANGUARD • ZAINO TREKKING HIGH CAPACITY",
-      "category": "vanguard",
-      "microArticle": "Lo zaino fotografico da spedizione da 53 litri. Progettato per contenere tutto il corredo fotografico (2 corpi, 4 obiettivi, tracciatore stellare) insieme all'attrezzatura per il bivacco in quota (tenda, sacco a pelo, vestiario tecnico). Schienale ergonomico ad altissimo comfort.",
-      "specs": [
-        "Capacità 53 Litri",
-        "Modulo Removibile ICU",
-        "Porta Sacca Idrica",
-        "Copertura Pioggia Inclusa"
-      ],
-      "ambassadorBadge": "Vanguard Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su Vanguard World",
-      "actionUrl": "https://www.vanguardworld.it/",
-      "image": "assets/gear_vanguard_active53.png"
-    },
-    {
-      "id": "vanguard-veo-active-46kg",
-      "title": "Vanguard VEO Active 46KG",
-      "brand": "VANGUARD • ZAINO OUTDOOR COMPATTO",
-      "category": "vanguard",
-      "microArticle": "La versione agile e dinamica da 46 litri, ottima per uscite giornaliere e trekking veloci. Mantiene gli stessi standard costruttivi ed ergonomici del 53KG in un volume più compatto, ideale per chi viaggia in aereo o su percorsi ripidi.",
-      "specs": [
-        "Capacità 46 Litri",
-        "Accesso Posteriore Sicuro",
-        "Tasche USB Passthrough",
-        "Attacco Treppiede Doppio"
-      ],
-      "ambassadorBadge": "Vanguard Ambassador",
-      "affiliateBadge": null,
-      "discountCode": null,
-      "actionLabel": "Scopri su Vanguard World",
-      "actionUrl": "https://www.vanguardworld.it/",
-      "image": "assets/gear_vanguard_active46.png"
-    }
-  ],
-  "blog": [
-    {
-      "id": "vanguard-lbp50s",
-      "title": "Vanguard LBP-50S: una testa a sfera compatta che non teme i carichi difficili",
-      "category": "vanguard",
-      "publisherTag": "🎒 VANGUARD WORLD OFFICIAL",
-      "excerpt": "Prima di entrare negli aspetti tecnici, però, voglio soffermarmi sul design. Non è soltanto una testa molto bella e curata nei dettagli: il contrasto tra il corpo nero e gli elementi arancioni mi ha...",
-      "date": "Luglio 2026",
-      "readTime": "Vanguard World",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/07/cover-image_blog-it_lbp50s_julio2026_3c3b3048-16a9-4369-8062-558d13e304b6_2048x-768x307.webp",
-      "actionUrl": "https://www.vanguardworld.it/blogs/articoli/vanguard-lbp-50s-una-testa-a-sfera-compatta-che-non-teme-i-carichi-difficili"
-    },
-    {
-      "id": "vanguard-veo-active-53kg-lowcost",
-      "title": "Viaggiare in low cost con il VEO Active 53KG: missione possibile",
-      "category": "vanguard",
-      "publisherTag": "🎒 VANGUARD WORLD OFFICIAL",
-      "excerpt": "Chi viaggia spesso per fotografare sa bene quanto sia importante avere uno zaino capiente, comodo e resistente. Il Vanguard VEO Active 53KG risponde perfettamente a queste esigenze ma cosa succede...",
-      "date": "Marzo 2026",
-      "readTime": "Vanguard World",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00098-Edit-768x512.jpg",
-      "actionUrl": "https://www.vanguardworld.it/blogs/articoli/viaggiare-in-low-cost-con-il-veo-active-53kg-missione-possibile"
-    },
-    {
-      "id": "vanguard-veo-select-39rbm",
-      "title": "Alla scoperta dello zaino VEO SELECT 39RBM",
-      "category": "vanguard",
-      "publisherTag": "🎒 VANGUARD WORLD OFFICIAL",
-      "excerpt": "Se sei alla ricerca di uno zaino che combini design, funzionalità e versatilità, il Vanguard VEO SELECT 39RBM-BK è una scelta che non delude. Ho avuto il piacere di testarlo durante un'intensa...",
-      "date": "Aprile 2024",
-      "readTime": "Vanguard World",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00012-Modifica-1-768x513.jpg",
-      "actionUrl": "https://www.vanguardworld.it/blogs/articoli/alla-scoperta-dello-zaino-veo-select-39rbm-bk"
-    },
-    {
-      "id": "vanguard-veo-active-53kg-allweather",
-      "title": "Viaggiare nel mondo in tutte le condizioni atmosferiche con Vanguard VEO Active 53 KG",
-      "category": "vanguard",
-      "publisherTag": "🎒 VANGUARD WORLD OFFICIAL",
-      "excerpt": "Da fotografo paesaggista e timelapser mi trovo spesso a viaggiare. Di solito i miei spostamenti avvengono in aereo, ma, come è noto, l’utilizzo dell’aereo è vincolato al budget non sempre...",
-      "date": "Aprile 2024",
-      "readTime": "Vanguard World",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/04/DSC00022-Pano-1-scaled.jpg",
-      "actionUrl": "https://www.vanguardworld.it/blogs/articoli/viaggiare-nel-mondo-in-tutte-le-condizioni-atmosferiche-secondo-davide-luongo"
-    },
-    {
-      "id": "sigma-ambassador-davide-luongo",
-      "title": "Davide Luongo – Ambassador SIGMA",
-      "category": "sigma",
-      "publisherTag": "📷 SIGMA ITALIA BLOG",
-      "excerpt": "Mi chiamo Davide. Sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino all’età di 20 anni. Sin da piccolo ho avuto a che fare con strumenti tecnologici grazie a mio padre...",
-      "date": "Marzo 2024",
-      "readTime": "SIGMA Italia",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/03/photo1710320834-768x512.jpeg",
-      "actionUrl": "https://www.sigma-italia.it/blogs/la-nostra-community/davide-luongo"
-    },
-    {
-      "id": "universofoto-astro-tenerife",
-      "title": "Prepararsi ad una sessione di astrofotografia a Tenerife",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Abbiamo parlato del ‘never ending day’ fotografico a Tenerife, ma focalizziamoci su quello che è uno dei motivi per cui un fotografo dovrebbe andarci almeno una volta nella vita...",
-      "date": "Marzo 2026",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/03/Immagine-2026-03-26-112416-768x777.jpg",
-      "actionUrl": "https://www.universofoto.it/astrofotografia-a-tenerife/"
-    },
-    {
-      "id": "universofoto-tenerife-giorno-infinito",
-      "title": "Tenerife: Il giorno che non finisce mai (se sei un fotografo)",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "A Tenerife, per un fotografo, la giornata non termina mai. È un ciclo continuo di luce che cambia, si trasforma, si spegne e rinasce...",
-      "date": "Agosto 2025",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2025/08/A6700004-Edit-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/viaggio-fotografico-tenerife/"
-    },
-    {
-      "id": "universofoto-madeira-cosa-portare",
-      "title": "Cosa portare a Madeira, l’isola dell’eterna primavera",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Madeira, un gioiello incastonato tra le acque dell’Oceano Atlantico, è conosciuta anche come l’isola dell’eterna primavera – e non a caso...",
-      "date": "Marzo 2026",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00317-Edit-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/cosa-portare-a-madeira/"
-    },
-    {
-      "id": "universofoto-madeira-lunga-esposizione",
-      "title": "Gestire una lunga esposizione a Madeira",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Rieccoci a parlare di Madeira! Voi mi direte: mare, acqua che si muove, luce radente, cieli colorati, nuvole che corrono che fai, non ti spari una lunga esposizione?...",
-      "date": "Marzo 2026",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00569-Edit-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/lunga-esposizione-a-madeira/"
-    },
-    {
-      "id": "universofoto-madeira-appunti-viaggio",
-      "title": "Madeira: Appunti di un viaggio fotografico",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Viaggio fotografico a Madeira, l’isola dell’eterna primavera. Non sono solito visitare destinazioni così ‘marittime’...",
-      "date": "Marzo 2026",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2026/03/BF_01482-Edit-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/viaggio-fotografico-madeira/"
-    },
-    {
-      "id": "universofoto-friuli-2025",
-      "title": "Viaggio Fotografico in Friuli: 17-18 Maggio 2025",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Scopri la bellezza selvaggia del Friuli in un viaggio fotografico unico! Il 17 e 18 Maggio 2025 Davide Luongo ti guiderà attraverso paesaggi mozzafiato...",
-      "date": "Maggio 2025",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/09/IMG00004-Pano-2-Modifica-scaled.jpg",
-      "actionUrl": "https://www.universofoto.it/viaggio-fotografico-in-friuli-17-18-maggio-2025/"
-    },
-    {
-      "id": "universofoto-nivolet-2025",
-      "title": "Workshop Fotografico al Colle del Nivolet: 28-29 Giugno 2025",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Nel cuore del Parco Nazionale del Gran Paradiso, il Colle del Nivolet è un altopiano sospeso tra terra e cielo, dove l’uomo è solo un ospite di passaggio...",
-      "date": "Giugno 2025",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00246-2-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/workshop-fotografico-al-colle-del-nivolet-28-29-giugno-2025/"
-    },
-    {
-      "id": "universofoto-cinque-terre-2025",
-      "title": "Primavera alle Cinque Terre – 22 marzo 2025",
-      "category": "universofoto",
-      "publisherTag": "📸 UNIVERSOFOTO MAGAZINE",
-      "excerpt": "Se ami la fotografia paesaggistica e vuoi perfezionare le tue tecniche, ecco un workshop alle Cinque Terre che fa per te! Davide Luongo ti aspetta...",
-      "date": "Marzo 2025",
-      "readTime": "UniversoFoto",
-      "image": "https://www.davideluongo.it/wp-content/uploads/2024/10/IMG00003-768x512.jpg",
-      "actionUrl": "https://www.universofoto.it/workshop-di-fotografia-alle-cinque-terre-22-marzo-2025/"
-    }
-  ],
-  "assets": [
-    {
-      "filename": "test_sigma_14mm_fullres.png",
-      "fullResPath": "assets/upload/test_sigma_14mm_fullres_web.jpg",
-      "webpPath": "assets/upload/test_sigma_14mm_fullres_web.webp",
-      "jpegPath": "assets/upload/test_sigma_14mm_fullres_web.jpg",
-      "width": 1024,
-      "height": 1024,
-      "srgbPreserved": true,
-      "uploadDate": "2026-07-29"
-    }
-  ]
+﻿{
+    "home":  {
+                 "badge":  "HIKE • SHOOT • PRINT • REPEAT",
+                 "title":  "Cattura la magia della \u003cspan class=\"gradient-text\"\u003eluce e del cielo notturno\u003c/span\u003e",
+                 "description":  "Esperienze fotografiche immersive in location straordinarie, viaggi guidati e corsi di formazione One-to-One. Dalla pianificazione sul campo alla stampa Fine Art.",
+                 "stats":  [
+                               {
+                                   "number":  "15+",
+                                   "label":  "Workshop Organizzati"
+                               },
+                               {
+                                   "number":  "100%",
+                                   "label":  "Assistenza sul Campo"
+                               },
+                               {
+                                   "number":  "SIGMA",
+                                   "label":  "Official Ambassador"
+                               },
+                               {
+                                   "number":  "Fine Art",
+                                   "label":  "Stampa di Qualità"
+                               }
+                           ],
+                 "bio":  {
+                             "title":  "Davide Luongo",
+                             "subtitle":  "La Mia Storia",
+                             "paragraphs":  [
+                                                "Mi chiamo Davide e sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino ai vent’anni. Fin da bambino ho avuto modo di avvicinarmi alla tecnologia grazie a mio padre, grande appassionato di innovazione e fotografia: la mia prima macchina fotografica, infatti, era la sua.",
+                                                "Durante gli anni universitari, nel 2016, ho riscoperto la fotografia come hobby grazie al mio coinquilino Franz. Insieme realizzammo uno dei miei primi scatti notturni a Boccadasse, un luogo che negli anni è diventato per me particolarmente significativo.",
+                                                "Nel 2017 mi sono trasferito a Padova per motivi di lavoro. Qui ho vissuto un periodo di solitudine che ha contribuito in modo decisivo alla maturazione della mia passione per la fotografia, diventata uno strumento di crescita personale ed espressione.",
+                                                "Da qualche tempo collaboro con brand fotografici di primo piano come SIGMA Lenses, Kase Filters e Vanguard. La fotografia rappresenta per me il punto d’incontro con la mia passione per l\u0027outdoor, la montagna e i paesaggi del grande Nord."
+                                            ]
+                         }
+             },
+    "workshops":  [
+                      {
+                          "id":  "friuli-2026",
+                          "title":  "Workshop Friuli: Tagliamento, Laghi \u0026 Astrofotografia",
+                          "category":  "nazionale",
+                          "date":  "10 - 11 Ottobre 2026",
+                          "location":  "Friuli-Venezia Giulia (Tagliamento \u0026 Laghi di Fusine)",
+                          "description":  "Esplorazione fotografica tra il maestoso fiume Tagliamento, i laghi alpini di Fusine e cieli notturni incontaminati per sessioni di paesaggio e astrofotografia.",
+                          "duration":  "2 Giorni / 1 Notte",
+                          "price":  "€290",
+                          "availableSeats":  5,
+                          "totalSeats":  8,
+                          "status":  "active",
+                          "statusLabel":  "Iscrizioni Aperte",
+                          "image":  "assets/friuli_workshop.png",
+                          "detailsUrl":  "friuli-2026.html",
+                          "priceCents":  35000
+                      },
+                      {
+                          "id":  "cascate-appennino-2026",
+                          "title":  "Workshop Cascate dell\u0027Appennino: Acque \u0026 Lunga Esposizione",
+                          "category":  "nazionale",
+                          "date":  "24 - 25 Ottobre 2026",
+                          "location":  "Appennino Tosco-Emiliano",
+                          "description":  "Fotografia di paesaggio fluviale e boschivo. Uso intensivo di filtri ND/GND Kase per effetti seta, dinamica dell\u0027acqua e composizione nell\u0027Appennino.",
+                          "duration":  "2 Giorni / 1 Notte",
+                          "price":  "€280",
+                          "availableSeats":  4,
+                          "totalSeats":  8,
+                          "status":  "active",
+                          "statusLabel":  "Iscrizioni Aperte",
+                          "image":  "assets/cascate_appennino_workshop.png",
+                          "detailsUrl":  "cascate-appennino-2026.html",
+                          "priceCents":  35000
+                      },
+                      {
+                          "id":  "canfaito-2026",
+                          "title":  "Workshop Faggeta di Canfaito: Foliage \u0026 Luce d\u0027Autunno",
+                          "category":  "nazionale",
+                          "date":  "7 - 8 Novembre 2026",
+                          "location":  "Riserva Monte San Vicino e Canfaito (Marche)",
+                          "description":  "L\u0027esplosione dei colori autunnali nella monumentale faggeta di Canfaito. Nebbie mattutine, quinte alberate e studio delle luci d\u0027atmosfera.",
+                          "duration":  "2 Giorni / 1 Notte",
+                          "price":  "€270",
+                          "availableSeats":  6,
+                          "totalSeats":  8,
+                          "status":  "active",
+                          "statusLabel":  "Iscrizioni Aperte",
+                          "image":  "assets/canfaito_workshop.png",
+                          "detailsUrl":  "canfaito-2026.html",
+                          "priceCents":  35000
+                      },
+                      {
+                          "id":  "foreste-casentinesi-2026",
+                          "title":  "Workshop Foreste Casentinesi: Il Grande Foliage",
+                          "category":  "nazionale",
+                          "date":  "28 - 29 Novembre 2026",
+                          "location":  "Parco Nazionale Foreste Casentinesi (Toscana/Romagna)",
+                          "description":  "Immersione in una delle foreste più antiche d\u0027Europa nel momento del picco cromatico del foliage. Tecnica fotografica, lettura del paesaggio e post-produzione.",
+                          "duration":  "2 Giorni / 1 Notte",
+                          "price":  "€290",
+                          "availableSeats":  5,
+                          "totalSeats":  8,
+                          "status":  "active",
+                          "statusLabel":  "Iscrizioni Aperte",
+                          "image":  "assets/foreste_casentinesi_workshop.png",
+                          "detailsUrl":  "foreste-casentinesi-2026.html",
+                          "priceCents":  35000
+                      }
+                  ],
+    "trips_2027":  [
+                       {
+                           "id":  "lapponia-2027",
+                           "title":  "Photo Tour Lapponia: Caccia all\u0027Aurora \u0026 Paesaggi Fiabeschi",
+                           "category":  "viaggio-2027",
+                           "date":  "Gennaio 2027",
+                           "location":  "Lapponia (Finlandia / Norvegia)",
+                           "description":  "Un\u0027avventura artica alla ricerca dell\u0027Aurora Boreale tra foreste innevate, laghi ghiacciati e la magia della luce polare invernale. Dettagli operativi in corso di definizione con l\u0027agenzia di viaggi partner.",
+                           "duration":  "7 Giorni / 6 Notti",
+                           "price":  "In Definizione",
+                           "status":  "upcoming",
+                           "statusLabel":  "Anteprima 2027 - Lista d\u0027Attesa",
+                           "image":  "assets/lapponia_photo_tour.png",
+                           "actionUrl":  "#modal-lapponia-2027"
+                       },
+                       {
+                           "id":  "minorca-2027",
+                           "title":  "Photo Tour Minorca: Scogliere \u0026 Cieli Bui (Starlight Reserve)",
+                           "category":  "viaggio-2027",
+                           "date":  "Maggio 2027",
+                           "location":  "Isola di Minorca (Spagna)",
+                           "description":  "Esplorazione fotografica tra i faraglioni e i fari di Minorca, riserva della biosfera UNESCO e Starlight Reserve per l\u0027osservazione notturna della Via Lattea. Programma in fase di rifinitura.",
+                           "duration":  "5 Giorni / 4 Notti",
+                           "price":  "In Definizione",
+                           "status":  "upcoming",
+                           "statusLabel":  "Anteprima 2027 - Lista d\u0027Attesa",
+                           "image":  "assets/minorca_photo_tour.png",
+                           "actionUrl":  "#modal-minorca-2027"
+                       },
+                       {
+                           "id":  "azzorre-2027",
+                           "title":  "Photo Tour Azzorre: Natura Incontaminata \u0026 Cieli Atlantici",
+                           "category":  "viaggio-2027",
+                           "date":  "Luglio 2027",
+                           "location":  "Arcipelago delle Azzorre (Portogallo)",
+                           "description":  "Vulcani, crateri vulcanici azzurri, scogliere a picco sull\u0027Atlantico e cieli stellati unici nel cuore dell\u0027Oceano. In attesa delle quotazioni ufficiali dell\u0027agenzia.",
+                           "duration":  "7 Giorni / 6 Notti",
+                           "price":  "In Definizione",
+                           "status":  "upcoming",
+                           "statusLabel":  "Anteprima 2027 - Lista d\u0027Attesa",
+                           "image":  "assets/azzorre_photo_tour.png",
+                           "actionUrl":  "#modal-azzorre-2027"
+                       },
+                       {
+                           "id":  "islanda-2027",
+                           "title":  "Photo Tour Islanda: Aurore Boreali \u0026 Paesaggi Vulcanici",
+                           "category":  "viaggio-2027",
+                           "date":  "Ottobre 2027",
+                           "location":  "Islanda (Sud \u0026 Snaefellsnes)",
+                           "description":  "Cascate imponenti, spiagge di sabbia nera, ghiacciai e lo spettacolo danzante dell\u0027Aurora Boreale nei cieli d\u0027autunno. Dettagli in aggiornamento.",
+                           "duration":  "8 Giorni / 7 Notti",
+                           "price":  "In Definizione",
+                           "status":  "upcoming",
+                           "statusLabel":  "Anteprima 2027 - Lista d\u0027Attesa",
+                           "image":  "assets/islanda_photo_tour.png",
+                           "actionUrl":  "#modal-islanda-2027"
+                       }
+                   ],
+    "gear":  [
+                 {
+                     "id":  "sigma-14mm",
+                     "title":  "SIGMA 14mm f/1.4 DG DN Art",
+                     "brand":  "SIGMA LENSES • OBIETTIVO FISSO",
+                     "category":  "sigma",
+                     "microArticle":  "L\u0027obiettivo definitivo per l\u0027astrofotografia ambientata e la fotografia di paesaggio notturno in alta quota. Il SIGMA 14mm f/1.4 DG DN Art rappresenta una pietra miliare dell\u0027ottica moderna: è il primo 14mm al mondo con apertura nativa f/1.4 per fotocamere mirrorless full-frame.\n\nRaccogliendo il 200% di luce in più rispetto ad un classico f/2.8, permette di lavorare a ISO 1600 anziché 6400, riducendo drasticamente il rumore e conservando una gamma dinamica ed una fedeltà cromatica eccezionali sia sulla Via Lattea che sul primo piano.\n\nIl sofisticato schema ottico a 19 elementi corregge in modo impeccabile il coma ed i bagliori ai bordi del fotogramma, mantenendo le stelle perfettamente sferiche ed incise a tutta apertura. Completo di blocco del fuoco MFL Switch e supporto per fasce anticondensa, è lo strumento di lavoro fondamentale nei miei workshop.",
+                     "specs":  [
+                                   "Sony E / L-Mount",
+                                   "Apertura Nativa: f/1.4",
+                                   "MFL Manual Focus Lock",
+                                   "Holder Anti-Condensa"
+                               ],
+                     "ambassadorBadge":  "SIGMA Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Leggi l\u0027Articolo Completo nel Blog →",
+                     "actionUrl":  "../blog/test-sigma-14mm-art.html",
+                     "image":  "assets/gear_sigma_14mm_vertical.jpg"
+                 },
+                 {
+                     "id":  "sigma-24-70mm",
+                     "title":  "SIGMA 24-70mm f/2.8 DG DN Art (Sony E)",
+                     "brand":  "SIGMA LENSES • ZOOM STANDARD",
+                     "category":  "sigma",
+                     "microArticle":  "Lo zoom di lavoro quotidiano per eccellenza. Estremamente nitido da bordo a bordo a qualsiasi focale, è la lente ideale per la fotografia di paesaggio diurno, ritratti ambientati e scatti durante i trekking in montagna dove occorre rapidità di composizione e versatilità senza cambiare ottica.",
+                     "specs":  [
+                                   "Sony E",
+                                   "Apertura Costante: f/2.8",
+                                   "Vetri FLD / SLD",
+                                   "Tropicalizzato"
+                               ],
+                     "ambassadorBadge":  "SIGMA Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su SIGMA Italia",
+                     "actionUrl":  "https://www.sigma-foto.it/",
+                     "image":  "assets/gear_sigma_2470.png"
+                 },
+                 {
+                     "id":  "sigma-100-400mm",
+                     "title":  "SIGMA 100-400mm f/5-6.3 DG DN OS (Sony E)",
+                     "brand":  "SIGMA LENSES • TELEOBIETTIVO",
+                     "category":  "sigma",
+                     "microArticle":  "Il teleobiettivo leggero per isolare dettagli di creste montuose, giochi di luce sulle nubi e strati di paesaggio compresso. Offre un\u0027incisione ottica straordinaria in un corpo compatto che non pesa nello zaino durante le lunghe salite in quota.",
+                     "specs":  [
+                                   "Sony E",
+                                   "Stabilizzazione Ottica OS",
+                                   "Dual Action Zoom",
+                                   "Peso Ridotto"
+                               ],
+                     "ambassadorBadge":  "SIGMA Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su SIGMA Italia",
+                     "actionUrl":  "https://www.sigma-foto.it/",
+                     "image":  "assets/gear_sigma_100400.png"
+                 },
+                 {
+                     "id":  "nomad-msm",
+                     "title":  "Nomad Move Shoot Move Star Tracker",
+                     "brand":  "ASTROPHOTOGRAPHY • STAR TRACKER",
+                     "category":  "astro",
+                     "microArticle":  "Il tracciatore stellare ultra-compatto per chi ama viaggiare leggero senza rinunciare alla qualità. Compensando la rotazione terrestre, permette di effettuare lunghe esposizioni del cielo notturno mantenendo le stelle perfettamente puntiformi e il rumore digitale al minimo.",
+                     "specs":  [
+                                   "Formato Tascabile",
+                                   "Batteria USB Ricaricabile",
+                                   "Allineamento Polare Laser",
+                                   "Payload fino a 3kg"
+                               ],
+                     "ambassadorBadge":  null,
+                     "affiliateBadge":  "Codice Sconto \u0026 Affiliato",
+                     "discountCode":  "MSM5DAVE",
+                     "actionLabel":  "Acquista con Link Affiliato",
+                     "actionUrl":  "https://www.moveshootmove.com/",
+                     "image":  "assets/gear_nomad_msm.png"
+                 },
+                 {
+                     "id":  "vanguard-alta-pro",
+                     "title":  "Vanguard Alta Pro 3VL 264CT",
+                     "brand":  "VANGUARD • TREPPIEDE CARBONIO",
+                     "category":  "vanguard",
+                     "microArticle":  "Treppiede in fibra di carbonio ad alte prestazioni con mezza sfera di livellamento integrata. Garantisce una stabilità incrollabile per l\u0027astrofotografia in presenza di vento forte e un livellamento istantaneo su pendenze montuose o scogliere impervie.",
+                     "specs":  [
+                                   "Fibra di Carbonio 8X",
+                                   "Mezza Sfera di Livellamento",
+                                   "Testa Fluida Video/Foto",
+                                   "Piedini Chiodati"
+                               ],
+                     "ambassadorBadge":  "Vanguard Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su Vanguard World",
+                     "actionUrl":  "https://www.vanguardworld.it/",
+                     "image":  "assets/gear_vanguard_alta.png"
+                 },
+                 {
+                     "id":  "vanguard-lbp50s",
+                     "title":  "Vanguard LBP-50S Lens Pouch",
+                     "brand":  "VANGUARD • ACCESSORI \u0026 CUSTODIE",
+                     "category":  "vanguard",
+                     "microArticle":  "Custodia protettiva imbottita e tropicalizzata per l\u0027alloggiamento e il trasporto in sicurezza di ottiche pregiate, filtri a lastra e accessori delicati. Perfetta da agganciare all\u0027esterno o all\u0027interno dello zaino durante i trekking.",
+                     "specs":  [
+                                   "Imbottitura Anti-Urto",
+                                   "Tessuto Idrorepellente",
+                                   "Attacco Modulare MOLLE"
+                               ],
+                     "ambassadorBadge":  "Vanguard Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su Vanguard World",
+                     "actionUrl":  "https://www.vanguardworld.it/",
+                     "image":  "assets/gear_vanguard_lbp.png"
+                 },
+                 {
+                     "id":  "vanguard-veo-active-53kg",
+                     "title":  "Vanguard VEO Active 53KG",
+                     "brand":  "VANGUARD • ZAINO TREKKING HIGH CAPACITY",
+                     "category":  "vanguard",
+                     "microArticle":  "Lo zaino fotografico da spedizione da 53 litri. Progettato per contenere tutto il corredo fotografico (2 corpi, 4 obiettivi, tracciatore stellare) insieme all\u0027attrezzatura per il bivacco in quota (tenda, sacco a pelo, vestiario tecnico). Schienale ergonomico ad altissimo comfort.",
+                     "specs":  [
+                                   "Capacità 53 Litri",
+                                   "Modulo Removibile ICU",
+                                   "Porta Sacca Idrica",
+                                   "Copertura Pioggia Inclusa"
+                               ],
+                     "ambassadorBadge":  "Vanguard Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su Vanguard World",
+                     "actionUrl":  "https://www.vanguardworld.it/",
+                     "image":  "assets/gear_vanguard_active53.png"
+                 },
+                 {
+                     "id":  "vanguard-veo-active-46kg",
+                     "title":  "Vanguard VEO Active 46KG",
+                     "brand":  "VANGUARD • ZAINO OUTDOOR COMPATTO",
+                     "category":  "vanguard",
+                     "microArticle":  "La versione agile e dinamica da 46 litri, ottima per uscite giornaliere e trekking veloci. Mantiene gli stessi standard costruttivi ed ergonomici del 53KG in un volume più compatto, ideale per chi viaggia in aereo o su percorsi ripidi.",
+                     "specs":  [
+                                   "Capacità 46 Litri",
+                                   "Accesso Posteriore Sicuro",
+                                   "Tasche USB Passthrough",
+                                   "Attacco Treppiede Doppio"
+                               ],
+                     "ambassadorBadge":  "Vanguard Ambassador",
+                     "affiliateBadge":  null,
+                     "discountCode":  null,
+                     "actionLabel":  "Scopri su Vanguard World",
+                     "actionUrl":  "https://www.vanguardworld.it/",
+                     "image":  "assets/gear_vanguard_active46.png"
+                 }
+             ],
+    "blog":  [
+                 {
+                     "id":  "vanguard-lbp50s",
+                     "title":  "Vanguard LBP-50S: una testa a sfera compatta che non teme i carichi difficili",
+                     "category":  "vanguard",
+                     "publisherTag":  "🎒 VANGUARD WORLD OFFICIAL",
+                     "excerpt":  "Prima di entrare negli aspetti tecnici, però, voglio soffermarmi sul design. Non è soltanto una testa molto bella e curata nei dettagli: il contrasto tra il corpo nero e gli elementi arancioni mi ha...",
+                     "date":  "Luglio 2026",
+                     "readTime":  "Vanguard World",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/07/cover-image_blog-it_lbp50s_julio2026_3c3b3048-16a9-4369-8062-558d13e304b6_2048x-768x307.webp",
+                     "actionUrl":  "https://www.vanguardworld.it/blogs/articoli/vanguard-lbp-50s-una-testa-a-sfera-compatta-che-non-teme-i-carichi-difficili"
+                 },
+                 {
+                     "id":  "vanguard-veo-active-53kg-lowcost",
+                     "title":  "Viaggiare in low cost con il VEO Active 53KG: missione possibile",
+                     "category":  "vanguard",
+                     "publisherTag":  "🎒 VANGUARD WORLD OFFICIAL",
+                     "excerpt":  "Chi viaggia spesso per fotografare sa bene quanto sia importante avere uno zaino capiente, comodo e resistente. Il Vanguard VEO Active 53KG risponde perfettamente a queste esigenze ma cosa succede...",
+                     "date":  "Marzo 2026",
+                     "readTime":  "Vanguard World",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00098-Edit-768x512.jpg",
+                     "actionUrl":  "https://www.vanguardworld.it/blogs/articoli/viaggiare-in-low-cost-con-il-veo-active-53kg-missione-possibile"
+                 },
+                 {
+                     "id":  "vanguard-veo-select-39rbm",
+                     "title":  "Alla scoperta dello zaino VEO SELECT 39RBM",
+                     "category":  "vanguard",
+                     "publisherTag":  "🎒 VANGUARD WORLD OFFICIAL",
+                     "excerpt":  "Se sei alla ricerca di uno zaino che combini design, funzionalità e versatilità, il Vanguard VEO SELECT 39RBM-BK è una scelta che non delude. Ho avuto il piacere di testarlo durante un\u0027intensa...",
+                     "date":  "Aprile 2024",
+                     "readTime":  "Vanguard World",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00012-Modifica-1-768x513.jpg",
+                     "actionUrl":  "https://www.vanguardworld.it/blogs/articoli/alla-scoperta-dello-zaino-veo-select-39rbm-bk"
+                 },
+                 {
+                     "id":  "vanguard-veo-active-53kg-allweather",
+                     "title":  "Viaggiare nel mondo in tutte le condizioni atmosferiche con Vanguard VEO Active 53 KG",
+                     "category":  "vanguard",
+                     "publisherTag":  "🎒 VANGUARD WORLD OFFICIAL",
+                     "excerpt":  "Da fotografo paesaggista e timelapser mi trovo spesso a viaggiare. Di solito i miei spostamenti avvengono in aereo, ma, come è noto, l’utilizzo dell’aereo è vincolato al budget non sempre...",
+                     "date":  "Aprile 2024",
+                     "readTime":  "Vanguard World",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/04/DSC00022-Pano-1-scaled.jpg",
+                     "actionUrl":  "https://www.vanguardworld.it/blogs/articoli/viaggiare-nel-mondo-in-tutte-le-condizioni-atmosferiche-secondo-davide-luongo"
+                 },
+                 {
+                     "id":  "sigma-ambassador-davide-luongo",
+                     "title":  "Davide Luongo – Ambassador SIGMA",
+                     "category":  "sigma",
+                     "publisherTag":  "📷 SIGMA ITALIA BLOG",
+                     "excerpt":  "Mi chiamo Davide. Sono nato e cresciuto nei dintorni di Imperia, dove ho vissuto fino all’età di 20 anni. Sin da piccolo ho avuto a che fare con strumenti tecnologici grazie a mio padre...",
+                     "date":  "Marzo 2024",
+                     "readTime":  "SIGMA Italia",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/03/photo1710320834-768x512.jpeg",
+                     "actionUrl":  "https://www.sigma-italia.it/blogs/la-nostra-community/davide-luongo"
+                 },
+                 {
+                     "id":  "universofoto-astro-tenerife",
+                     "title":  "Prepararsi ad una sessione di astrofotografia a Tenerife",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Abbiamo parlato del ‘never ending day’ fotografico a Tenerife, ma focalizziamoci su quello che è uno dei motivi per cui un fotografo dovrebbe andarci almeno una volta nella vita...",
+                     "date":  "Marzo 2026",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/03/Immagine-2026-03-26-112416-768x777.jpg",
+                     "actionUrl":  "https://www.universofoto.it/astrofotografia-a-tenerife/"
+                 },
+                 {
+                     "id":  "universofoto-tenerife-giorno-infinito",
+                     "title":  "Tenerife: Il giorno che non finisce mai (se sei un fotografo)",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "A Tenerife, per un fotografo, la giornata non termina mai. È un ciclo continuo di luce che cambia, si trasforma, si spegne e rinasce...",
+                     "date":  "Agosto 2025",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2025/08/A6700004-Edit-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/viaggio-fotografico-tenerife/"
+                 },
+                 {
+                     "id":  "universofoto-madeira-cosa-portare",
+                     "title":  "Cosa portare a Madeira, l’isola dell’eterna primavera",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Madeira, un gioiello incastonato tra le acque dell’Oceano Atlantico, è conosciuta anche come l’isola dell’eterna primavera – e non a caso...",
+                     "date":  "Marzo 2026",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00317-Edit-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/cosa-portare-a-madeira/"
+                 },
+                 {
+                     "id":  "universofoto-madeira-lunga-esposizione",
+                     "title":  "Gestire una lunga esposizione a Madeira",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Rieccoci a parlare di Madeira! Voi mi direte: mare, acqua che si muove, luce radente, cieli colorati, nuvole che corrono che fai, non ti spari una lunga esposizione?...",
+                     "date":  "Marzo 2026",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/03/A7R00569-Edit-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/lunga-esposizione-a-madeira/"
+                 },
+                 {
+                     "id":  "universofoto-madeira-appunti-viaggio",
+                     "title":  "Madeira: Appunti di un viaggio fotografico",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Viaggio fotografico a Madeira, l’isola dell’eterna primavera. Non sono solito visitare destinazioni così ‘marittime’...",
+                     "date":  "Marzo 2026",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2026/03/BF_01482-Edit-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/viaggio-fotografico-madeira/"
+                 },
+                 {
+                     "id":  "universofoto-friuli-2025",
+                     "title":  "Viaggio Fotografico in Friuli: 17-18 Maggio 2025",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Scopri la bellezza selvaggia del Friuli in un viaggio fotografico unico! Il 17 e 18 Maggio 2025 Davide Luongo ti guiderà attraverso paesaggi mozzafiato...",
+                     "date":  "Maggio 2025",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/09/IMG00004-Pano-2-Modifica-scaled.jpg",
+                     "actionUrl":  "https://www.universofoto.it/viaggio-fotografico-in-friuli-17-18-maggio-2025/"
+                 },
+                 {
+                     "id":  "universofoto-nivolet-2025",
+                     "title":  "Workshop Fotografico al Colle del Nivolet: 28-29 Giugno 2025",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Nel cuore del Parco Nazionale del Gran Paradiso, il Colle del Nivolet è un altopiano sospeso tra terra e cielo, dove l’uomo è solo un ospite di passaggio...",
+                     "date":  "Giugno 2025",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/04/IMG00246-2-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/workshop-fotografico-al-colle-del-nivolet-28-29-giugno-2025/"
+                 },
+                 {
+                     "id":  "universofoto-cinque-terre-2025",
+                     "title":  "Primavera alle Cinque Terre – 22 marzo 2025",
+                     "category":  "universofoto",
+                     "publisherTag":  "📸 UNIVERSOFOTO MAGAZINE",
+                     "excerpt":  "Se ami la fotografia paesaggistica e vuoi perfezionare le tue tecniche, ecco un workshop alle Cinque Terre che fa per te! Davide Luongo ti aspetta...",
+                     "date":  "Marzo 2025",
+                     "readTime":  "UniversoFoto",
+                     "image":  "https://www.davideluongo.it/wp-content/uploads/2024/10/IMG00003-768x512.jpg",
+                     "actionUrl":  "https://www.universofoto.it/workshop-di-fotografia-alle-cinque-terre-22-marzo-2025/"
+                 }
+             ],
+    "assets":  [
+                   {
+                       "filename":  "test_sigma_14mm_fullres.png",
+                       "fullResPath":  "assets/upload/test_sigma_14mm_fullres_web.jpg",
+                       "webpPath":  "assets/upload/test_sigma_14mm_fullres_web.webp",
+                       "jpegPath":  "assets/upload/test_sigma_14mm_fullres_web.jpg",
+                       "width":  1024,
+                       "height":  1024,
+                       "srgbPreserved":  true,
+                       "uploadDate":  "2026-07-29"
+                   }
+               ],
+    "coupons":  [
+                    {
+                        "id":  "CP-001",
+                        "code":  "DAVEPRO10",
+                        "type":  "percentage",
+                        "value":  10,
+                        "description":  "Sconto 10% riservato alla community",
+                        "active":  true,
+                        "percentage":  10,
+                        "fixedPrice":  null,
+                        "maxDiscount":  null,
+                        "usageLimit":  50,
+                        "usedCount":  0
+                    },
+                    {
+                        "id":  "CP-002",
+                        "code":  "EARLYBIRD50",
+                        "type":  "fixed_price",
+                        "value":  300,
+                        "description":  "Prezzo speciale lancio €300 per saldo completo",
+                        "active":  true,
+                        "percentage":  null,
+                        "fixedPrice":  300,
+                        "maxDiscount":  null,
+                        "usageLimit":  5,
+                        "usedCount":  0
+                    }
+                ]
 }

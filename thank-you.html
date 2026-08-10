@@ -163,13 +163,52 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('name')) document.getElementById('summary-name').innerText = urlParams.get('name');
-      if (urlParams.has('email')) document.getElementById('summary-email').innerText = urlParams.get('email');
-      if (urlParams.has('phone')) document.getElementById('summary-phone').innerText = urlParams.get('phone');
-      if (urlParams.has('workshop')) document.getElementById('summary-workshop').innerText = urlParams.get('workshop');
-      if (urlParams.has('payment')) document.getElementById('summary-payment').innerText = urlParams.get('payment');
+      const p = new URLSearchParams(window.location.search);
+
+      // Personal data (old params still work)
+      if (p.has('name'))  document.getElementById('summary-name').innerText  = p.get('name');
+      if (p.has('email')) document.getElementById('summary-email').innerText = p.get('email');
+      if (p.has('phone')) document.getElementById('summary-phone').innerText = p.get('phone');
+      if (p.has('workshop')) document.getElementById('summary-workshop').innerText = p.get('workshop');
+
+      // New PayPal params
+      const bookingId = p.get('bookingId') || '';
+      const formula   = p.get('formula')   || 'caparra';
+      const amount    = p.get('amount')    || '';
+
+      // Update payment summary text
+      const payEl = document.getElementById('summary-payment');
+      if (payEl) {
+        if (formula === 'caparra') {
+          payEl.textContent = `💳 Caparra €50 confermata — Saldo residuo in loco (Bonifico / Contanti / PayPal)`;
+          payEl.style.color = 'var(--accent-cyan)';
+        } else {
+          const amtFmt = amount ? `€${parseFloat(amount).toFixed(2)}` : '€350.00';
+          payEl.textContent = `💰 Pagamento Completo ${amtFmt} — Nessun importo residuo`;
+          payEl.style.color = '#a855f7';
+        }
+      }
+
+      // Inject booking ID row if present
+      if (bookingId) {
+        const summaryBox = document.querySelector('.booking-summary') || document.querySelector('[class*="summary"]');
+        if (summaryBox) {
+          const div = document.createElement('div');
+          div.className = 'summary-row';
+          div.innerHTML = `
+            <span style="color:var(--text-secondary);">ID Prenotazione:</span>
+            <strong style="color:var(--accent-cyan); font-family:monospace; font-size:0.85rem;">${bookingId}</strong>
+          `;
+          summaryBox.insertBefore(div, summaryBox.firstChild);
+        }
+      }
+
+      // Clean URL
+      if (window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     });
   </script>
+
 </body>
 </html>

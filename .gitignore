@@ -5,4 +5,10 @@ __pycache__/
 *.pyc
 data/smtp_config.json
 
+# Credenziali e dati sensibili — NON committare mai
+.env
+production.env
+private/*.env
+data/bookings.json
+
 
