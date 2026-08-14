@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Davide Luongo — Elementor-Style Admin CMS Client Logic
    ========================================================================== */
 
@@ -818,86 +818,196 @@ function renderCouponsEditor() {
   container.innerHTML = '';
 
   if (adminCoupons.length === 0) {
-    container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Nessun codice sconto presente. Clicca su "+ Nuovo Codice Sconto" per crearne uno.</p>';
+    container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:1rem;">Nessun codice sconto. Clicca su "+ Nuovo Codice Sconto" per crearne uno.</p>';
     return;
   }
 
   adminCoupons.forEach((c, idx) => {
+    const isPercent   = c.type === 'percentage';
+    const isFixed     = c.type === 'fixed_price';
+    const percentVal  = c.percentage  != null ? c.percentage  : (c.value || 0);
+    const fixedVal    = c.fixedPrice  != null ? c.fixedPrice  : (isFixed ? (c.value || 0) : '');
+    const usedCount   = c.usedCount   || 0;
+    const usageLimit  = c.usageLimit  != null ? c.usageLimit  : '';
+    const description = c.description || '';
+
     const card = document.createElement('div');
     card.className = 'entity-card';
     card.style.marginBottom = '1.25rem';
     card.innerHTML = `
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.1rem; color: var(--accent-cyan); font-family: var(--font-heading); font-weight: 800; letter-spacing: 1px;">🎟️ ${c.code || 'NUOVO_CODICE'}</h3>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+        <div>
+          <h3 style="font-size:1.1rem; color:var(--accent-cyan); font-family:var(--font-heading); font-weight:800; letter-spacing:1px; margin:0;">
+            🎟️ ${c.code || 'NUOVO_CODICE'}
+          </h3>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
+            Utilizzi: ${usedCount}${usageLimit !== '' ? ' / ' + usageLimit : ' (illimitato)'}
+            &nbsp;·&nbsp;
+            <span style="color:${c.active !== false ? '#4ade80' : '#f87171'}">
+              ${c.active !== false ? '● Attivo' : '● Disattivato'}
+            </span>
+          </div>
+        </div>
         <button class="delete-btn" onclick="deleteCoupon(${idx})">🗑️ Elimina</button>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
-          <label class="form-label">Codice Sconto (es. DAVEPRO10)</label>
-          <input type="text" class="form-input coupon-code-input" data-idx="${idx}" value="${c.code || ''}" style="text-transform: uppercase; font-family: var(--font-heading); font-weight: 700;" />
+          <label class="form-label">Codice (es. DAVEPRO10)</label>
+          <input type="text" class="form-input coupon-code-input" data-idx="${idx}"
+                 value="${c.code || ''}"
+                 style="text-transform:uppercase; font-family:var(--font-heading); font-weight:700;" />
         </div>
 
         <div class="form-group">
           <label class="form-label">Tipologia Sconto</label>
-          <select class="form-input coupon-type-input" data-idx="${idx}">
-            <option value="percentage" ${c.type === 'percentage' ? 'selected' : ''}>Sconto Percentuale (%)</option>
-            <option value="fixed_price" ${c.type === 'fixed_price' ? 'selected' : ''}>Prezzo Finale Fisso (€)</option>
+          <select class="form-input coupon-type-input" data-idx="${idx}" onchange="onCouponTypeChange(this)">
+            <option value="percentage" ${isPercent ? 'selected' : ''}>Sconto Percentuale (%)</option>
+            <option value="fixed_price" ${isFixed   ? 'selected' : ''}>Prezzo Finale Fisso (€)</option>
           </select>
         </div>
+      </div>
 
+      <!-- Campo Percentuale -->
+      <div class="form-group coupon-pct-group-${idx}" style="display:${isPercent ? '' : 'none'}; margin-top:0.5rem;">
+        <label class="form-label">Percentuale di Sconto (es. 10 = -10%)</label>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <input type="number" class="form-input coupon-pct-input" data-idx="${idx}"
+                 value="${percentVal}" min="1" max="99" step="1" style="max-width:120px;" />
+          <span style="color:var(--text-secondary); font-size:0.9rem;">%</span>
+          <span style="font-size:0.8rem; color:var(--text-muted); margin-left:0.5rem;" id="pct-preview-${idx}">
+            → Su €350: risparmio €${((percentVal/100)*350).toFixed(2)}, paghi €${(350 - (percentVal/100)*350).toFixed(2)}
+          </span>
+        </div>
+      </div>
+
+      <!-- Campo Prezzo Fisso -->
+      <div class="form-group coupon-fixed-group-${idx}" style="display:${isFixed ? '' : 'none'}; margin-top:0.5rem;">
+        <label class="form-label">Prezzo Finale Fisso (€) — es. 300 = prezzo finale €300</label>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span style="color:var(--text-secondary);">€</span>
+          <input type="number" class="form-input coupon-fixed-input" data-idx="${idx}"
+                 value="${fixedVal}" min="0" max="349" step="1" style="max-width:120px;" />
+          <span style="font-size:0.8rem; color:var(--text-muted); margin-left:0.5rem;" id="fixed-preview-${idx}">
+            ${fixedVal !== '' ? `→ Sconto: -€${(350 - fixedVal).toFixed(2)}` : ''}
+          </span>
+        </div>
+        <div style="font-size:0.75rem; color:rgba(168,85,247,0.8); margin-top:0.35rem;">
+          ✱ In caso di caparra, il saldo in loco sarà <strong>prezzo fisso − €50</strong>.
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top:1rem;">
         <div class="form-group">
-          <label class="form-label">Valore Sconto (es. 15 per -15% oppure 300 per €300 fisso)</label>
-          <input type="number" class="form-input coupon-value-input" data-idx="${idx}" value="${c.value || 0}" />
+          <label class="form-label">Descrizione (interna, per admin)</label>
+          <input type="text" class="form-input coupon-desc-input" data-idx="${idx}"
+                 value="${description}" placeholder="Es. Sconto per iscritti newsletter" />
         </div>
 
         <div class="form-group">
-          <label class="form-label">Stato Codice</label>
+          <label class="form-label">Limite Utilizzi (vuoto = illimitato)</label>
+          <input type="number" class="form-input coupon-limit-input" data-idx="${idx}"
+                 value="${usageLimit}" min="1" placeholder="es. 10" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Stato</label>
           <select class="form-input coupon-active-input" data-idx="${idx}">
-            <option value="true" ${c.active !== false ? 'selected' : ''}>Attivo</option>
-            <option value="false" ${c.active === false ? 'selected' : ''}>Disattivato</option>
+            <option value="true"  ${c.active !== false ? 'selected' : ''}>✅ Attivo</option>
+            <option value="false" ${c.active === false  ? 'selected' : ''}>⛔ Disattivato</option>
           </select>
         </div>
       </div>
     `;
     container.appendChild(card);
+
+    // Live preview on percentage input
+    const pctInput = card.querySelector(`.coupon-pct-input`);
+    if (pctInput) {
+      pctInput.addEventListener('input', () => {
+        const v = parseFloat(pctInput.value) || 0;
+        const el = document.getElementById(`pct-preview-${idx}`);
+        if (el) el.textContent = `→ Su €350: risparmio €${((v/100)*350).toFixed(2)}, paghi €${(350-(v/100)*350).toFixed(2)}`;
+      });
+    }
+    const fixedInput = card.querySelector(`.coupon-fixed-input`);
+    if (fixedInput) {
+      fixedInput.addEventListener('input', () => {
+        const v = parseFloat(fixedInput.value) || 0;
+        const el = document.getElementById(`fixed-preview-${idx}`);
+        if (el) el.textContent = v > 0 ? `→ Sconto: -€${(350 - v).toFixed(2)}` : '';
+      });
+    }
   });
+}
+
+function onCouponTypeChange(selectEl) {
+  const idx = selectEl.getAttribute('data-idx');
+  const val = selectEl.value;
+  const pctGroup   = document.querySelector(`.coupon-pct-group-${idx}`);
+  const fixedGroup = document.querySelector(`.coupon-fixed-group-${idx}`);
+  if (pctGroup)   pctGroup.style.display   = val === 'percentage'  ? '' : 'none';
+  if (fixedGroup) fixedGroup.style.display = val === 'fixed_price'  ? '' : 'none';
 }
 
 function addNewCoupon() {
   if (!globalData.coupons) globalData.coupons = [];
-  const newCode = `PROMO${Math.floor(Math.random()*1000)}`;
+  const newCode = `PROMO${Math.floor(Math.random() * 9000) + 1000}`;
   globalData.coupons.push({
-    id: `CP-${Date.now()}`,
-    code: newCode,
-    type: 'percentage',
-    value: 10,
-    active: true
+    id:          `CP-${Date.now()}`,
+    code:        newCode,
+    type:        'percentage',
+    percentage:  10,
+    fixedPrice:  null,
+    description: '',
+    usageLimit:  null,
+    usedCount:   0,
+    active:      true
   });
   renderCouponsEditor();
 }
 
 function deleteCoupon(idx) {
-  if (confirm('Sei sicuro di voler eliminare questo codice sconto?')) {
+  if (confirm(`Eliminare il codice "${(globalData.coupons[idx] || {}).code}"?`)) {
     globalData.coupons.splice(idx, 1);
     renderCouponsEditor();
   }
 }
 
 function saveCouponsFromAdmin() {
-  const codes = document.querySelectorAll('.coupon-code-input');
-  const types = document.querySelectorAll('.coupon-type-input');
-  const values = document.querySelectorAll('.coupon-value-input');
+  const codes   = document.querySelectorAll('.coupon-code-input');
+  const types   = document.querySelectorAll('.coupon-type-input');
   const actives = document.querySelectorAll('.coupon-active-input');
+  const descs   = document.querySelectorAll('.coupon-desc-input');
+  const limits  = document.querySelectorAll('.coupon-limit-input');
 
   const updatedCoupons = [];
-  codes.forEach((input, idx) => {
+  codes.forEach((codeInput, i) => {
+    const idx     = parseInt(codeInput.getAttribute('data-idx'));
+    const type    = types[i].value;
+    const existing = globalData.coupons[idx] || {};
+
+    let percentage = null;
+    let fixedPrice = null;
+    if (type === 'percentage') {
+      const pctEl = document.querySelector(`.coupon-pct-input[data-idx="${idx}"]`);
+      percentage  = pctEl ? (parseFloat(pctEl.value) || 10) : 10;
+    } else {
+      const fixEl = document.querySelector(`.coupon-fixed-input[data-idx="${idx}"]`);
+      fixedPrice  = fixEl ? (parseFloat(fixEl.value) || null) : null;
+    }
+
+    const limitVal = limits[i].value.trim();
     updatedCoupons.push({
-      id: globalData.coupons[idx] ? globalData.coupons[idx].id : `CP-${idx}`,
-      code: input.value.trim().toUpperCase(),
-      type: types[idx].value,
-      value: parseFloat(values[idx].value) || 0,
-      active: actives[idx].value === 'true'
+      id:          existing.id || `CP-${Date.now()}-${i}`,
+      code:        codeInput.value.trim().toUpperCase(),
+      type:        type,
+      percentage:  percentage,
+      fixedPrice:  fixedPrice,
+      description: descs[i] ? descs[i].value.trim() : '',
+      usageLimit:  limitVal !== '' ? parseInt(limitVal) : null,
+      usedCount:   existing.usedCount || 0,
+      active:      actives[i].value === 'true'
     });
   });
 
@@ -908,8 +1018,13 @@ function saveCouponsFromAdmin() {
   })
     .then(res => res.json())
     .then(data => {
-      globalData.coupons = updatedCoupons;
-      showToast('Codici sconto salvati con successo!');
+      if (data.status === 'success' || data.status === 'ok') {
+        globalData.coupons = updatedCoupons;
+        renderCouponsEditor();
+        showToast('✅ Codici sconto salvati!');
+      } else {
+        alert('Errore: ' + (data.message || 'Risposta inattesa'));
+      }
     })
-    .catch(err => alert('Errore nel salvataggio dei codici sconto.'));
+    .catch(() => alert('Errore di rete nel salvataggio dei coupon.'));
 }

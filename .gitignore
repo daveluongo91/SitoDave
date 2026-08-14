@@ -1,14 +1,45 @@
+# Cartelle di dipendenze / compilate
 davide-second-brain/
-.DS_Store
-*.log
 __pycache__/
+backend/.venv/
+backend/**/__pycache__/
+node_modules/
 *.pyc
-data/smtp_config.json
+*.pyo
 
-# Credenziali e dati sensibili — NON committare mai
+# File sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# ============================================================
+# DATI SENSIBILI — NON committare mai
+# ============================================================
 .env
 production.env
-private/*.env
+
+# Tutta la cartella private/ esclusa — contiene pw, backup, db
+private/
+
+# Ma includi gli script di setup (override del blocco private/)
+!private/_backup.ps1
+!private/_mkdirs.ps1
+!private/_setup.ps1
+!private/_test_settings.py
+
+# ============================================================
+# DATI RUNTIME
+# ============================================================
+data/smtp_config.json
 data/bookings.json
+data/paypal_token_cache.json
 
+# Cache Python
+*.pyc
+*.pyo
 
+# File di test locali
+Test/
