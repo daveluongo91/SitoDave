@@ -538,9 +538,10 @@
         <!-- Colonna sinistra: foto -->
         <div style="
           position: relative;
-          min-height: 480px;
+          min-height: 520px;
           overflow: hidden;
-        ">
+          cursor: zoom-in;
+        " onmouseenter="this.querySelector('img').style.transform='scale(1.04)'" onmouseleave="this.querySelector('img').style.transform='scale(1)'">
           <img
             src="assets/bts_mountains_embrace_sky.jpg"
             alt="Via Lattea tra le montagne alpine — Where Mountains Embrace the Sky"
@@ -550,15 +551,16 @@
               width: 100%;
               height: 100%;
               object-fit: cover;
-              object-position: center top;
-              transition: transform 0.6s ease;
+              object-position: center 30%;
+              transition: transform 0.7s ease;
             "
           />
-          <!-- overlay gradiente verso destra per fusione -->
+          <!-- overlay gradiente verso destra per fusione con il testo -->
           <div style="
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, transparent 60%, var(--bg-secondary) 100%);
+            background: linear-gradient(to right, transparent 55%, var(--bg-secondary) 100%);
+            pointer-events: none;
           "></div>
         </div>
 
