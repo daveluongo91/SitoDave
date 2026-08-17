@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import field_validator, model_validator
+from pydantic import model_validator
 
 # Root del progetto (L:\Sito_Dave)
 # settings.py è in backend/app/config/ → parents[3] = L:\Sito_Dave
@@ -101,7 +101,7 @@ class Settings(BaseSettings):
 
     @property
     def public_upload_dir(self) -> Path:
-        d = PROJECT_ROOT / "frontend" / "assets" / "images"
+        d = PROJECT_ROOT / "assets" / "upload"
         d.mkdir(parents=True, exist_ok=True)
         return d
 
@@ -109,19 +109,23 @@ class Settings(BaseSettings):
     def allowed_origins_list(self) -> list[str]:
         return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
 
-    @field_validator("secret_key")
-    @classmethod
-    def secret_key_must_be_set_in_production(cls, v: str) -> str:
-        # Genera un default sicuro se non configurato (solo sviluppo locale)
-        if not v:
-            import secrets
-            return secrets.token_hex(32)
-        return v
-
     @model_validator(mode="after")
-    def warn_if_development(self) -> "Settings":
+    def validate_environment(self) -> "Settings":
         if self.app_env == "production" and not self.secret_key:
             raise ValueError("SECRET_KEY è obbligatoria in produzione.")
+        if not self.secret_key:
+            import secrets
+            self.secret_key = secrets.token_hex(32)
+        if self.paypal_env.lower() == "live":
+            missing = [
+                name for name, value in (
+                    ("PAYPAL_LIVE_CLIENT_ID", self.paypal_live_client_id),
+                    ("PAYPAL_LIVE_CLIENT_SECRET", self.paypal_live_client_secret),
+                    ("PAYPAL_WEBHOOK_ID", self.paypal_webhook_id),
+                ) if not value
+            ]
+            if missing:
+                raise ValueError(f"Configurazione PayPal live incompleta: {', '.join(missing)}")
         return self
 
 

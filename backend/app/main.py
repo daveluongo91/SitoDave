@@ -8,7 +8,8 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -91,25 +92,75 @@ app.include_router(reports.router)
 app.include_router(audit.router)
 app.include_router(paypal.router)  # [ISOLATO]
 
-# ── Static Files ──────────────────────────────────────────────────────────────
-# Frontend pubblico (NON serve private/, data/, backend/)
-_frontend = PROJECT_ROOT / "frontend"
-if _frontend.exists():
-    app.mount("/assets", StaticFiles(directory=str(_frontend / "assets")), name="assets")
-    app.mount("/css", StaticFiles(directory=str(_frontend / "css")), name="css")
-    app.mount("/js", StaticFiles(directory=str(_frontend / "js")), name="js")
+# ── Health check ──────────────────────────────────────────────────────────────
+@app.get("/api/health")
+async def health():
+    return {"status": "ok", "version": "3.0.0", "environment": settings.app_env}
+
+
+# ── Frontend pubblico con allowlist ──────────────────────────────────────────
+# Non montare mai PROJECT_ROOT: contiene .env, backend/, data/ e private/.
+def _public_file(filename: str) -> FileResponse:
+    path = PROJECT_ROOT / filename
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="Risorsa non trovata.")
+    return FileResponse(path)
+
+
+@app.get("/", include_in_schema=False)
+@app.get("/index.html", include_in_schema=False)
+async def home():
+    return _public_file("index.html")
+
+
+@app.get("/thank-you.html", include_in_schema=False)
+async def thank_you():
+    return _public_file("thank-you.html")
+
+
+@app.get("/style.css", include_in_schema=False)
+async def stylesheet():
+    return _public_file("style.css")
+
+
+@app.get("/main.js", include_in_schema=False)
+async def main_script():
+    return _public_file("main.js")
+
+
+@app.get("/blog.js", include_in_schema=False)
+async def blog_script():
+    return _public_file("blog.js")
+
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots():
+    return _public_file("robots.txt")
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+async def sitemap():
+    return _public_file("sitemap.xml")
+
+
+for route, folder in (
+    ("/assets", "assets"),
+    ("/blog", "blog"),
+    ("/gear", "gear"),
+    ("/workshops_2026", "workshops_2026"),
+    ("/viaggi_2027", "viaggi_2027"),
+    ("/prelancio", "prelancio"),
+):
+    directory = PROJECT_ROOT / folder
+    if directory.exists():
+        app.mount(route, StaticFiles(directory=str(directory), html=True), name=folder)
+
+
+@app.get("/data/articles.json", include_in_schema=False)
+async def public_articles():
+    return FileResponse(PROJECT_ROOT / "data" / "articles.json", media_type="application/json")
 
 # Admin SPA
 _admin = PROJECT_ROOT / "admin"
 if _admin.exists():
     app.mount("/admin", StaticFiles(directory=str(_admin), html=True), name="admin")
-
-# Frontend root (index.html, thank-you.html, ecc.)
-if _frontend.exists():
-    app.mount("/", StaticFiles(directory=str(_frontend), html=True), name="frontend")
-
-
-# ── Health check ──────────────────────────────────────────────────────────────
-@app.get("/api/health")
-async def health():
-    return {"status": "ok", "version": "3.0.0"}

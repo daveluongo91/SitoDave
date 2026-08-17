@@ -9,6 +9,7 @@ import json
 from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
+from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
 from backend.app.config.database import get_db
@@ -137,17 +138,12 @@ class MediaUpdate(BaseModel):
     focalPointY: Optional[float] = None
     tags: Optional[str] = None
 
-    from pydantic import field_validator
     @field_validator("focalPointX", "focalPointY")
     @classmethod
     def focal_range(cls, v: Optional[float]) -> Optional[float]:
         if v is not None and not (0.0 <= v <= 1.0):
             raise ValueError("Il punto focale deve essere tra 0.0 e 1.0.")
         return v
-
-
-from pydantic import BaseModel
-
 
 @router.put("/{media_id}", dependencies=[Depends(verify_csrf)])
 async def update_media(

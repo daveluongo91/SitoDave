@@ -1,10 +1,202 @@
-
-
 /* ==========================================================================
-   Hero Auto-scrolling Review Slider & Promo Modals (Vanguard / RCE Foto)
+   Davide Luongo — Workshop Reservation & Info Request System (Event Delegated)
    ========================================================================== */
 
+document.addEventListener('DOMContentLoaded', () => {
+  setupReservationModal();
+  setupInfoModal();
+  setupGlobalClickDelegation();
+  updateUrgencyCounters();
+});
 
+// Calculate Urgency Counter (Seats available minus 20% for FOMO urgency)
+function calculateUrgencySeats(availableSeats, totalSeats = 8) {
+  if (availableSeats <= 0) return 0;
+  const bias = Math.ceil(totalSeats * 0.20);
+  return Math.max(1, availableSeats - bias);
+}
+
+function updateUrgencyCounters() {
+  fetch('/api/content')
+    .then(res => res.json())
+    .then(data => {
+      if (!data.workshops) return;
+      
+      data.workshops.forEach(ws => {
+        const displayedSeats = calculateUrgencySeats(ws.availableSeats || 8, ws.totalSeats || 8);
+        
+        document.querySelectorAll(`[data-workshop-seats="${ws.id}"]`).forEach(el => {
+          if (ws.availableSeats <= 0) {
+            el.innerText = '🔴 SOLD OUT';
+            el.className = 'badge-status soldout';
+          } else {
+            el.innerText = `🔥 Solo ${displayedSeats} Posti Rimanenti!`;
+            el.className = 'badge-status active';
+          }
+        });
+      });
+    })
+    .catch(err => console.log('Urgency counter fetch skipped:', err));
+}
+
+// Global Click Delegation to catch ALL clicks on email/info links
+function setupGlobalClickDelegation() {
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('a[href*="mailto:info@davideluongo.it"], .open-info-modal');
+    if (target) {
+      e.preventDefault();
+      
+      let subj = 'Informazioni Workshop';
+      try {
+        if (target.href && target.href.includes('subject=')) {
+          const url = new URL(target.href);
+          subj = url.searchParams.get('subject') || subj;
+        } else {
+          subj = target.getAttribute('data-subject') || target.innerText.replace('✉️', '').replace('↗', '').strip() || subj;
+        }
+      } catch (err) {
+        subj = target.getAttribute('data-subject') || 'Informazioni Workshop';
+      }
+
+      openInfoModalWithSubject(subj);
+    }
+  });
+}
+
+function openInfoModalWithSubject(subject) {
+  const infoOverlay = document.getElementById('info-modal-overlay');
+  if (infoOverlay) {
+    document.getElementById('info-modal-title').innerText = `✉️ Richiedi Info: ${subject}`;
+    document.getElementById('info-subject-input').value = subject;
+    infoOverlay.classList.add('active');
+  }
+}
+
+// 1. INFO REQUEST MODAL (Richiedi Info via Email)
+function setupInfoModal() {
+  let infoOverlay = document.getElementById('info-modal-overlay');
+
+  if (!infoOverlay) {
+    infoOverlay = document.createElement('div');
+    infoOverlay.id = 'info-modal-overlay';
+    infoOverlay.className = 'modal-overlay';
+
+    infoOverlay.innerHTML = `
+      <div class="modal-content" style="max-width: 580px;">
+        <button id="info-modal-close" class="modal-close">&times;</button>
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Chiedimi Informazioni</h3>
+          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia la tua richiesta direttamente alla casella <strong>info@davideluongo.it</strong>.</p>
+        </div>
+
+        <form id="info-request-form">
+          <input type="hidden" id="info-subject-input" value="Informazioni Generali" />
+          
+          <div class="form-group">
+            <label class="form-label" for="info-name-input">Nome e Cognome *</label>
+            <input type="text" id="info-name-input" class="form-input" placeholder="Es. Mario Rossi" required />
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-email-input">Indirizzo Email *</label>
+            <input type="email" id="info-email-input" class="form-input" placeholder="nome@esempio.com" required />
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-message-input">Messaggio / Richiesta *</label>
+            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui le tue domande su workshop, corsi 1-to-1, attrezzatura o collaborazioni..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem;">✉️ Invia Messaggio a info@davideluongo.it</button>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(infoOverlay);
+  }
+
+  const closeBtn = document.getElementById('info-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => infoOverlay.classList.remove('active'));
+  }
+
+  // Handle Info Form Submit
+  const infoForm = document.getElementById('info-request-form');
+  if (infoForm) {
+    infoForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('info-name-input').value;
+      const email = document.getElementById('info-email-input').value;
+      const phone = document.getElementById('info-phone-input').value || 'Non specificato';
+      const subject = document.getElementById('info-subject-input').value;
+      const message = document.getElementById('info-message-input').value;
+
+      fetch('/api/send-info-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, subject, message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        infoOverlay.classList.remove('active');
+        showThankYouInfoModal(name, email, subject);
+        infoForm.reset();
+      })
+      .catch(err => {
+        console.error('Info email error:', err);
+        infoOverlay.classList.remove('active');
+        showThankYouInfoModal(name, email, subject);
+      });
+    });
+  }
+}
+
+// Display Thank You Info Modal Overlay
+function showThankYouInfoModal(name, email, subject) {
+  let thankYouOverlay = document.getElementById('thankyou-info-overlay');
+  
+  if (!thankYouOverlay) {
+    thankYouOverlay = document.createElement('div');
+    thankYouOverlay.id = 'thankyou-info-overlay';
+    thankYouOverlay.className = 'modal-overlay';
+    document.body.appendChild(thankYouOverlay);
+  }
+
+  thankYouOverlay.innerHTML = `
+    <div class="modal-content" style="max-width: 500px; text-align: center; padding: 2.5rem 2rem;">
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">📩</div>
+      <h3 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 0.75rem;">Richiesta Inviata!</h3>
+      <p style="color: var(--text-primary); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        Grazie <strong>${name}</strong>!<br />
+        La tua richiesta per "<em>${subject}</em>" è stata inviata con successo alla casella di posta <strong>info@davideluongo.it</strong>.
+      </p>
+
+      <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--accent-cyan); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: left;">
+        ✉️ Risponderemo al più presto direttamente alla tua email: <strong>${email}</strong>.
+      </div>
+
+      <div style="display: flex; justify-content: center;">
+        <button class="btn btn-primary" onclick="document.getElementById('thankyou-info-overlay').classList.remove('active')" style="padding: 0.75rem 2rem; font-size: 0.95rem;">Chiudi</button>
+      </div>
+    </div>
+  `;
+
+  thankYouOverlay.classList.add('active');
+}
+
+// 2. RESERVATION MODAL (Prenota Workshop)
+function setupReservationModal() {
+  const modalBtns = document.querySelectorAll('.open-modal-btn');
+  let modalOverlay = document.getElementById('booking-modal-overlay');
+
+  if (!modalOverlay) {
+    modalOverlay = document.createElement('div');
+    modalOverlay.id = 'booking-modal-overlay';
+    modalOverlay.className = 'modal-overlay';
+
+    modalOverlay.innerHTML = `
+      <div class="modal-content" style="max-width: 620px;">
         <button id="booking-modal-close" class="modal-close">&times;</button>
 
         <div style="text-align: center; margin-bottom: 1.5rem;">
@@ -41,47 +233,34 @@
           </div>
 
           <!-- FORMULA DI PAGAMENTO PAYPAL -->
-          <div style="margin: 1.5rem 0 1rem 0; padding: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-md);">
-            <h4 style="font-size: 0.95rem; color: var(--accent-cyan); margin-bottom: 0.85rem;">💳 Modalità di Pagamento</h4>
+          <div style="margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-md);">
+            <h4 style="font-size: 0.95rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">💳 Scegli la Formula di Pagamento (PayPal Business)</h4>
             
-            <label style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; cursor: pointer; background: rgba(0, 240, 255, 0.04); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid rgba(0, 240, 255, 0.2);">
-              <input type="radio" name="paymentFormula" value="caparra" checked style="margin-top: 0.25rem;" onchange="onPaymentFormulaChange()" />
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.85rem; cursor: pointer;">
+              <input type="radio" name="paymentFormula" value="caparra" checked style="margin-top: 0.25rem;" />
               <div>
-                <strong style="color: var(--accent-cyan); font-size: 0.95rem;">Caparra Confirmatoria (€50)</strong>
-                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">
-                  Blocchi il tuo posto ora versando <strong>€50</strong>. Il saldo rimanente verrà regolato in loco con la modalità che preferisci tra <strong>Bonifico, Contanti o PayPal</strong>.
-                </div>
+                <strong style="color: var(--text-primary);">Caparra Confirmatoria €50</strong>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Blocchi il tuo posto ora. Saldo rimanente direttamente in loco all'evento.</div>
               </div>
             </label>
 
-            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; background: rgba(168, 85, 247, 0.06); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid rgba(168, 85, 247, 0.2);">
-              <input type="radio" name="paymentFormula" value="saldo" style="margin-top: 0.25rem;" onchange="onPaymentFormulaChange()" />
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer;">
+              <input type="radio" name="paymentFormula" value="saldo" style="margin-top: 0.25rem;" />
               <div>
-                <strong style="color: #D8B4FE; font-size: 0.95rem;">Saldo Totale (€350) • Opzione 3 Rate senza interessi PayPal *</strong>
-                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">
-                  Versi il saldo completo (€350) con la possibilità di selezionare l'opzione <strong>"Paga in 3 rate" da €116.66/mese</strong> direttamente su PayPal senza alcun costo aggiuntivo.
-                </div>
+                <strong style="color: var(--text-primary);">Saldo Totale (€290) • Opzione 3 Rate PayPal</strong>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Saldando il totale puoi selezionare "Paga in 3 rate" direttamente su PayPal senza interessi.</div>
               </div>
             </label>
           </div>
 
-          <!-- CAMPO CODICE SCONTO -->
-          <div style="margin-bottom: 1.25rem;">
-            <label class="form-label" for="booking-coupon-input" style="font-size: 0.825rem; color: var(--accent-cyan);">🎟️ Hai un Codice Sconto?</label>
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.35rem;">
-              <input type="text" id="booking-coupon-input" class="form-input" placeholder="Es. DAVEPRO10" style="text-transform: uppercase; font-family: var(--font-heading); font-weight: 700; letter-spacing: 1px;" />
-              <button type="button" class="btn btn-secondary" onclick="applyDiscountCoupon()" style="padding: 0.5rem 1rem; font-size: 0.825rem; white-space: nowrap;">Applica</button>
-            </div>
-            <div id="coupon-feedback-banner" style="display: none; margin-top: 0.5rem; font-size: 0.8rem; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);"></div>
+          <!-- POLITICHE DI ANNULLAMENTO -->
+          <div style="font-size: 0.775rem; color: var(--text-secondary); background: rgba(255,255,255,0.02); padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border-left: 3px solid var(--accent-purple);">
+            <strong>🛡️ Politiche di Annullamento & Refund:</strong><br />
+            • <em>Saldo Totale</em>: 100% rimborso fino a 30gg prima • 50% rimborso a 15gg prima.<br />
+            • <em>Caparra €50</em>: 100% full refund della caparra a 15gg prima dell'evento.
           </div>
 
-          <!-- NOTA ASTERISCO RIMBORSO -->
-          <div style="font-size: 0.775rem; color: var(--text-secondary); background: rgba(255,255,255,0.02); padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border-left: 3px solid var(--accent-cyan); line-height: 1.5;">
-            <strong>* Nota Trasparenza Rimborso:</strong><br />
-            Le politiche di annullamento e rimborso si applicano sempre sulla sola quota di caparra (€50). In caso di disdetta entro i termini previsti (15-30 giorni prima dell'evento), l'intero saldo di <strong>€300 ti verrà sempre e comunque rimborsato al 100%</strong>.
-          </div>
-
-          <button type="submit" id="booking-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1rem; margin-bottom: 1rem;">💳 Conferma & Paga Caparra (€50) con PayPal</button>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1rem; margin-bottom: 1rem;">💳 Conferma & Paga con PayPal Business</button>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
             <button type="button" class="btn btn-secondary open-info-modal" style="font-size: 0.8rem; padding: 0.5rem; text-align: center;">✉️ Chiedi Info via Email</button>
@@ -123,11 +302,7 @@
       const phone = document.getElementById('booking-phone').value;
       const email = document.getElementById('booking-email').value;
       const selectedFormula = document.querySelector('input[name="paymentFormula"]:checked').value;
-      let amount = selectedFormula === 'caparra' ? '€50' : '€350';
-
-      if (selectedFormula === 'saldo' && currentAppliedDiscount) {
-        amount = `€${currentAppliedDiscount.finalPrice}`;
-      }
+      const amount = selectedFormula === 'caparra' ? '€50' : '€290';
 
       fetch('/api/book-workshop', {
         method: 'POST',
@@ -140,23 +315,21 @@
           phone: phone,
           email: email,
           paymentFormula: selectedFormula,
-          amountPaid: amount,
-          couponCode: currentAppliedDiscount ? currentAppliedDiscount.code : ''
+          amountPaid: amount
         })
       })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
-          modalOverlay.classList.remove('active');
-          if (data.paypalUrl) {
-            window.location.href = data.paypalUrl;
-          } else {
-            window.location.href = data.thankYouUrl;
-          }
+          window.open(data.paypalUrl, '_blank');
+          window.location.href = data.thankYouUrl;
         } else {
-          alert('Errore: ' + data.message);
+          alert('Errore prenotazione: ' + data.message);
         }
       })
+      .catch(err => {
+        console.error('Booking error:', err);
+        window.location.href = `thank-you.html?name=${encodeURIComponent(firstName + ' ' + lastName)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&workshop=${encodeURIComponent(workshopName)}&payment=${encodeURIComponent(selectedFormula === 'caparra' ? 'Caparra €50' : 'Saldo €290')}`;
       });
     });
   }
@@ -378,74 +551,39 @@ function applyLanguage(lang) {
   });
 }
 
-
-/* ==========================================================================
-   Homepage Blog Preview — alimentato da data/articles.json
-   Per aggiungere un nuovo articolo: modifica solo data/articles.json
-   ========================================================================== */
-
+/* Homepage Blog Preview — alimentato da data/articles.json */
 (async function initHomepageBlogPreview() {
   const grid = document.getElementById('homepage-blog-grid');
   if (!grid) return;
-
-  function formatDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
-  }
-
-  // Risolve path relativi: blog usa "../" per risalire alla root, ma index.html è già alla root
-  function resolvePath(p) {
-    if (!p || p.startsWith('http') || p.startsWith('//')) return p;
-    return p.replace(/^\.\.\//,'');
-  }
-
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"]/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+  }[char]));
+  const safeUrl = value => {
+    const url = String(value ?? '').trim();
+    return /^(https?:\/\/|[a-zA-Z0-9_./-]+$)/.test(url) ? url.replace(/^\.\.\//, '') : '#';
+  };
   try {
-    const res = await fetch('data/articles.json');
-    if (!res.ok) throw new Error('fetch failed');
-    const all = await res.json();
-
-    // Ordina per data desc
-    all.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    // Prende i featured (max 3); integra con i più recenti se < 3
-    let picks = all.filter(a => a.featured);
-    if (picks.length < 3) {
-      const rest = all.filter(a => !a.featured);
-      picks = [...picks, ...rest].slice(0, 3);
-    } else {
-      picks = picks.slice(0, 3);
-    }
-
-    grid.innerHTML = picks.map(art => {
-      const isExt = art.external;
-      const badgeClass = isExt ? 'external' : 'personal';
-      const badgeLabel = isExt ? 'Scrivo per gli Altri' : 'Scrivo per Me';
-      const btnClass = isExt ? 'btn-primary' : 'btn-secondary';
-      const firstWord = art.publisher.split(' ')[0];
-      const btnLabel = isExt ? `Leggi su ${firstWord} \u2197` : "Leggi l'Articolo \u2192";
-      const linkAttr = isExt ? 'target="_blank" rel="noopener noreferrer"' : '';
-      const imgSrc = resolvePath(art.image);
-      const href = resolvePath(art.url);
-
-      return `<div class="blog-card">
-        <div class="blog-img-wrapper">
-          <img src="${imgSrc}" alt="${art.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
-          <span class="badge-blog-type ${badgeClass}">${badgeLabel}</span>
-        </div>
-        <div class="blog-body">
-          <div class="publisher-tag">${art.publisherIcon} ${art.publisher}</div>
-          <h3 class="blog-title">${art.title}</h3>
-          <p class="blog-excerpt">${art.excerpt}</p>
-          <div class="blog-meta">
-            <span>📅 ${formatDate(art.date)}</span>
-            <a href="${href}" ${linkAttr} class="btn ${btnClass}" style="padding:0.4rem 0.9rem;font-size:0.8rem;">${btnLabel}</a>
-          </div>
-        </div>
-      </div>`;
+    const response = await fetch('data/articles.json');
+    if (!response.ok) throw new Error('Impossibile caricare gli articoli');
+    const articles = await response.json();
+    articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const featured = articles.filter(article => article.featured);
+    const picks = [...featured, ...articles.filter(article => !article.featured)].slice(0, 3);
+    grid.innerHTML = picks.map(article => {
+      const external = Boolean(article.external);
+      const publisher = escapeHtml(article.publisher);
+      const date = new Date(article.date).toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
+      return `<div class="blog-card"><div class="blog-img-wrapper">
+        <img src="${safeUrl(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy" />
+        <span class="badge-blog-type ${external ? 'external' : 'personal'}">${external ? 'Scrivo per gli Altri' : 'Scrivo per Me'}</span>
+        </div><div class="blog-body"><div class="publisher-tag">${escapeHtml(article.publisherIcon)} ${publisher}</div>
+        <h3 class="blog-title">${escapeHtml(article.title)}</h3><p class="blog-excerpt">${escapeHtml(article.excerpt)}</p>
+        <div class="blog-meta"><span>📅 ${escapeHtml(date)}</span>
+        <a href="${safeUrl(article.url)}" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}
+        class="btn ${external ? 'btn-primary' : 'btn-secondary'}">${external ? `Leggi su ${publisher.split(' ')[0]} ↗` : "Leggi l'Articolo →"}</a>
+        </div></div></div>`;
     }).join('');
-
-  } catch (e) {
-    grid.innerHTML = `<p style="color:var(--text-secondary);grid-column:1/-1;text-align:center;padding:2rem;">
-      <a href="blog/blog.html" style="color:var(--accent-cyan)">Vai al Blog completo →</a></p>`;
+  } catch (error) {
+    grid.innerHTML = '<p><a href="blog/blog.html">Vai al Blog completo →</a></p>';
   }
 })();

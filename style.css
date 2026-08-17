@@ -1844,6 +1844,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 600px) {
+  .navbar .nav-container {
+    padding-inline: 0.35rem;
+  }
+  .nav-actions .open-info-modal {
+    display: none;
+  }
+  .lang-btn span {
+    display: none;
+  }
+  .lang-toggle-wrapper {
+    min-width: auto;
+  }
   .hero-brand-logo {
     max-width: 290px;
   }
@@ -1855,6 +1867,12 @@ h1, h2, h3, h4, h5, h6 {
   }
   .hero-reviews-carousel {
     padding: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-logo > span {
+    display: none;
   }
 }
 

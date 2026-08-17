@@ -60,6 +60,8 @@ def init_db():
     Crea tutte le tabelle se non esistono.
     Chiamato all'avvio del server (lifespan).
     """
+    if _db_url.startswith("sqlite:///"):
+        (settings.private_dir / "database").mkdir(parents=True, exist_ok=True)
     from backend.app.models import (  # noqa: F401 — importa per registrare i modelli
         user, session, page, block, page_revision,
         workshop, booking, coupon, media, cost, report, audit_log,

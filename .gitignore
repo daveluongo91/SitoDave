@@ -2,6 +2,7 @@
 davide-second-brain/
 __pycache__/
 backend/.venv/
+.venv/
 backend/**/__pycache__/
 node_modules/
 *.pyc

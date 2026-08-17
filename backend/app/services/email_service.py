@@ -28,8 +28,8 @@ def send_email(
     NESSUNA credenziale viene loggata.
     """
     if not settings.aruba_smtp_pass:
-        _log(f"SMTP non configurato. Email in coda locale per: [REDACTED] (Subject: {subject})")
-        return True, "Email registrata localmente (configura ARUBA_SMTP_PASS in .env)"
+        _log(f"SMTP non configurato. Email non inviata per: [REDACTED] (Subject: {subject})")
+        return False, "Servizio email temporaneamente non disponibile."
 
     msg = MIMEMultipart()
     msg["From"] = f"Davide Luongo Website <{settings.aruba_smtp_user}>"

@@ -16,7 +16,8 @@ from backend.app.config.database import get_db
 from backend.app.config.settings import settings
 from backend.app.middleware.auth import get_admin_user
 from backend.app.middleware.audit_log import log_action
-from backend.app.middleware.csrf import generate_csrf_token
+from backend.app.middleware.csrf import generate_csrf_token, verify_csrf
+from backend.app.middleware.rate_limit import check_rate_limit
 from backend.app.models.user import User
 from backend.app.services.auth_service import (
     AuthError,
@@ -67,6 +68,7 @@ async def login(
     body: LoginRequest,
     response: Response,
     db: Session = Depends(get_db),
+    _rate: None = Depends(check_rate_limit),
 ):
     """
     Login admin. Imposta cookie HttpOnly session + cookie CSRF.
@@ -120,7 +122,7 @@ async def login(
     }
 
 
-@router.post("/logout")
+@router.post("/logout", dependencies=[Depends(verify_csrf)])
 async def logout(
     request: Request,
     response: Response,
@@ -151,7 +153,7 @@ async def me(current_user: User = Depends(get_admin_user)):
     }
 
 
-@router.post("/change-password")
+@router.post("/change-password", dependencies=[Depends(verify_csrf)])
 async def change_password(
     request: Request,
     body: ChangePasswordRequest,

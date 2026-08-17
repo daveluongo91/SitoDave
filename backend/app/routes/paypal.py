@@ -10,19 +10,15 @@ NON considerare un pagamento confermato sulla base di dati inviati dal frontend.
 """
 from __future__ import annotations
 
-import os
 import json
 import re
 import threading
-import hmac
-import hashlib
-from datetime import datetime, timezone, timedelta
-from pathlib import Path
-from typing import Optional
+import uuid
+from datetime import datetime, timezone
 
 import requests as _requests
-from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, field_validator
 
 from backend.app.config.settings import settings
 from backend.app.config.database import get_db, SessionLocal
@@ -32,6 +28,7 @@ from backend.app.models.coupon import Coupon
 from backend.app.services.coupon_service import validate_coupon, consume_coupon, CouponError
 from backend.app.services.email_service import send_booking_confirmation
 from backend.app.services.availability_alert_service import notify_availability_threshold
+from backend.app.middleware.rate_limit import check_rate_limit
 
 router = APIRouter(prefix="/api", tags=["paypal-isolated"])
 
@@ -93,9 +90,35 @@ class CreateOrderRequest(BaseModel):
     phone: str = ""
     participants: int = 1
 
+    @field_validator("formula")
+    @classmethod
+    def valid_formula(cls, value: str) -> str:
+        if value not in {"caparra", "saldo"}:
+            raise ValueError("Formula di pagamento non valida.")
+        return value
+
+    @field_validator("participants")
+    @classmethod
+    def valid_participants(cls, value: int) -> int:
+        if not 1 <= value <= 8:
+            raise ValueError("Numero partecipanti non valido.")
+        return value
+
+    @field_validator("firstName", "lastName")
+    @classmethod
+    def valid_name(cls, value: str) -> str:
+        value = re.sub(r"[\r\n\t]+", " ", value).strip()
+        if not 2 <= len(value) <= 100:
+            raise ValueError("Nome non valido.")
+        return value
+
 
 @router.post("/create-paypal-order")
-async def create_paypal_order(body: CreateOrderRequest, request: Request):
+async def create_paypal_order(
+    body: CreateOrderRequest,
+    request: Request,
+    _rate: None = Depends(check_rate_limit),
+):
     """[ISOLATO] Crea ordine PayPal server-side."""
     db = SessionLocal()
     try:
@@ -103,8 +126,12 @@ async def create_paypal_order(body: CreateOrderRequest, request: Request):
             raise HTTPException(status_code=400, detail="Email non valida.")
 
         ws = db.query(Workshop).filter(Workshop.workshop_key == body.workshopId).first()
-        original_cents = ws.price_cents if ws else 35000
-        ws_name = ws.title if ws else "Workshop Fotografico"
+        if not ws or ws.status != "active":
+            raise HTTPException(status_code=404, detail="Workshop non disponibile.")
+        if ws.available_seats < body.participants:
+            raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
+        original_cents = ws.price_cents
+        ws_name = ws.title
 
         discount_cents = 0
         coupon_code = body.couponCode.strip().upper()
@@ -132,14 +159,13 @@ async def create_paypal_order(body: CreateOrderRequest, request: Request):
                 "brand_name": "Davide Luongo Photography",
                 "locale": "it-IT",
                 "user_action": "PAY_NOW",
-                "return_url": f"http://localhost:{settings.app_port}/thank-you.html",
-                "cancel_url": f"http://localhost:{settings.app_port}/index.html",
+                "return_url": f"{settings.site_public_url.rstrip('/')}/thank-you.html",
+                "cancel_url": f"{settings.site_public_url.rstrip('/')}/index.html",
             },
         })
 
         order_id = paypal_order["id"]
-        all_ids = [b.id for b in db.query(Booking.id).all()]
-        bk_id = f"BK-{len(all_ids) + 1:04d}"
+        bk_id = f"BK-{uuid.uuid4().hex[:12].upper()}"
 
         booking = Booking(
             id=bk_id,
@@ -179,7 +205,10 @@ async def create_paypal_order(body: CreateOrderRequest, request: Request):
 
 
 @router.post("/capture-paypal-order")
-async def capture_paypal_order(request: Request):
+async def capture_paypal_order(
+    request: Request,
+    _rate: None = Depends(check_rate_limit),
+):
     """[ISOLATO] Cattura ordine PayPal dopo approvazione utente."""
     body = await request.json()
     order_id = body.get("orderId", "").strip()
@@ -199,6 +228,14 @@ async def capture_paypal_order(request: Request):
         capture_id = capture_data.get("id")
         capture_status = capture_data.get("status", "")
         captured_amt = capture_data.get("amount", {}).get("value", "0.00")
+        captured_currency = capture_data.get("amount", {}).get("currency_code", "")
+        try:
+            captured_cents = int(round(float(captured_amt) * 100))
+        except (TypeError, ValueError):
+            captured_cents = -1
+
+        if captured_currency != "EUR" or captured_cents != booking.amount_due_cents:
+            raise HTTPException(status_code=409, detail="Importo PayPal non coerente con la prenotazione.")
 
         booking.paypal_capture_id = capture_id
         booking.status = "paid" if capture_status == "COMPLETED" else "pending"
@@ -210,7 +247,9 @@ async def capture_paypal_order(request: Request):
             # Decrementa posti
             ws = db.query(Workshop).filter(Workshop.workshop_key == booking.workshop_id).first()
             if ws:
-                ws.available_seats = max(0, ws.available_seats - 1)
+                if ws.available_seats < booking.participants:
+                    raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
+                ws.available_seats -= booking.participants
                 if ws.available_seats == 0:
                     ws.status = "soldout"
                 db.commit()
@@ -224,13 +263,23 @@ async def capture_paypal_order(request: Request):
 
 @router.post("/paypal-webhook")
 async def paypal_webhook(request: Request):
-    """[ISOLATO] Webhook PayPal — sempre risponde 200."""
+    """Accetta soltanto webhook la cui firma è verificata da PayPal."""
+    if not _WEBHOOK_ID:
+        raise HTTPException(status_code=503, detail="Webhook PayPal non configurato.")
     raw_body = await request.body()
     try:
         event = json.loads(raw_body)
-        event_type = event.get("event_type", "")
-        # Logica webhook invariata dall'originale
-        # TODO: implementare verifica firma quando PayPal è configurato
-    except Exception:
-        pass
+        verification = _paypal_request("POST", "/v1/notifications/verify-webhook-signature", {
+            "auth_algo": request.headers.get("paypal-auth-algo", ""),
+            "cert_url": request.headers.get("paypal-cert-url", ""),
+            "transmission_id": request.headers.get("paypal-transmission-id", ""),
+            "transmission_sig": request.headers.get("paypal-transmission-sig", ""),
+            "transmission_time": request.headers.get("paypal-transmission-time", ""),
+            "webhook_id": _WEBHOOK_ID,
+            "webhook_event": event,
+        })
+    except (ValueError, json.JSONDecodeError, _requests.RequestException):
+        raise HTTPException(status_code=400, detail="Webhook PayPal non valido.")
+    if verification.get("verification_status") != "SUCCESS":
+        raise HTTPException(status_code=400, detail="Firma webhook PayPal non valida.")
     return {"status": "ok"}
