@@ -165,6 +165,12 @@ async def create_paypal_order(
         })
 
         order_id = paypal_order["id"]
+        approve_url = next(
+            (link.get("href") for link in paypal_order.get("links", []) if link.get("rel") == "approve"),
+            None,
+        )
+        if not approve_url:
+            raise HTTPException(status_code=502, detail="PayPal non ha restituito il link di approvazione.")
         bk_id = f"BK-{uuid.uuid4().hex[:12].upper()}"
 
         booking = Booking(
@@ -193,6 +199,7 @@ async def create_paypal_order(
         return {
             "status": "success",
             "orderId": order_id,
+            "approveUrl": approve_url,
             "bookingId": bk_id,
             "amountDue": amount_due_str,
             "finalPrice": f"{final_cents / 100:.2f}",
@@ -221,7 +228,10 @@ async def capture_paypal_order(
         if not booking:
             raise HTTPException(status_code=404, detail="Prenotazione non trovata.")
         if booking.status == "paid":
-            return {"status": "already_paid", "bookingId": booking.id}
+            return {
+                "status": "already_paid", "bookingId": booking.id,
+                "formula": booking.formula, "amount": f"{booking.amount_due_cents / 100:.2f}",
+            }
 
         capture = _paypal_request("POST", f"/v2/checkout/orders/{order_id}/capture")
         capture_data = capture.get("purchase_units", [{}])[0].get("payments", {}).get("captures", [{}])[0]
@@ -256,7 +266,10 @@ async def capture_paypal_order(
                 notify_availability_threshold(db, ws)
             send_booking_confirmation(booking.to_dict())
 
-        return {"status": booking.status, "bookingId": booking.id, "captureId": capture_id}
+        return {
+            "status": booking.status, "bookingId": booking.id, "captureId": capture_id,
+            "formula": booking.formula, "amount": f"{booking.amount_due_cents / 100:.2f}",
+        }
     finally:
         db.close()
 

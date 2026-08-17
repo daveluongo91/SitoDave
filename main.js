@@ -282,9 +282,10 @@ function setupReservationModal() {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const subject = btn.getAttribute('data-subject') || 'Workshop Fotografico 2026';
+      const workshopId = btn.getAttribute('data-workshop-id') || '';
       
       document.getElementById('booking-modal-title').innerText = `Prenota ${subject}`;
-      document.getElementById('booking-workshop-id').value = subject;
+      document.getElementById('booking-workshop-id').value = workshopId;
       document.getElementById('modal-whatsapp-btn').href = `https://wa.me/393735096237?text=${encodeURIComponent('Ciao Davide, vorrei informazioni su ' + subject)}`;
 
       modalOverlay.classList.add('active');
@@ -293,44 +294,29 @@ function setupReservationModal() {
 
   const bookingForm = document.getElementById('workshop-booking-form');
   if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const workshopName = document.getElementById('booking-workshop-id').value;
+      const workshopId = document.getElementById('booking-workshop-id').value;
+      const workshopName = document.getElementById('booking-modal-title').innerText.replace(/^Prenota\s+/, '');
       const firstName = document.getElementById('booking-first-name').value;
       const lastName = document.getElementById('booking-last-name').value;
       const phone = document.getElementById('booking-phone').value;
       const email = document.getElementById('booking-email').value;
       const selectedFormula = document.querySelector('input[name="paymentFormula"]:checked').value;
-      const amount = selectedFormula === 'caparra' ? '€50' : '€290';
-
-      fetch('/api/book-workshop', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workshopId: workshopName.toLowerCase().replace(/ /g, '-'),
-          workshopName: workshopName,
-          firstName: firstName,
-          lastName: lastName,
-          phone: phone,
-          email: email,
-          paymentFormula: selectedFormula,
-          amountPaid: amount
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          window.open(data.paypalUrl, '_blank');
-          window.location.href = data.thankYouUrl;
-        } else {
-          alert('Errore prenotazione: ' + data.message);
-        }
-      })
-      .catch(err => {
-        console.error('Booking error:', err);
-        window.location.href = `thank-you.html?name=${encodeURIComponent(firstName + ' ' + lastName)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&workshop=${encodeURIComponent(workshopName)}&payment=${encodeURIComponent(selectedFormula === 'caparra' ? 'Caparra €50' : 'Saldo €290')}`;
-      });
+      try {
+        const response = await fetch('/api/create-paypal-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({workshopId, formula: selectedFormula, firstName, lastName, phone, email, participants: 1})
+        });
+        const data = await response.json();
+        if (!response.ok || !data.approveUrl) throw new Error(data.detail || 'Impossibile avviare PayPal.');
+        window.location.assign(data.approveUrl);
+      } catch (error) {
+        console.error('Booking error:', error);
+        alert(`Prenotazione non completata: ${error.message}`);
+      }
     });
   }
 }

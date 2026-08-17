@@ -163,7 +163,7 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       const p = new URLSearchParams(window.location.search);
 
       // Personal data (old params still work)
@@ -173,9 +173,35 @@
       if (p.has('workshop')) document.getElementById('summary-workshop').innerText = p.get('workshop');
 
       // New PayPal params
-      const bookingId = p.get('bookingId') || '';
-      const formula   = p.get('formula')   || 'caparra';
-      const amount    = p.get('amount')    || '';
+      let bookingId = p.get('bookingId') || '';
+      let formula   = p.get('formula')   || 'caparra';
+      let amount    = p.get('amount')    || '';
+      const paypalOrderId = p.get('token') || '';
+
+      if (paypalOrderId) {
+        const payElPending = document.getElementById('summary-payment');
+        if (payElPending) payElPending.textContent = 'Verifica del pagamento PayPal in corso…';
+        try {
+          const response = await fetch('/api/capture-paypal-order', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({orderId: paypalOrderId})
+          });
+          const result = await response.json();
+          if (!response.ok || !['paid', 'already_paid'].includes(result.status)) {
+            throw new Error(result.detail || 'Pagamento non confermato.');
+          }
+          bookingId = result.bookingId || bookingId;
+          formula = result.formula || formula;
+          amount = result.amount || amount;
+        } catch (error) {
+          if (payElPending) {
+            payElPending.textContent = 'Pagamento non confermato. Contatta Davide prima di riprovare.';
+            payElPending.style.color = '#ef4444';
+          }
+          return;
+        }
+      }
 
       // Update payment summary text
       const payEl = document.getElementById('summary-payment');
