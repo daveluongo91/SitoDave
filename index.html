@@ -634,66 +634,19 @@
     <div class="container">
       <div class="section-header" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
         <div>
-          <div class="sub-title">Articoli & Pubblicazioni</div>
-          <h2 class="section-title">Dal Blog & Dai Portali Terzi</h2>
-          <p class="section-desc">Pensieri personali, guide tecniche sul campo e articoli scriti per SIGMA Italia, Vanguard World, Kase e RCE Foto.</p>
+          <div class="sub-title">Articoli &amp; Pubblicazioni</div>
+          <h2 class="section-title">Dal Blog &amp; Dai Portali Terzi</h2>
+          <p class="section-desc">Pensieri personali, guide tecniche sul campo e articoli scritti per SIGMA Italia, Vanguard World e UniversoFoto.</p>
         </div>
         <a href="blog/blog.html" class="btn btn-secondary">Vedi Tutti gli Articoli</a>
       </div>
 
-      <div class="blog-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-        
-        <!-- Card 1: Scrivo per Me -->
-        <div class="blog-card">
-          <div class="blog-img-wrapper">
-            <img src="assets/blog_nivolet_guide.png" alt="Pianificare la Via Lattea in Quota" />
-            <span class="badge-blog-type personal">Scrivo per Me</span>
-          </div>
-          <div class="blog-body">
-            <div class="publisher-tag">✍️ BLOG DI DAVIDE LUONGO</div>
-            <h3 class="blog-title">Pianificare la Via Lattea in Quota: Guida al Tracciamento al Nivolet</h3>
-            <p class="blog-excerpt">Come preparare uno scatto di astrofotografia a 2.500m di quota analizzando fase lunare, calcolo dell'inclinazione polare e ISO nativi.</p>
-            <div class="blog-meta">
-              <span>📅 15 Luglio 2026</span>
-              <a href="blog/blog.html" class="btn btn-secondary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi l'Articolo</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2: Scrivo per gli Altri (SIGMA Italia) -->
-        <div class="blog-card">
-          <div class="blog-img-wrapper">
-            <img src="assets/gear_sigma_14mm.png" style="object-fit: contain; background: #0B1929;" alt="SIGMA 14mm Art Test" />
-            <span class="badge-blog-type external">Scrivo per gli Altri</span>
-          </div>
-          <div class="blog-body">
-            <div class="publisher-tag">📷 SIGMA ITALIA BLOG</div>
-            <h3 class="blog-title">Test sul Campo: SIGMA 14mm f/1.4 Art sotto il Cielo del Gran Paradiso</h3>
-            <p class="blog-excerpt">Articolo tecnico sul blog ufficiale SIGMA Italia. Analisi del comportamento ottico del 14mm f/1.4 Art e correzione del coma ai bordi.</p>
-            <div class="blog-meta">
-              <span>📅 22 Giugno 2026</span>
-              <a href="https://www.sigma-foto.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su SIGMA</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3: Scrivo per gli Altri (Vanguard World) -->
-        <div class="blog-card">
-          <div class="blog-img-wrapper">
-            <img src="assets/gear_vanguard_active53.png" style="object-fit: contain; background: #0B1929;" alt="Vanguard Backpack Guide" />
-            <span class="badge-blog-type external">Scrivo per gli Altri</span>
-          </div>
-          <div class="blog-body">
-            <div class="publisher-tag">🎒 VANGUARD WORLD</div>
-            <h3 class="blog-title">Guida alla Scelta dello Zaino Fotografico per Trekking e Bivacco</h3>
-            <p class="blog-excerpt">Articolo guida su Vanguard World per bilanciare i carichi dello zaino VEO Active 53KG durante spedizioni e pernotti in quota.</p>
-            <div class="blog-meta">
-              <span>📅 10 Maggio 2026</span>
-              <a href="https://www.vanguardworld.it/" target="_blank" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.8rem;">Leggi su Vanguard</a>
-            </div>
-          </div>
-        </div>
-
+      <!-- Le card vengono iniettate da JS leggendo data/articles.json -->
+      <div class="blog-grid" id="homepage-blog-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+        <!-- skeleton loader -->
+        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite;"></div>
+        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite 0.2s;"></div>
+        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite 0.4s;"></div>
       </div>
     </div>
   </section>

@@ -1,4 +1,4 @@
-﻿
+
 
 /* ==========================================================================
    Hero Auto-scrolling Review Slider & Promo Modals (Vanguard / RCE Foto)
@@ -377,3 +377,75 @@ function applyLanguage(lang) {
     }
   });
 }
+
+
+/* ==========================================================================
+   Homepage Blog Preview — alimentato da data/articles.json
+   Per aggiungere un nuovo articolo: modifica solo data/articles.json
+   ========================================================================== */
+
+(async function initHomepageBlogPreview() {
+  const grid = document.getElementById('homepage-blog-grid');
+  if (!grid) return;
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // Risolve path relativi: blog usa "../" per risalire alla root, ma index.html è già alla root
+  function resolvePath(p) {
+    if (!p || p.startsWith('http') || p.startsWith('//')) return p;
+    return p.replace(/^\.\.\//,'');
+  }
+
+  try {
+    const res = await fetch('data/articles.json');
+    if (!res.ok) throw new Error('fetch failed');
+    const all = await res.json();
+
+    // Ordina per data desc
+    all.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Prende i featured (max 3); integra con i più recenti se < 3
+    let picks = all.filter(a => a.featured);
+    if (picks.length < 3) {
+      const rest = all.filter(a => !a.featured);
+      picks = [...picks, ...rest].slice(0, 3);
+    } else {
+      picks = picks.slice(0, 3);
+    }
+
+    grid.innerHTML = picks.map(art => {
+      const isExt = art.external;
+      const badgeClass = isExt ? 'external' : 'personal';
+      const badgeLabel = isExt ? 'Scrivo per gli Altri' : 'Scrivo per Me';
+      const btnClass = isExt ? 'btn-primary' : 'btn-secondary';
+      const firstWord = art.publisher.split(' ')[0];
+      const btnLabel = isExt ? `Leggi su ${firstWord} \u2197` : "Leggi l'Articolo \u2192";
+      const linkAttr = isExt ? 'target="_blank" rel="noopener noreferrer"' : '';
+      const imgSrc = resolvePath(art.image);
+      const href = resolvePath(art.url);
+
+      return `<div class="blog-card">
+        <div class="blog-img-wrapper">
+          <img src="${imgSrc}" alt="${art.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
+          <span class="badge-blog-type ${badgeClass}">${badgeLabel}</span>
+        </div>
+        <div class="blog-body">
+          <div class="publisher-tag">${art.publisherIcon} ${art.publisher}</div>
+          <h3 class="blog-title">${art.title}</h3>
+          <p class="blog-excerpt">${art.excerpt}</p>
+          <div class="blog-meta">
+            <span>📅 ${formatDate(art.date)}</span>
+            <a href="${href}" ${linkAttr} class="btn ${btnClass}" style="padding:0.4rem 0.9rem;font-size:0.8rem;">${btnLabel}</a>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch (e) {
+    grid.innerHTML = `<p style="color:var(--text-secondary);grid-column:1/-1;text-align:center;padding:2rem;">
+      <a href="blog/blog.html" style="color:var(--accent-cyan)">Vai al Blog completo →</a></p>`;
+  }
+})();
