@@ -1,0 +1,8 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^workshops/dardagna-2026/seats$ seats.php [L,QSA]
+RewriteRule ^availability-alerts/subscribe$ subscribe.php [L,QSA]
+RewriteRule ^send-info-email$ send-info-email.php [L,QSA]
+RewriteRule ^create-paypal-order$ create-paypal-order.php [L,QSA]
+RewriteRule ^capture-paypal-order$ capture-paypal-order.php [L,QSA]
+RewriteRule ^paypal-webhook$ paypal-webhook.php [L,QSA]
