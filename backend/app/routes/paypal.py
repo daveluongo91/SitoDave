@@ -1,11 +1,9 @@
-"""
+﻿"""
 backend/app/routes/paypal.py
 [ISOLATO — NON MODIFICARE senza autorizzazione esplicita]
 
 Questo modulo contiene le route PayPal dal server.py originale.
-Il codice è funzionalmente invariato ma ora richiede CSRF protection.
-L'integrazione PayPal rimane incompleta ed è esclusa da questa fase.
-
+Supporta Workshop fisici e Percorsi Formativi One to One.
 NON considerare un pagamento confermato sulla base di dati inviati dal frontend.
 """
 from __future__ import annotations
@@ -85,6 +83,7 @@ def _paypal_request(method: str, path: str, body=None):
 class CreateOrderRequest(BaseModel):
     workshopId: str
     formula: str = "caparra"
+    hours: int = 1
     extraDay: bool = False
     couponCode: str = ""
     firstName: str
@@ -96,8 +95,15 @@ class CreateOrderRequest(BaseModel):
     @field_validator("formula")
     @classmethod
     def valid_formula(cls, value: str) -> str:
-        if value not in {"caparra", "saldo"}:
+        if value not in {"caparra", "saldo", "one-to-one"}:
             raise ValueError("Formula di pagamento non valida.")
+        return value
+
+    @field_validator("hours")
+    @classmethod
+    def valid_hours(cls, value: int) -> int:
+        if not 1 <= value <= 5:
+            raise ValueError("Le ore devono essere comprese tra 1 e 5.")
         return value
 
     @field_validator("participants")
@@ -116,61 +122,104 @@ class CreateOrderRequest(BaseModel):
         return value
 
 
+def calculate_one_to_one_price_cents(hours: int) -> tuple[int, int, int]:
+    """Calcola (list_price_cents, discount_percent, final_price_cents) per One to One."""
+    if not 1 <= hours <= 5:
+        raise ValueError("Le ore devono essere comprese tra 1 e 5.")
+    base_rate_cents = 8000  # 80.00 EUR / ora
+    list_price_cents = base_rate_cents * hours
+    discounts = {1: 0, 2: 10, 3: 20, 4: 30, 5: 40}
+    discount_pct = discounts[hours]
+    final_price_cents = list_price_cents * (100 - discount_pct) // 100
+    return list_price_cents, discount_pct, final_price_cents
+
+
 @router.post("/create-paypal-order")
 async def create_paypal_order(
     body: CreateOrderRequest,
     request: Request,
     _rate: None = Depends(check_rate_limit),
 ):
-    """[ISOLATO] Crea ordine PayPal server-side."""
+    """[ISOLATO] Crea ordine PayPal server-side con validazione importi sicura."""
     db = SessionLocal()
     try:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", body.email):
             raise HTTPException(status_code=400, detail="Email non valida.")
 
-        ws = db.query(Workshop).filter(Workshop.workshop_key == body.workshopId).first()
-        if not ws or ws.status != "active":
-            raise HTTPException(status_code=404, detail="Workshop non disponibile.")
-        if ws.available_seats < body.participants:
-            raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
-        extra_day_selected = bool(body.extraDay and body.workshopId == FRIULI_WORKSHOP_ID)
-        extra_day_cents = EXTRA_DAY_CENTS if extra_day_selected else 0
-        original_cents = ws.price_cents + extra_day_cents
-        ws_name = ws.title
+        if body.workshopId == "one-to-one" or body.formula == "one-to-one":
+            hours = body.hours or body.participants
+            if not 1 <= hours <= 5:
+                raise HTTPException(status_code=400, detail="Le ore devono essere comprese tra 1 e 5.")
+            original_cents, discount_pct, final_cents = calculate_one_to_one_price_cents(hours)
+            discount_cents = original_cents - final_cents
+            amount_due_cents = final_cents
+            amount_due_str = f"{amount_due_cents / 100:.2f}"
+            ws_name = f"Corso One to One ({hours} {'ora' if hours == 1 else 'ore'})"
+            extra_day_selected = False
+            extra_day_cents = 0
+            balance_cents = 0
+            coupon_code = ""
 
-        discount_cents = 0
-        coupon_code = body.couponCode.strip().upper()
-        if coupon_code:
-            try:
-                coupon, discount, final = validate_coupon(db, coupon_code, body.workshopId, body.email, original_cents)
-                discount_cents = int(discount * 100)
-            except CouponError as e:
-                raise HTTPException(status_code=400, detail=str(e))
+            paypal_order = _paypal_request("POST", "/v2/checkout/orders", {
+                "intent": "CAPTURE",
+                "purchase_units": [{
+                    "reference_id": "one-to-one",
+                    "description": ws_name,
+                    "amount": {"currency_code": "EUR", "value": amount_due_str},
+                    "custom_id": f"one-to-one|hours={hours}|{body.email}",
+                }],
+                "application_context": {
+                    "brand_name": "Davide Luongo Photography",
+                    "locale": "it-IT",
+                    "user_action": "PAY_NOW",
+                    "return_url": f"{settings.site_public_url.rstrip('/')}/thank-you.html",
+                    "cancel_url": f"{settings.site_public_url.rstrip('/')}/one-to-one/one-to-one.html",
+                },
+            })
+        else:
+            ws = db.query(Workshop).filter(Workshop.workshop_key == body.workshopId).first()
+            if not ws or ws.status != "active":
+                raise HTTPException(status_code=404, detail="Workshop non disponibile.")
+            if ws.available_seats < body.participants:
+                raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
+            extra_day_selected = bool(body.extraDay and body.workshopId == FRIULI_WORKSHOP_ID)
+            extra_day_cents = EXTRA_DAY_CENTS if extra_day_selected else 0
+            original_cents = ws.price_cents + extra_day_cents
+            ws_name = ws.title
 
-        final_cents = max(DEPOSIT_CENTS, original_cents - discount_cents)
-        balance_cents = max(0, final_cents - DEPOSIT_CENTS)
-        amount_due_cents = DEPOSIT_CENTS if body.formula == "caparra" else final_cents
-        amount_due_str = f"{amount_due_cents / 100:.2f}"
+            discount_cents = 0
+            coupon_code = body.couponCode.strip().upper()
+            if coupon_code:
+                try:
+                    coupon, discount, final = validate_coupon(db, coupon_code, body.workshopId, body.email, original_cents)
+                    discount_cents = int(discount * 100)
+                except CouponError as e:
+                    raise HTTPException(status_code=400, detail=str(e))
 
-        paypal_order = _paypal_request("POST", "/v2/checkout/orders", {
-            "intent": "CAPTURE",
-            "purchase_units": [{
-                "reference_id": body.workshopId,
-                "description": (
-                    f"{ws_name} — {'Caparra' if body.formula == 'caparra' else 'Saldo Completo'}"
-                    f"{' — con venerdì 9 ottobre' if extra_day_selected else ''}"
-                ),
-                "amount": {"currency_code": "EUR", "value": amount_due_str},
-                "custom_id": f"{body.formula}|{coupon_code}|{body.email}|extra_day={int(extra_day_selected)}",
-            }],
-            "application_context": {
-                "brand_name": "Davide Luongo Photography",
-                "locale": "it-IT",
-                "user_action": "PAY_NOW",
-                "return_url": f"{settings.site_public_url.rstrip('/')}/thank-you.html",
-                "cancel_url": f"{settings.site_public_url.rstrip('/')}/index.html",
-            },
-        })
+            final_cents = max(DEPOSIT_CENTS, original_cents - discount_cents)
+            balance_cents = max(0, final_cents - DEPOSIT_CENTS)
+            amount_due_cents = DEPOSIT_CENTS if body.formula == "caparra" else final_cents
+            amount_due_str = f"{amount_due_cents / 100:.2f}"
+
+            paypal_order = _paypal_request("POST", "/v2/checkout/orders", {
+                "intent": "CAPTURE",
+                "purchase_units": [{
+                    "reference_id": body.workshopId,
+                    "description": (
+                        f"{ws_name} — {'Caparra' if body.formula == 'caparra' else 'Saldo Completo'}"
+                        f"{' — con venerdì 9 ottobre' if extra_day_selected else ''}"
+                    ),
+                    "amount": {"currency_code": "EUR", "value": amount_due_str},
+                    "custom_id": f"{body.formula}|{coupon_code}|{body.email}|extra_day={int(extra_day_selected)}",
+                }],
+                "application_context": {
+                    "brand_name": "Davide Luongo Photography",
+                    "locale": "it-IT",
+                    "user_action": "PAY_NOW",
+                    "return_url": f"{settings.site_public_url.rstrip('/')}/thank-you.html",
+                    "cancel_url": f"{settings.site_public_url.rstrip('/')}/index.html",
+                },
+            })
 
         order_id = paypal_order["id"]
         approve_url = next(
@@ -190,7 +239,7 @@ async def create_paypal_order(
             last_name=body.lastName,
             email=body.email.lower(),
             phone=body.phone,
-            participants=body.participants,
+            participants=body.hours if body.workshopId == "one-to-one" else body.participants,
             formula=body.formula,
             extra_day_selected=extra_day_selected,
             extra_day_cents=extra_day_cents,
@@ -267,16 +316,17 @@ async def capture_paypal_order(
         if capture_status == "COMPLETED":
             if booking.coupon_code:
                 consume_coupon(db, booking.coupon_code)
-            # Decrementa posti
-            ws = db.query(Workshop).filter(Workshop.workshop_key == booking.workshop_id).first()
-            if ws:
-                if ws.available_seats < booking.participants:
-                    raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
-                ws.available_seats -= booking.participants
-                if ws.available_seats == 0:
-                    ws.status = "soldout"
-                db.commit()
-                notify_availability_threshold(db, ws)
+            # Decrementa posti solo per workshop fisici
+            if booking.workshop_id and booking.workshop_id != "one-to-one":
+                ws = db.query(Workshop).filter(Workshop.workshop_key == booking.workshop_id).first()
+                if ws:
+                    if ws.available_seats < booking.participants:
+                        raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
+                    ws.available_seats -= booking.participants
+                    if ws.available_seats == 0:
+                        ws.status = "soldout"
+                    db.commit()
+                    notify_availability_threshold(db, ws)
             send_booking_confirmation(booking.to_dict())
 
         return {

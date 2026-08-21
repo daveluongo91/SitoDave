@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -13,10 +13,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
+  <!-- PayPal JS SDK Sandbox -->
+  <script src="https://www.paypal.com/sdk/js?client-id=ATbo0WDenxLNZViuCIeC8ul8nB_BNhUfG5VMHg5j59-Phr-5q7LgOo8BsVvLixDaxsF6W579NXCqAHsK&currency=EUR&locale=it_IT&intent=capture&enable-funding=paylater" defer></script>
+
   <style>
     .oto-hero {
       position: relative;
-      padding: 9rem 0 5rem 0;
+      padding: 8.5rem 0 3.5rem 0;
       background: radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.08) 0%, rgba(11, 25, 41, 0.95) 75%), var(--bg-main);
       border-bottom: 1px solid var(--border-glass);
       overflow: hidden;
@@ -32,6 +35,142 @@
       background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15), transparent 70%);
       pointer-events: none;
     }
+
+    /* Sezione Confronti RAW / Elaborata */
+    .comparisons-section {
+      padding: 3.5rem 0 4.5rem 0;
+      background: var(--bg-main);
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .comparisons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .comparison-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: border-color var(--transition-normal);
+    }
+    .comparison-card:hover {
+      border-color: var(--border-glass-hover);
+    }
+    .comparison-slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+      background: #050b14;
+      cursor: ew-resize;
+    }
+    .comparison-slider:focus {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 2px;
+    }
+    .comparison-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .comparison-img-edit-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 50%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .comparison-img-edit-wrap .comparison-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .comparison-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: #ffffff;
+      transform: translateX(-50%);
+      pointer-events: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      z-index: 10;
+    }
+    .comparison-handle-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(11, 25, 41, 0.95);
+      border: 2px solid var(--accent-cyan);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+    .badge-label {
+      position: absolute;
+      bottom: 12px;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 5;
+      backdrop-filter: blur(8px);
+    }
+    .badge-raw {
+      right: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+    }
+    .badge-edit {
+      left: 12px;
+      background: rgba(0, 240, 255, 0.25);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .comparison-info {
+      padding: 1.25rem;
+      text-align: left;
+    }
+    .comparison-info h4 {
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+      color: var(--text-primary);
+    }
+    .comparison-info p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Griglie percorsi */
     .oto-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -53,6 +192,10 @@
       transform: translateY(-6px);
       border-color: var(--accent-cyan);
       box-shadow: 0 15px 35px rgba(0, 240, 255, 0.12);
+    }
+    .oto-card.highlight {
+      border-color: rgba(0, 240, 255, 0.4);
+      background: linear-gradient(180deg, rgba(0, 240, 255, 0.04) 0%, rgba(18, 30, 49, 0.7) 100%);
     }
     .oto-card-badge {
       display: inline-block;
@@ -81,12 +224,12 @@
       color: var(--accent-amber);
     }
     .oto-card-icon {
-      font-size: 2.75rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
     }
     .oto-card-title {
       font-size: 1.45rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
       color: var(--text-primary);
     }
     .oto-card-desc {
@@ -113,19 +256,93 @@
       color: var(--accent-cyan);
       font-weight: bold;
     }
+
+    /* Selettore Ore & Calcolatore Prezzo */
+    .hours-picker-wrap {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .hours-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin: 0.75rem 0;
+    }
+    .counter-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .counter-btn:hover:not(:disabled) {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.1);
+    }
+    .counter-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .hours-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      min-width: 90px;
+    }
+    .price-display-box {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .price-original-line {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-right: 0.5rem;
+    }
+    .price-final-highlight {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: var(--accent-cyan);
+    }
+    .discount-badge-pill {
+      display: inline-block;
+      margin-left: 0.5rem;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Timeline step */
     .step-timeline {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       margin-top: 3rem;
-      position: relative;
     }
     .step-card {
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
       padding: 2rem 1.5rem;
-      position: relative;
       text-align: left;
     }
     .step-num {
@@ -141,31 +358,122 @@
       font-size: 1.1rem;
       margin-bottom: 1.25rem;
     }
+
+    /* FAQ Accordion Accessibile */
+    .faq-list {
+      max-width: 860px;
+      margin: 2.5rem auto 0 auto;
+    }
     .faq-item {
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
       margin-bottom: 1rem;
       overflow: hidden;
+      transition: border-color var(--transition-fast);
+    }
+    .faq-item:hover {
+      border-color: var(--border-glass-hover);
     }
     .faq-question {
-      padding: 1.25rem 1.5rem;
+      width: 100%;
+      padding: 1.35rem 1.5rem;
+      background: none;
+      border: none;
+      text-align: left;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--text-primary);
+      font-family: inherit;
+    }
+    .faq-question:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: -2px;
+    }
+    .faq-icon {
+      font-size: 1.3rem;
+      color: var(--accent-cyan);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .faq-question[aria-expanded="true"] .faq-icon {
+      transform: rotate(45deg);
     }
     .faq-answer {
-      padding: 0 1.5rem 1.25rem 1.5rem;
+      display: none;
+      padding: 0 1.5rem 1.35rem 1.5rem;
       color: var(--text-secondary);
       font-size: 0.95rem;
-      line-height: 1.6;
+      line-height: 1.65;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
+    .faq-question[aria-expanded="true"] + .faq-answer {
+      display: block;
+    }
+
+    /* Modali */
+    .oto-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 11, 20, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 1.5rem;
+    }
+    .oto-modal-overlay.active {
+      display: flex;
+    }
+    .oto-modal-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass-hover);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .oto-modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all var(--transition-fast);
+    }
+    .oto-modal-close:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
     @media (max-width: 992px) {
-      .oto-grid-3, .step-timeline {
+      .comparisons-grid, .oto-grid-3, .step-timeline {
         grid-template-columns: 1fr;
+      }
+      .oto-modal-container {
+        padding: 1.75rem 1.25rem;
       }
     }
   </style>
@@ -228,8 +536,8 @@
           </button>
         </div>
 
-        <button type="button" class="btn btn-primary open-info-modal" data-subject="Sessione One to One">
-          ✉️ Richiedi Info
+        <button type="button" class="btn btn-primary" id="btn-hero-quote" onclick="openQuoteModal('Informazioni Generali')">
+          Richiedi Info
         </button>
       </div>
     </div>
@@ -238,119 +546,211 @@
   <!-- ==================== HERO SECTION ==================== -->
   <section class="oto-hero">
     <div class="container" style="text-align: center; max-width: 960px;">
-      <span class="section-eyebrow" style="color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.15em;">🎯 TUTORAGGIO & FORMAZIONE SU MISURA</span>
+      <span class="section-eyebrow" style="color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.15em;">FORMAZIONE INDIVIDUALE E SU MISURA</span>
       <h1 style="font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 1rem 0 1.25rem 0; line-height: 1.15;">
         Sessioni <span class="gradient-text">One to One</span>
       </h1>
-      <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 760px; margin: 0 auto 2rem auto; line-height: 1.7;">
-        Percorsi formativi individuali dedicati a chi desidera accelerare la propria crescita fotografica, superare i propri limiti tecnici e padroneggiare la luce, l'astrofotografia avanzata e la post-produzione professionale.
+      <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto 2.25rem auto; line-height: 1.7;">
+        Un percorso di lavoro diretto e individuale. Che tu voglia sbloccare la gestione della luce, dominare l'astrofotografia avanzata o trovare finalmente un metodo chiaro per elaborare i tuoi file RAW, lavoriamo insieme sui tuoi scatti e sulle tue esigenze reali.
       </p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <a href="#percorsi" class="btn btn-primary">Esplora i Percorsi <span>↓</span></a>
-        <button type="button" class="btn btn-secondary open-info-modal" data-subject="Sessione One to One">Richiedi Disponibilità <span>↗</span></button>
+        <button type="button" class="btn btn-secondary" onclick="openQuoteModal('Richiesta Disponibilità')">Richiedi Disponibilità <span>↗</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== VANTAGGI ONE TO ONE ==================== -->
+  <!-- ==================== 2. TRE CONFRONTI RAW / ELABORATO ==================== -->
+  <section class="comparisons-section" aria-label="Confronti prima e dopo">
+    <div class="container">
+      <div class="section-header center" style="margin-bottom: 1.5rem;">
+        <div class="sub-title">DAL RAW ALLO SCATTO FINALE</div>
+        <h2 class="section-title">Guarda come prende forma l'immagine</h2>
+        <p class="section-desc">Trascina il cursore su ogni fotografia per confrontare il file grezzo di scatto con l'elaborazione definitiva.</p>
+      </div>
+
+      <div class="comparisons-grid">
+        
+        <!-- Confronto 1: Astrofotografia / Nivolet -->
+        <article class="comparison-card">
+          <div class="comparison-slider" role="slider" tabindex="0" aria-label="Confronto RAW e immagine elaborata: Via Lattea al Colle del Nivolet" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" data-comparison>
+            <img src="../assets/confronto_01_raw.jpg" alt="File RAW grezzo della Via Lattea al Colle del Nivolet" class="comparison-img img-raw" loading="lazy" />
+            <div class="comparison-img-edit-wrap">
+              <img src="../assets/confronto_01_elaborata.jpg" alt="Fotografia elaborata della Via Lattea al Colle del Nivolet" class="comparison-img img-edit" loading="lazy" />
+            </div>
+            <div class="comparison-handle">
+              <div class="comparison-handle-btn" aria-hidden="true">↔</div>
+            </div>
+            <span class="badge-label badge-edit">Elaborata</span>
+            <span class="badge-label badge-raw">RAW</span>
+          </div>
+          <div class="comparison-info">
+            <h4>Via Lattea • Colle del Nivolet</h4>
+            <p>Sviluppo del cielo notturno, pulizia del rumore termico e bilanciamento cromatico tra stelle e terreno.</p>
+          </div>
+        </article>
+
+        <!-- Confronto 2: Cascate / Dardagna -->
+        <article class="comparison-card">
+          <div class="comparison-slider" role="slider" tabindex="0" aria-label="Confronto RAW e immagine elaborata: Cascate del Dardagna" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" data-comparison>
+            <img src="../assets/confronto_02_raw.jpg" alt="File RAW grezzo delle Cascate del Dardagna" class="comparison-img img-raw" loading="lazy" />
+            <div class="comparison-img-edit-wrap">
+              <img src="../assets/confronto_02_elaborata.jpg" alt="Fotografia elaborata delle Cascate del Dardagna" class="comparison-img img-edit" loading="lazy" />
+            </div>
+            <div class="comparison-handle">
+              <div class="comparison-handle-btn" aria-hidden="true">↔</div>
+            </div>
+            <span class="badge-label badge-edit">Elaborata</span>
+            <span class="badge-label badge-raw">RAW</span>
+          </div>
+          <div class="comparison-info">
+            <h4>Cascate del Dardagna • Appennino</h4>
+            <p>Controllo delle alte luci sull'acqua, mascherature mirate e separazione tonale dei dettagli del sottobosco.</p>
+          </div>
+        </article>
+
+        <!-- Confronto 3: Riflessi Alpini / Fusine -->
+        <article class="comparison-card">
+          <div class="comparison-slider" role="slider" tabindex="0" aria-label="Confronto RAW e immagine elaborata: Riflesso ai Laghi di Fusine" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" data-comparison>
+            <img src="../assets/confronto_03_raw.jpg" alt="File RAW grezzo del riflesso ai Laghi di Fusine" class="comparison-img img-raw" loading="lazy" />
+            <div class="comparison-img-edit-wrap">
+              <img src="../assets/confronto_03_elaborata.jpg" alt="Fotografia elaborata del riflesso ai Laghi di Fusine" class="comparison-img img-edit" loading="lazy" />
+            </div>
+            <div class="comparison-handle">
+              <div class="comparison-handle-btn" aria-hidden="true">↔</div>
+            </div>
+            <span class="badge-label badge-edit">Elaborata</span>
+            <span class="badge-label badge-raw">RAW</span>
+          </div>
+          <div class="comparison-info">
+            <h4>Laghi di Fusine • Alpi Giulie</h4>
+            <p>Recupero della gamma dinamica all'alba, contrasto locale e fedeltà dei riflessi autunnali nello specchio d'acqua.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3, 4, 5. INTRODUZIONE AI VANTAGGI ==================== -->
   <section class="section" style="background: var(--bg-secondary);">
     <div class="container">
       <div class="section-header center">
-        <div class="sub-title">💎 IL VALORE DELL'INSEGNAMENTO INDIVIDUALE</div>
         <h2 class="section-title">Perché scegliere un percorso 1-to-1?</h2>
-        <p class="section-desc">Un approccio totalmente cucito sulle tue esigenze, senza le distrazioni o i compromessi dei corsi di gruppo.</p>
+        <p class="section-desc" style="font-size: 1.15rem; color: var(--accent-cyan); font-weight: 500;">
+          In gruppo è sicuramente bellissimo, ma nel One-to-One sono tutto per te.
+        </p>
       </div>
 
-      <div class="oto-grid-3">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem;">
+        
+        <!-- Card Personalizzazione (Requisito 4) -->
         <div class="oto-card">
           <div class="oto-card-icon">🎯</div>
-          <h3 class="oto-card-title">100% Personalizzato</h3>
-          <p class="oto-card-desc">Niente programmi preconfezionati. Analizziamo insieme il tuo punto di partenza, la tua attrezzatura e i tuoi obiettivi specifici per creare una roadmap su misura.</p>
+          <h3 class="oto-card-title">Costruire il tuo stile, non copiare il mio</h3>
+          <p class="oto-card-desc">
+            Non voglio importi la mia visione, voglio aiutarti a sviluppare la tua. Che cosa vuol dire? Spesso una fotografia viene corretta seguendo uno stile che non appartiene davvero a chi l’ha scattata. Io partirò dai tuoi file, dal tuo modo di vedere e da ciò che vuoi raccontare, per guidarti nella costruzione di uno stile tutto tuo.
+          </p>
         </div>
 
+        <!-- Card Registrazioni & Drive (Requisito 5) -->
         <div class="oto-card">
-          <div class="oto-card-icon">⚡</div>
-          <h3 class="oto-card-title">Massima Efficacia</h3>
-          <p class="oto-card-desc">Tutta la mia attenzione è rivolta esclusivamente a te. Puoi fare qualsiasi domanda, approfondire ogni singolo passaggio tecnico e risolvere i blocchi che rallentano la tua crescita.</p>
+          <div class="oto-card-icon">📁</div>
+          <h3 class="oto-card-title">Registrazioni, appunti e file di lavoro</h3>
+          <p class="oto-card-desc">
+            Tutte le videolezioni online si svolgono su Google Meet in blocchi da un’ora e vengono registrate integralmente. Al termine dell'incontro trovi nel tuo Drive dedicato la registrazione video, i file .xmp e .psd prodotti durante le lezioni e gli appunti generati dall’assistente Gemini durante gli incontri, per tornare sui passaggi e approfondire con calma.
+          </p>
         </div>
 
-        <div class="oto-card">
-          <div class="oto-card-icon">📹</div>
-          <h3 class="oto-card-title">Registrazione HD Inclusa</h3>
-          <p class="oto-card-desc">Tutte le sessioni online vengono registrate integralmente in 1080p e ti vengono consegnate per poter rivedere e ripassare ogni dimostrazione tutte le volte che vuoi.</p>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== I PERCORSI FORMATIVI ==================== -->
+  <!-- ==================== 6, 7, 8. I PERCORSI FORMATIVI E ACQUISTO ORE ==================== -->
   <section class="section" id="percorsi">
     <div class="container">
       <div class="section-header center">
-        <div class="sub-title">📚 OFFERTA FORMATIVA</div>
-        <h2 class="section-title">I 3 Percorsi One to One</h2>
-        <p class="section-desc">Scegli la formula più adatta ai tuoi obiettivi: sul campo a contatto con la natura o comodamente online da casa tua.</p>
+        <div class="sub-title">LE FORMULE FORMATIVE</div>
+        <h2 class="section-title">Scegli come vogliamo lavorare insieme</h2>
+        <p class="section-desc">Dalla consulenza mirata da remoto fino alle giornate sul campo, costruiamo l'esperienza sui tuoi obiettivi.</p>
       </div>
 
       <div class="oto-grid-3">
         
-        <!-- Percorso 1: Astrofotografia sul Campo -->
+        <!-- 1. Percorso da remoto (Requisito 6 + 7) -->
         <article class="oto-card">
-          <span class="oto-card-badge cyan">🌌 SUL CAMPO • DAL TRAMONTO ALL'ALBA</span>
-          <div class="oto-card-icon">🔭</div>
-          <h3 class="oto-card-title">Astrofotografia & Paesaggio Notturno</h3>
-          <p class="oto-card-desc">Un'intera nottata sul campo fianco a fianco sotto cieli bui certificati, per imparare la gestione completa dello scatto astronomico.</p>
+          <span class="oto-card-badge purple">💻 ONLINE • GOOGLE MEET</span>
+          <div class="oto-card-icon">🖥️</div>
+          <h3 class="oto-card-title">Percorso da remoto</h3>
+          <p class="oto-card-desc">
+            Lavoriamo insieme sui tuoi scatti in condivisione schermo, analizzando a fondo tecnica di ripresa, composizione e sviluppo.
+          </p>
           
           <ul class="oto-feature-list">
-            <li><span class="check">✓</span> Pianificazione con PhotoPills & carte dell'inquinamento luminoso</li>
-            <li><span class="check">✓</span> Messa a fuoco precisa con maschere di Bahtinov</li>
-            <li><span class="check">✓</span> Uso intensivo di astroinseguitore (MSM Nomad / Star Adventurer)</li>
-            <li><span class="check">✓</span> Calcolo tempi, ISO, SNR e stacking multiesposizione</li>
-            <li><span class="check">✓</span> Composizione creativa tra primo piano terrestre e Via Lattea</li>
+            <li><span class="check">✓</span> Elaborazione completa delle fotografie</li>
+            <li><span class="check">✓</span> Lettura compositiva e disamina tecnica dei file RAW</li>
+            <li><span class="check">✓</span> Analisi critica delle scelte fatte in fase di scatto</li>
+            <li><span class="check">✓</span> Sviluppo di un metodo personale e del tuo stile</li>
+            <li><span class="check">✓</span> Sessioni Google Meet in blocchi da un'ora</li>
+            <li><span class="check">✓</span> Registrazioni, appunti Gemini, XMP e PSD nel Drive condiviso</li>
           </ul>
 
-          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Astrofotografia sul Campo" style="width: 100%; text-align: center; justify-content: center;">
-            📩 Richiedi Questo Percorso
+          <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="openQuoteModal('Percorso da remoto')">
+            Richiedi un preventivo
           </button>
         </article>
 
-        <!-- Percorso 2: Post-Produzione Digitale -->
+        <!-- 2. Percorso dal vivo (Requisito 6 + 7) -->
         <article class="oto-card">
-          <span class="oto-card-badge purple">💻 ONLINE • 1-TO-1 IN CONDIVISIONE SCHERMO</span>
-          <div class="oto-card-icon">🎨</div>
-          <h3 class="oto-card-title">Post-Produzione Avanzata Lightroom & Photoshop</h3>
-          <p class="oto-card-desc">Sessioni intensive da 2 o 4 ore via Google Meet per trasformare i tuoi file RAW in immagini dal forte impatto emotivo e pulizia tecnica.</p>
+          <span class="oto-card-badge cyan">🏔️ SUL CAMPO • FIANCO A FIANCO</span>
+          <div class="oto-card-icon">🌄</div>
+          <h3 class="oto-card-title">Percorso dal vivo</h3>
+          <p class="oto-card-desc">
+            Un'esperienza sul campo per seguire l'intera creazione della fotografia: dall'idea iniziale fino allo scatto definitivo.
+          </p>
           
           <ul class="oto-feature-list">
-            <li><span class="check">✓</span> Sviluppo avanzato del file RAW in Adobe Lightroom</li>
-            <li><span class="check">✓</span> Maschere di luminanza, colore e range depth in Photoshop</li>
-            <li><span class="check">✓</span> Stacking astronomico (Sequator / Starry Landscape Stacker)</li>
-            <li><span class="check">✓</span> Tecniche di Star Reduction e pulizia del rumore termico</li>
-            <li><span class="check">✓</span> Blending naturale e preciso tra cielo e terreno</li>
+            <li><span class="check">✓</span> Ideazione dello scatto e scelta del soggetto</li>
+            <li><span class="check">✓</span> Studio della location, luce, meteo e orari migliori</li>
+            <li><span class="check">✓</span> Progettazione e pianificazione con strumenti dedicati</li>
+            <li><span class="check">✓</span> Preparazione corretta dell'attrezzatura e filtri</li>
+            <li><span class="check">✓</span> Composizione, inquadratura e gestione dell'esposizione</li>
+            <li><span class="check">✓</span> Realizzazione dello scatto fianco a fianco</li>
           </ul>
 
-          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Post-Produzione Avanzata" style="width: 100%; text-align: center; justify-content: center;">
-            📩 Richiedi Questo Percorso
+          <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="openQuoteModal('Percorso dal vivo')">
+            Richiedi un preventivo
           </button>
         </article>
 
-        <!-- Percorso 3: Fine Art & Portfolio Review -->
-        <article class="oto-card">
-          <span class="oto-card-badge amber">🖼️ ONLINE / IN STUDIO • DAL RAW ALLA STAMPA</span>
-          <div class="oto-card-icon">🖨️</div>
-          <h3 class="oto-card-title">Portfolio Review & Stampa Fine Art</h3>
-          <p class="oto-card-desc">Analisi critica e strategica della tua produzione fotografica, preparazione dei file per gallerie, concorsi e stampe Fine Art museali.</p>
-          
-          <ul class="oto-feature-list">
-            <li><span class="check">✓</span> Revisione critica e costruttiva dei tuoi migliori scatti</li>
-            <li><span class="check">✓</span> Gestione del colore, spazi colore (sRGB, AdobeRGB, ProPhoto)</li>
-            <li><span class="check">✓</span> Soft Proofing e profili ICC per carte cotone Hahnemühle</li>
-            <li><span class="check">✓</span> Tecniche di sharpening e interpolazione per grandi formati</li>
-            <li><span class="check">✓</span> Definizione della tua identità e coerenza stilistica</li>
-          </ul>
+        <!-- 3. Acquisto diretto delle ore (Requisito 8 + 9) -->
+        <article class="oto-card highlight">
+          <span class="oto-card-badge amber">⚡ ACQUISTO DIRETTO • ORE ONLINE</span>
+          <div class="oto-card-icon">⏱️</div>
+          <h3 class="oto-card-title">Acquista le tue ore</h3>
+          <p class="oto-card-desc">
+            Vuoi fare una o più ore di lezione online senza preventivo? Scegli il numero di ore e procedi direttamente con PayPal.
+          </p>
 
-          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Portfolio Review & Stampa" style="width: 100%; text-align: center; justify-content: center;">
-            📩 Richiedi Questo Percorso
+          <div class="hours-picker-wrap">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Seleziona la quantità di ore:</div>
+            
+            <div class="hours-counter">
+              <button type="button" class="counter-btn" id="btn-hours-minus" aria-label="Riduci di un'ora" onclick="changeHours(-1)">−</button>
+              <div class="hours-value" id="hours-display" aria-live="polite">1 ora</div>
+              <button type="button" class="counter-btn" id="btn-hours-plus" aria-label="Aumenta di un'ora" onclick="changeHours(1)">+</button>
+            </div>
+
+            <div class="price-display-box" id="price-box" aria-live="polite">
+              <span id="price-original" class="price-original-line" style="display: none;">160 €</span>
+              <span id="price-final" class="price-final-highlight">80 €</span>
+              <span id="price-discount-badge" class="discount-badge-pill" style="display: none;">-10%</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Prezzo base: 80 € / ora • Sconto progressivo automatico</div>
+          </div>
+
+          <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #00f0ff, #a855f7); color: #0b1929; font-weight: 800;" onclick="openCheckoutModal()">
+            💳 Acquista Ora con PayPal
           </button>
         </article>
 
@@ -358,153 +758,699 @@
     </div>
   </section>
 
-  <!-- ==================== COME FUNZIONA ==================== -->
+  <!-- ==================== 10. COME FUNZIONA IL PERCORSO ==================== -->
   <section class="section" style="background: var(--bg-secondary);">
     <div class="container">
       <div class="section-header center">
-        <div class="sub-title">🧭 IL METODO DI LAVORO</div>
-        <h2 class="section-title">Come Funziona il Percorso</h2>
-        <p class="section-desc">Un processo semplice e trasparente in 4 passaggi per ottenere il massimo dalla tua esperienza formativa.</p>
+        <div class="sub-title">IL METODO DI LAVORO</div>
+        <h2 class="section-title">Come funziona il percorso</h2>
+        <p class="section-desc">Un processo lineare e concreto in 4 passaggi per organizzare la tua formazione.</p>
       </div>
 
       <div class="step-timeline">
         <div class="step-card">
           <div class="step-num">1</div>
-          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Primo Contatto</h4>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Compili il modulo indicando il percorso scelto, la tua attrezzatura attuale e i tuoi desideri formativi.</p>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-primary);">Primo contatto</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Compili il modulo indicando le tue esigenze e la fascia oraria preferita per essere telefonato, oppure acquisti direttamente le ore.</p>
         </div>
 
         <div class="step-card">
           <div class="step-num">2</div>
-          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Briefing & Data</h4>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Fissiamo la data ideale e definiamo insieme la scaletta didattica degli argomenti da affrontare.</p>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-primary);">Contatto & Pianificazione</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Ti chiamo per definire insieme la scaletta didattica, concordare le date e formalizzare il pacchetto più adatto.</p>
         </div>
 
         <div class="step-card">
           <div class="step-num">3</div>
-          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Sessione 1-to-1</h4>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Svolgiamo la sessione (online o sul campo) concentrandoci su pratica, workflow e risoluzione problemi.</p>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-primary);">Sessione 1-to-1</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Lavoriamo insieme in blocchi da un'ora su Google Meet oppure sul campo dalla progettazione allo scatto.</p>
         </div>
 
         <div class="step-card">
           <div class="step-num">4</div>
-          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Video HD & Follow-up</h4>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Ricevi la registrazione integrale in alta definizione e rimani in contatto per la revisione dei tuoi progressi.</p>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-primary);">Drive & Materiali</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Accedi al tuo Drive dedicato con le videoregistrazioni, i file XMP/PSD e gli appunti Gemini per ripassare con calma.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== FAQ ==================== -->
+  <!-- ==================== 11. DOMANDE E RISPOSTE (FAQ ACCORDION) ==================== -->
   <section class="section">
     <div class="container" style="max-width: 860px;">
       <div class="section-header center">
-        <div class="sub-title">❓ DUBBI FREQUENTI</div>
-        <h2 class="section-title">Domande & Risposte</h2>
+        <div class="sub-title">DUBBI FREQUENTI</div>
+        <h2 class="section-title">Domande e Risposte</h2>
       </div>
 
       <div class="faq-list">
+        
         <div class="faq-item">
-          <div class="faq-question">Quale attrezzatura mi serve per una sessione online? <span>+</span></div>
-          <div class="faq-answer">È sufficiente un computer con connessione internet stabile, microfono e i software installati (Adobe Lightroom Classic, Photoshop o software per stacking come Sequator). Lavoreremo direttamente sui tuoi file RAW.</div>
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-1">
+            <span>Qual è la differenza tra percorso da remoto e percorso dal vivo?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-1">
+            Il percorso da remoto si concentra sull'analisi dei tuoi file RAW, sulla lettura critica della composizione e sullo sviluppo delle immagini via Google Meet. Il percorso dal vivo copre invece l'intero processo di scatto: ideazione, scelta della location, studio della luce e del meteo, impostazioni della fotocamera e composizione fianco a fianco sul campo.
+          </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">Dove si svolgono le sessioni sul campo? <span>+</span></div>
-          <div class="faq-answer">Le sessioni sul campo possono essere concordate nelle migliori location panoramiche d'Italia (Alpi, Dolomiti, Appennino tosco-emiliano, Marche, Toscana) o nella tua zona di preferenza in base alle condizioni astronomiche e meteo.</div>
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-2">
+            <span>Come viene costruito il preventivo?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-2">
+            Dopo la tua richiesta, ti contatto telefonicamente per comprendere il tuo livello di partenza, gli argomenti che desideri approfondire e le tue disponibilità. Sulla base di questi elementi definiamo il numero di incontri o la tipologia di uscita sul campo più indicata.
+          </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">Posso acquistare un pacchetto di ore per la post-produzione? <span>+</span></div>
-          <div class="faq-answer">Certamente! È possibile strutturare percorsi modulari da 2, 4 o 8 ore suddivise in più incontri settimanali per darti il tempo di esercitarti tra una lezione e l'altra.</div>
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-3">
+            <span>Quando verrò contattato dopo la richiesta?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-3">
+            Ti ricontatto telefonicamente al massimo entro il giorno successivo alla ricezione del form, rispettando la fascia oraria che hai indicato nelle note.
+          </div>
         </div>
 
         <div class="faq-item">
-          <div class="faq-question">Come ricevo la registrazione della lezione? <span>+</span></div>
-          <div class="faq-answer">Al termine di ogni sessione online riceverai un link privato protetto da cui potrai scaricare il file video in formato MP4 1080p, che rimarrà a tua completa disposizione per sempre.</div>
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-4">
+            <span>Quanto dura ogni incontro online?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-4">
+            Le sessioni online si svolgono in blocchi da un'ora su Google Meet. In base agli argomenti concordati possiamo svolgere sessioni singole o accorpare due blocchi nello stesso appuntamento.
+          </div>
         </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-5">
+            <span>Che cosa troverò nel Drive condiviso?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-5">
+            Nel Drive personale troverai le registrazioni video integrali di ogni lezione, i file .xmp con le regolazioni sviluppate, i file .psd con tutti i livelli di lavoro e gli appunti di riepilogo generati dall'assistente Gemini durante l'incontro.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-6">
+            <span>Posso acquistare anche una sola ora?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-6">
+            Sì, puoi acquistare direttamente una singola ora a 80 € per affrontare un dubbio tecnico specifico, una revisione mirata o un passaggio di sviluppo sui tuoi file.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-7">
+            <span>Come funziona lo sconto acquistando più ore?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-7">
+            Lo sconto si applica progressivamente all'intero pacchetto: 2 ore al 10% (144 €), 3 ore al 20% (192 €), 4 ore al 30% (224 €) e 5 ore al 40% (240 €). Le ore possono essere distribuite su più appuntamenti.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-8">
+            <span>Posso pagare con PayPal in tre rate?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-8">
+            L'opzione "Paga in 3 rate" è gestita direttamente da PayPal ed è visibile durante il checkout quando consentita per il tuo account e per l'importo della transazione.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-ans-9">
+            <span>Che cosa accade se una sessione dal vivo deve essere rinviata per il meteo?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer" id="faq-ans-9">
+            In caso di condizioni meteo avverse o incompatibili con gli obiettivi fotografici, la sessione sul campo viene concordata e riprogrammata in una data successiva di comune accordo.
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- ==================== CTA MODULO CONTATTI ==================== -->
-  <section class="section" style="background: radial-gradient(circle at center, rgba(0, 240, 255, 0.06) 0%, var(--bg-secondary) 100%); border-top: 1px solid var(--border-glass);">
-    <div class="container" style="max-width: 720px; text-align: center;">
-      <span class="section-eyebrow" style="color: var(--accent-cyan); font-weight: 700;">📬 PRENOTA LA TUA SESSIONE</span>
-      <h2 style="font-size: 2.2rem; margin: 0.75rem 0 1rem 0;" class="gradient-text">Inizia il tuo percorso su misura</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;">
-        Compila il modulo per concordare date, obiettivi e dettagli logistici. Riceverai una risposta dettagliata entro 24 ore direttamente da Davide Luongo.
-      </p>
-
-      <button type="button" class="btn btn-primary open-info-modal" data-subject="Sessione One to One" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);">
-        ✉️ Invia Richiesta per One to One
-      </button>
-
-      <div style="margin-top: 1.5rem;">
-        <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20vorrei%20informazioni%20su%20un%20corso%20One%20to%20One!" target="_blank" style="color: #25D366; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem;">
-          💬 Preferisci WhatsApp? Scrivimi direttamente ↗
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== FOOTER ==================== -->
+  <!-- ==================== 1. FOOTER (IDENTICO A INDEX.HTML) ==================== -->
   <footer class="footer">
-    <div class="container footer-content">
-      <div class="footer-col brand-col">
-        <div class="footer-brand-header">
-          <img src="../assets/pittogramma.png" alt="Davide Luongo Logo" class="footer-logo-img" />
-          <h3 class="footer-brand-title">Davide Luongo</h3>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="../index.html" class="brand-logo">
+            <img src="../assets/pittogramma.png" alt="Davide Luongo Pictogram" class="logo-img" />
+            <span>Davide Luongo</span>
+          </a>
+          <p>Landscape & Astrophotography. Workshop, viaggi fotografici e lezioni su misura per trasformare la tua visione in scatti d'arte.</p>
         </div>
-        <p class="footer-claim">Night Sky & Landscape Photographer • SIGMA Art Ambassador</p>
-        <p class="footer-tax">P.IVA: IT03043130737 • Taranto (TA), Italy</p>
+
+        <div>
+          <h4 class="footer-heading">Navigazione</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html#home">Home</a></li>
+            <li><a href="../index.html#workshops">Workshop & Tour</a></li>
+            <li><a href="one-to-one.html">One to One</a></li>
+            <li><a href="../gear/gear.html">Gear &amp; Attrezzatura</a></li>
+            <li><a href="../blog/blog.html">Blog &amp; Pubblicazioni</a></li>
+            <li><a href="../index.html#chi-sono">Chi Sono</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Partner Tecnologici</h4>
+          <ul class="footer-links">
+            <li><a href="#">SIGMA Italia</a></li>
+            <li><a href="#">Vanguard World</a></li>
+            <li><a href="#">RCE Foto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Social & Contatti</h4>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/daveluongo/" target="_blank">Instagram (@daveluongo)</a></li>
+            <li><a href="https://www.facebook.com/davideluongoph/" target="_blank">Facebook</a></li>
+            <li><a href="mailto:info@davideluongo.it">info@davideluongo.it</a></li>
+            <li><a href="https://wa.me/393735096237" target="_blank" rel="noopener noreferrer">Tel / WhatsApp: +39 373 509 6237</a></li>
+          </ul>
+        </div>
       </div>
 
-      <div class="footer-col">
-        <h4>Navigazione</h4>
-        <ul class="footer-links">
-          <li><a href="../index.html#home">Home</a></li>
-          <li><a href="../index.html#workshops">Workshop & Tour</a></li>
-          <li><a href="one-to-one.html">One to One</a></li>
-          <li><a href="../index.html#team">Il Team</a></li>
-          <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
-          <li><a href="../blog/blog.html">Blog & Pubblicazioni</a></li>
-          <li><a href="../index.html#chi-sono">Chi Sono</a></li>
-        </ul>
+      <div class="footer-bottom">
+        <div>&copy; 2026 Davide Luongo. P.IVA IT03043130737. Tutti i diritti riservati.</div>
+        <div>Designed for High Performance & Astrophotography.</div>
       </div>
-
-      <div class="footer-col">
-        <h4>Contatti & Social</h4>
-        <ul class="footer-links">
-          <li><a href="mailto:info@davideluongo.it">info@davideluongo.it</a></li>
-          <li><a href="https://wa.me/393735096237" target="_blank" rel="noopener noreferrer">WhatsApp: +39 373 509 6237</a></li>
-          <li><a href="https://www.instagram.com/daveluongo/" target="_blank" rel="noopener noreferrer">Instagram: @daveluongo</a></li>
-          <li><a href="https://www.facebook.com/davideluongoph/" target="_blank" rel="noopener noreferrer">Facebook: @davideluongoph</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="container footer-bottom">
-      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati.</p>
     </div>
   </footer>
 
-  <script src="../main.js"></script>
+  <!-- ==================== 7. MODALE RICHIESTA PREVENTIVO ==================== -->
+  <div class="oto-modal-overlay" id="quote-modal" role="dialog" aria-modal="true" aria-labelledby="quote-modal-title">
+    <div class="oto-modal-container">
+      <button type="button" class="oto-modal-close" aria-label="Chiudi modale" onclick="closeQuoteModal()">&times;</button>
+      
+      <h3 id="quote-modal-title" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Richiedi un Preventivo</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Indicami quando preferisci essere chiamato. Ti contatterò al massimo entro il giorno successivo per capire insieme quale percorso costruire.
+      </p>
+
+      <form id="quote-form" novalidate onsubmit="handleQuoteSubmit(event)">
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="quote-name">Nome e Cognome *</label>
+          <input type="text" id="quote-name" class="form-input" placeholder="Es. Marco Rossi" required />
+          <div class="form-error" id="err-quote-name" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Inserisci il tuo nome e cognome.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="quote-email">Email *</label>
+          <input type="email" id="quote-email" class="form-input" placeholder="nome@esempio.com" required />
+          <div class="form-error" id="err-quote-email" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Inserisci un indirizzo email valido.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="quote-phone">Numero di Telefono *</label>
+          <input type="tel" id="quote-phone" class="form-input" placeholder="Es. +39 333 1234567" required />
+          <div class="form-error" id="err-quote-phone" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Inserisci un recapito telefonico per la chiamata.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label class="form-label" for="quote-path">Percorso di interesse</label>
+          <input type="text" id="quote-path" class="form-input" readonly style="background: rgba(255,255,255,0.03); color: var(--accent-cyan); font-weight: 600;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label" for="quote-notes">Cosa vorresti migliorare e quando preferisci essere telefonato? *</label>
+          <textarea id="quote-notes" class="form-input" rows="4" placeholder="Es. Vorrei migliorare la gestione della Via Lattea e delle maschere in Photoshop. Preferisco essere chiamato tra le 14:00 e le 18:00." required style="resize: vertical;"></textarea>
+          <div class="form-error" id="err-quote-notes" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Indicami cosa vorresti approfondire e le fasce orarie in cui contattarti.</div>
+        </div>
+
+        <div id="quote-status-msg" style="display: none; padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.9rem;"></div>
+
+        <button type="submit" id="btn-submit-quote" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem;">
+          Invia Richiesta
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 9. MODALE CHECKOUT PAYPAL ORE ==================== -->
+  <div class="oto-modal-overlay" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="oto-modal-container">
+      <button type="button" class="oto-modal-close" aria-label="Chiudi modale" onclick="closeCheckoutModal()">&times;</button>
+      
+      <h3 id="checkout-modal-title" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Acquisto Ore One to One</h3>
+      
+      <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1rem; margin: 1rem 0 1.5rem 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+          <span style="color: var(--text-secondary);">Quantità selezionata:</span>
+          <strong id="chk-hours-summary" style="color: var(--text-primary);">1 ora</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;" id="chk-discount-row">
+          <span style="color: var(--text-secondary);">Sconto applicato:</span>
+          <strong id="chk-discount-summary" style="color: #4ade80;">0%</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.5rem; margin-top: 0.5rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">Totale da corrispondere:</span>
+          <strong id="chk-total-summary" style="font-size: 1.25rem; color: var(--accent-cyan);">80.00 €</strong>
+        </div>
+      </div>
+
+      <form id="checkout-form" novalidate>
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label class="form-label" for="chk-name">Nome e Cognome *</label>
+          <input type="text" id="chk-name" class="form-input" placeholder="Es. Marco Rossi" required />
+          <div class="form-error" id="err-chk-name" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Nome obbligatorio.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label class="form-label" for="chk-email">Email *</label>
+          <input type="email" id="chk-email" class="form-input" placeholder="nome@esempio.com" required />
+          <div class="form-error" id="err-chk-email" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Email valida obbligatoria.</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.85rem;">
+          <label class="form-label" for="chk-phone">Numero di Telefono *</label>
+          <input type="tel" id="chk-phone" class="form-input" placeholder="Es. +39 333 1234567" required />
+          <div class="form-error" id="err-chk-phone" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">Telefono obbligatorio per accordare le date.</div>
+        </div>
+
+        <div style="margin: 1rem 0 1.25rem 0;">
+          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.85rem; color: var(--text-secondary);">
+            <input type="checkbox" id="chk-privacy" required style="margin-top: 0.2rem;" />
+            <span>Accetto il trattamento dei dati personali per l'erogazione del servizio formativo e la gestione della prenotazione.</span>
+          </label>
+          <div class="form-error" id="err-chk-privacy" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.25rem;">È necessario accettare il consenso privacy.</div>
+        </div>
+
+        <div id="chk-status-msg" style="display: none; padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.9rem;"></div>
+
+        <!-- Container pulsante PayPal -->
+        <div id="paypal-button-container-oto" style="margin-top: 1rem;"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT DI GESTIONE INTERATTIVA ONE TO ONE -->
   <script>
-    // FAQ accordion toggle
-    document.querySelectorAll('.faq-question').forEach(q => {
-      q.addEventListener('click', () => {
-        const item = q.parentElement;
-        const ans = item.querySelector('.faq-answer');
-        const icon = q.querySelector('span');
-        if (ans.style.display === 'none' || !ans.style.display) {
-          ans.style.display = 'block';
-          icon.textContent = '−';
-        } else {
-          ans.style.display = 'none';
-          icon.textContent = '+';
+    /* ==========================================================================
+       1. REGOLA PREZZI & SCONTO PROGRESSIVO ORE (Centralizzato in JS)
+       ========================================================================== */
+    const OTO_CONFIG = {
+      basePricePerHour: 80,
+      minHours: 1,
+      maxHours: 5,
+      discounts: {
+        1: 0,
+        2: 10,
+        3: 20,
+        4: 30,
+        5: 40
+      }
+    };
+
+    let selectedHours = 1;
+    let lastFocusedElement = null;
+
+    function calculateOtoPrice(hours) {
+      const h = Math.max(OTO_CONFIG.minHours, Math.min(OTO_CONFIG.maxHours, hours));
+      const listPrice = OTO_CONFIG.basePricePerHour * h;
+      const discountPct = OTO_CONFIG.discounts[h] || 0;
+      const finalPrice = Math.round(listPrice * (100 - discountPct) / 100);
+      const savedAmount = listPrice - finalPrice;
+      return { hours: h, listPrice, discountPct, finalPrice, savedAmount };
+    }
+
+    function updateHoursUI() {
+      const p = calculateOtoPrice(selectedHours);
+      
+      // Update display text
+      document.getElementById('hours-display').textContent = p.hours === 1 ? '1 ora' : `${p.hours} ore`;
+      
+      const priceOrigEl = document.getElementById('price-original');
+      const priceFinalEl = document.getElementById('price-final');
+      const discountBadgeEl = document.getElementById('price-discount-badge');
+      const btnMinus = document.getElementById('btn-hours-minus');
+      const btnPlus = document.getElementById('btn-hours-plus');
+
+      btnMinus.disabled = p.hours <= OTO_CONFIG.minHours;
+      btnPlus.disabled = p.hours >= OTO_CONFIG.maxHours;
+
+      if (p.discountPct > 0) {
+        priceOrigEl.style.display = 'inline';
+        priceOrigEl.textContent = `${p.listPrice} €`;
+        priceFinalEl.textContent = `${p.finalPrice} €`;
+        discountBadgeEl.style.display = 'inline-block';
+        discountBadgeEl.textContent = `-${p.discountPct}% (Risparmi ${p.savedAmount} €)`;
+      } else {
+        priceOrigEl.style.display = 'none';
+        priceFinalEl.textContent = `${p.finalPrice} €`;
+        discountBadgeEl.style.display = 'none';
+      }
+
+      // Update checkout summary
+      document.getElementById('chk-hours-summary').textContent = p.hours === 1 ? '1 ora' : `${p.hours} ore`;
+      document.getElementById('chk-discount-summary').textContent = p.discountPct > 0 ? `-${p.discountPct}% (-${p.savedAmount} €)` : 'Nessuno';
+      document.getElementById('chk-total-summary').textContent = `${p.finalPrice}.00 €`;
+    }
+
+    function changeHours(delta) {
+      selectedHours = Math.max(OTO_CONFIG.minHours, Math.min(OTO_CONFIG.maxHours, selectedHours + delta));
+      updateHoursUI();
+    }
+
+    /* ==========================================================================
+       2. CONFRONTI RAW / ELABORATO (Pointer, Touch, Tastiera)
+       ========================================================================== */
+    function setupComparisonSliders() {
+      const sliders = document.querySelectorAll('[data-comparison]');
+
+      sliders.forEach(slider => {
+        const wrap = slider.querySelector('.comparison-img-edit-wrap');
+        const handle = slider.querySelector('.comparison-handle');
+        let isDragging = false;
+
+        function setPosition(percent) {
+          const clamped = Math.max(0, Math.min(100, percent));
+          wrap.style.width = `${clamped}%`;
+          handle.style.left = `${clamped}%`;
+          slider.setAttribute('aria-valuenow', Math.round(clamped));
+        }
+
+        function updateFromEvent(e) {
+          const rect = slider.getBoundingClientRect();
+          const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+          const percent = ((clientX - rect.left) / rect.width) * 100;
+          setPosition(percent);
+        }
+
+        slider.addEventListener('pointerdown', (e) => {
+          isDragging = true;
+          slider.setPointerCapture(e.pointerId);
+          updateFromEvent(e);
+        });
+
+        slider.addEventListener('pointermove', (e) => {
+          if (!isDragging) return;
+          updateFromEvent(e);
+        });
+
+        slider.addEventListener('pointerup', () => { isDragging = false; });
+        slider.addEventListener('pointercancel', () => { isDragging = false; });
+
+        // Gestione tastiera accessibile
+        slider.addEventListener('keydown', (e) => {
+          let current = parseFloat(slider.getAttribute('aria-valuenow')) || 50;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            setPosition(current - 5);
+          } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            setPosition(current + 5);
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            setPosition(0);
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            setPosition(100);
+          }
+        });
+      });
+    }
+
+    /* ==========================================================================
+       3. FAQ ACCORDION ACCESSIBILE
+       ========================================================================== */
+    function setupFaqAccordion() {
+      const buttons = document.querySelectorAll('.faq-question');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+          buttons.forEach(b => {
+            b.setAttribute('aria-expanded', 'false');
+          });
+          btn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+        });
+      });
+    }
+
+    /* ==========================================================================
+       4. MODALE RICHIESTA PREVENTIVO
+       ========================================================================== */
+    function openQuoteModal(pathName) {
+      lastFocusedElement = document.activeElement;
+      document.getElementById('quote-path').value = pathName || 'Percorso One to One';
+      const modal = document.getElementById('quote-modal');
+      modal.classList.add('active');
+      document.getElementById('quote-name').focus();
+      trapFocus(modal);
+    }
+
+    function closeQuoteModal() {
+      const modal = document.getElementById('quote-modal');
+      modal.classList.remove('active');
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    async function handleQuoteSubmit(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('quote-name').value.trim();
+      const email = document.getElementById('quote-email').value.trim();
+      const phone = document.getElementById('quote-phone').value.trim();
+      const path = document.getElementById('quote-path').value.trim();
+      const notes = document.getElementById('quote-notes').value.trim();
+
+      document.getElementById('err-quote-name').style.display = 'none';
+      document.getElementById('err-quote-email').style.display = 'none';
+      document.getElementById('err-quote-phone').style.display = 'none';
+      document.getElementById('err-quote-notes').style.display = 'none';
+
+      let hasError = false;
+      if (name.length < 2) {
+        document.getElementById('err-quote-name').style.display = 'block';
+        hasError = true;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('err-quote-email').style.display = 'block';
+        hasError = true;
+      }
+      if (phone.length < 5) {
+        document.getElementById('err-quote-phone').style.display = 'block';
+        hasError = true;
+      }
+      if (notes.length < 5) {
+        document.getElementById('err-quote-notes').style.display = 'block';
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const statusBox = document.getElementById('quote-status-msg');
+      const submitBtn = document.getElementById('btn-submit-quote');
+      
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(0, 240, 255, 0.1)';
+      statusBox.style.color = 'var(--accent-cyan)';
+      statusBox.textContent = 'Invio in corso...';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('../api/send-info-email.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            subject: `[ONE-TO-ONE] Richiesta preventivo per ${path}`,
+            message: `Percorso richiesto: ${path}\nNote / Obiettivi / Orario preferito per la telefonata:\n${notes}`
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.status === 'error') {
+          throw new Error(data.message || 'Errore durante la trasmissione al server.');
+        }
+
+        statusBox.style.background = 'rgba(34, 197, 94, 0.15)';
+        statusBox.style.color = '#4ade80';
+        statusBox.textContent = '✓ Richiesta inviata con successo! Ti contatterò telefonicamente al massimo entro il giorno successivo.';
+        document.getElementById('quote-form').reset();
+        setTimeout(() => { closeQuoteModal(); statusBox.style.display = 'none'; }, 3500);
+      } catch (err) {
+        statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        statusBox.style.color = '#ef4444';
+        statusBox.textContent = navigator.onLine ? `Impossibile inviare la richiesta: ${err.message}` : 'Nessuna connessione a Internet. Verifica la rete e riprova.';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    /* ==========================================================================
+       5. MODALE CHECKOUT PAYPAL ORE
+       ========================================================================== */
+    function openCheckoutModal() {
+      lastFocusedElement = document.activeElement;
+      updateHoursUI();
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('active');
+      document.getElementById('chk-name').focus();
+      trapFocus(modal);
+      renderPayPalButtons();
+    }
+
+    function closeCheckoutModal() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('active');
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    function renderPayPalButtons() {
+      const container = document.getElementById('paypal-button-container-oto');
+      container.innerHTML = '';
+
+      if (typeof paypal === 'undefined') {
+        container.innerHTML = '<div style="color: #ef4444; font-size: 0.85rem;">SDK PayPal in caricamento o non disponibile. Ricarica la pagina.</div>';
+        return;
+      }
+
+      paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'gold',
+          shape: 'rect',
+          label: 'paypal'
+        },
+        onClick: (data, actions) => {
+          const name = document.getElementById('chk-name').value.trim();
+          const email = document.getElementById('chk-email').value.trim();
+          const phone = document.getElementById('chk-phone').value.trim();
+          const privacy = document.getElementById('chk-privacy').checked;
+
+          let valid = true;
+          document.getElementById('err-chk-name').style.display = name.length < 2 ? (valid = false, 'block') : 'none';
+          document.getElementById('err-chk-email').style.display = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? (valid = false, 'block') : 'none';
+          document.getElementById('err-chk-phone').style.display = phone.length < 5 ? (valid = false, 'block') : 'none';
+          document.getElementById('err-chk-privacy').style.display = !privacy ? (valid = false, 'block') : 'none';
+
+          if (!valid) {
+            return actions.reject();
+          }
+          return actions.resolve();
+        },
+        createOrder: async () => {
+          const nameParts = document.getElementById('chk-name').value.trim().split(' ');
+          const firstName = nameParts[0] || 'Cliente';
+          const lastName = nameParts.slice(1).join(' ') || 'OneToOne';
+          const email = document.getElementById('chk-email').value.trim();
+          const phone = document.getElementById('chk-phone').value.trim();
+
+          const res = await fetch('../api/create-paypal-order.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workshopId: 'one-to-one',
+              formula: 'one-to-one',
+              hours: selectedHours,
+              firstName,
+              lastName,
+              email,
+              phone
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok || data.status !== 'success' || !data.orderId) {
+            throw new Error(data.message || 'Impossibile creare ordine PayPal.');
+          }
+          return data.orderId;
+        },
+        onApprove: async (data) => {
+          const statusBox = document.getElementById('chk-status-msg');
+          statusBox.style.display = 'block';
+          statusBox.style.background = 'rgba(0, 240, 255, 0.1)';
+          statusBox.style.color = 'var(--accent-cyan)';
+          statusBox.textContent = 'Conferma del pagamento in corso...';
+
+          try {
+            const res = await fetch('../api/capture-paypal-order.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId: data.orderID })
+            });
+
+            const captureData = await res.json().catch(() => ({}));
+            if (!res.ok || (captureData.status !== 'paid' && captureData.status !== 'already_paid')) {
+              throw new Error(captureData.message || 'Errore nella registrazione del pagamento.');
+            }
+
+            statusBox.style.background = 'rgba(34, 197, 94, 0.15)';
+            statusBox.style.color = '#4ade80';
+            statusBox.textContent = '✓ Pagamento registrato con successo! Verrai reindirizzato alla pagina di conferma...';
+            setTimeout(() => {
+              window.location.href = '../thank-you.html';
+            }, 1800);
+          } catch (err) {
+            statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+            statusBox.style.color = '#ef4444';
+            statusBox.textContent = `Errore di cattura: ${err.message}`;
+          }
+        },
+        onError: (err) => {
+          const statusBox = document.getElementById('chk-status-msg');
+          statusBox.style.display = 'block';
+          statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+          statusBox.style.color = '#ef4444';
+          statusBox.textContent = 'Si è verificato un errore con PayPal. Nessun importo è stato addebitato.';
+        }
+      }).render('#paypal-button-container-oto');
+    }
+
+    /* ==========================================================================
+       6. FOCUS TRAP & ACCESSIBILITÀ MODALI
+       ========================================================================== */
+    function trapFocus(modal) {
+      const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (modal.id === 'quote-modal') closeQuoteModal();
+          if (modal.id === 'checkout-modal') closeCheckoutModal();
+        }
+        if (e.key === 'Tab') {
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
         }
       });
+    }
+
+    // Chiusura al click sul backdrop
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('oto-modal-overlay')) {
+        e.target.classList.remove('active');
+        if (lastFocusedElement) lastFocusedElement.focus();
+      }
+    });
+
+    // Inizializzazione al caricamento
+    document.addEventListener('DOMContentLoaded', () => {
+      setupComparisonSliders();
+      setupFaqAccordion();
+      updateHoursUI();
     });
   </script>
 </body>
