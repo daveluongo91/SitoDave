@@ -713,9 +713,12 @@
         <!-- 1. Timelapsing -->
         <article class="workshop-card" style="display: flex; flex-direction: column;">
           <div class="workshop-img-container" style="height: 220px; overflow: hidden; position: relative;">
-            <img src="assets/hero_milky_way.png" alt="Timelapsing Davide Luongo" style="width: 100%; height: 100%; object-fit: cover;" />
-            <div style="position: absolute; top: 1rem; left: 1rem; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; color: var(--accent-cyan);">
-              ⏱️ MOTION & HYPERLAPSE
+            <video autoplay loop muted playsinline poster="assets/timelapse_nivolet_poster.jpg" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <source src="assets/timelapse_nivolet_card.mp4" type="video/mp4" />
+              <img src="assets/hero_milky_way.png" alt="Timelapsing Davide Luongo" style="width: 100%; height: 100%; object-fit: cover;" />
+            </video>
+            <div style="position: absolute; top: 1rem; left: 1rem; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; color: var(--accent-cyan); z-index: 2;">
+              ⏱️ MOTION &amp; HYPERLAPSE
             </div>
           </div>
 
