@@ -64,15 +64,29 @@ function setupGlobalClickDelegation() {
 }
 
 function openInfoModalWithSubject(subject) {
+  const cleanSubject = (subject || 'Informazioni Generali').trim();
+  const formattedTag = cleanSubject.toLowerCase().startsWith('richiesta info per') 
+    ? cleanSubject 
+    : `Richiesta info per ${cleanSubject}`;
+
+  setupInfoModal();
   const infoOverlay = document.getElementById('info-modal-overlay');
   if (infoOverlay) {
-    document.getElementById('info-modal-title').innerText = `✉️ Richiedi Info: ${subject}`;
-    document.getElementById('info-subject-input').value = subject;
+    const titleEl = document.getElementById('info-modal-title');
+    const subjInput = document.getElementById('info-subject-input');
+    const tagBadge = document.getElementById('info-tag-badge');
+
+    if (titleEl) titleEl.innerText = `✉️ ${cleanSubject}`;
+    if (subjInput) subjInput.value = formattedTag;
+    if (tagBadge) {
+      tagBadge.innerHTML = `🏷️ <strong>Tag email:</strong> ${formattedTag}`;
+      tagBadge.style.display = 'inline-block';
+    }
     infoOverlay.classList.add('active');
   }
 }
 
-// 1. INFO REQUEST MODAL (Richiedi Info via Email)
+// 1. INFO REQUEST MODAL (Richiedi Info via Email a info@davideluongo.it)
 function setupInfoModal() {
   let infoOverlay = document.getElementById('info-modal-overlay');
 
@@ -83,15 +97,16 @@ function setupInfoModal() {
 
     infoOverlay.innerHTML = `
       <div class="modal-content" style="max-width: 580px;">
-        <button id="info-modal-close" class="modal-close">&times;</button>
+        <button id="info-modal-close" class="modal-close" type="button">&times;</button>
 
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Chiedimi Informazioni</h3>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">Invia la tua richiesta direttamente alla casella <strong>info@davideluongo.it</strong>.</p>
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <span id="info-tag-badge" style="display: inline-block; background: rgba(255, 42, 133, 0.15); border: 1px solid #ff2a85; color: #ff2a85; font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 9999px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">🏷️ Tag: Richiesta info per...</span>
+          <h3 id="info-modal-title" style="font-size: 1.5rem; color: var(--accent-cyan);" class="gradient-text">Richiedi Informazioni</h3>
+          <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">La tua richiesta sarà inoltrata direttamente a <strong>info@davideluongo.it</strong>.</p>
         </div>
 
         <form id="info-request-form">
-          <input type="hidden" id="info-subject-input" value="Informazioni Generali" />
+          <input type="hidden" id="info-subject-input" value="Richiesta info per Informazioni Generali" />
           
           <div class="form-group">
             <label class="form-label" for="info-name-input">Nome e Cognome *</label>
@@ -104,11 +119,16 @@ function setupInfoModal() {
           </div>
 
           <div class="form-group" style="margin-top: 1rem;">
-            <label class="form-label" for="info-message-input">Messaggio / Richiesta *</label>
-            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui le tue domande su workshop, corsi 1-to-1, attrezzatura o collaborazioni..." required></textarea>
+            <label class="form-label" for="info-phone-input">Telefono (Opzionale / WhatsApp)</label>
+            <input type="tel" id="info-phone-input" class="form-input" placeholder="+39 340 1234567" />
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem;">✉️ Invia Messaggio a info@davideluongo.it</button>
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="info-message-input">Messaggio / Domande *</label>
+            <textarea id="info-message-input" class="form-textarea" rows="4" placeholder="Scrivi qui cosa vorresti sapere su programma, disponibilità, lista d'attesa o dettagli logistici..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1.25rem; font-size: 1rem; cursor: pointer;">✉️ Invia Richiesta a info@davideluongo.it</button>
         </form>
       </div>
     `;
@@ -117,12 +137,13 @@ function setupInfoModal() {
 
   const closeBtn = document.getElementById('info-modal-close');
   if (closeBtn) {
-    closeBtn.addEventListener('click', () => infoOverlay.classList.remove('active'));
+    closeBtn.onclick = () => infoOverlay.classList.remove('active');
   }
 
   // Handle Info Form Submit
   const infoForm = document.getElementById('info-request-form');
-  if (infoForm) {
+  if (infoForm && !infoForm.dataset.initialized) {
+    infoForm.dataset.initialized = "true";
     infoForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
