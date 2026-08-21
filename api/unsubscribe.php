@@ -1,0 +1,2 @@
+<?php
+declare(strict_types=1);require __DIR__.'/common.php';headers_secure();header('Content-Type: text/html; charset=utf-8');$token=text($_GET['token']??'',96);$found=false;if($token!=='')store(function(array &$d)use($token,&$found){foreach($d['subscribers'] as &$x){if(hash_equals($x['token']??'',$token)){$x['active']=false;$found=true;break;}}unset($x);});http_response_code($found?200:404);echo '<!doctype html><html lang="it"><meta charset="utf-8"><title>Preferenze email</title><body><h1>'.($found?'Disiscrizione completata':'Link non valido').'</h1></body></html>';
