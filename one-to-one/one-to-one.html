@@ -1,0 +1,511 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corsi One to One & Mentorship Fotografica • Davide Luongo</title>
+  <meta name="description" content="Sessioni individuali One to One e mentorship personalizzata di astrofotografia, paesaggio e post-produzione con Davide Luongo. Sia sul campo che online." />
+  <meta name="theme-color" content="#0B1929" />
+  <link rel="canonical" href="https://www.davideluongo.it/one-to-one/one-to-one.html" />
+  
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    .oto-hero {
+      position: relative;
+      padding: 9rem 0 5rem 0;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.08) 0%, rgba(11, 25, 41, 0.95) 75%), var(--bg-main);
+      border-bottom: 1px solid var(--border-glass);
+      overflow: hidden;
+    }
+    .oto-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .oto-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .oto-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+      backdrop-filter: blur(12px);
+    }
+    .oto-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.12);
+    }
+    .oto-card-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+    .oto-card-badge.cyan {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .oto-card-badge.purple {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid var(--accent-purple);
+      color: var(--accent-purple);
+    }
+    .oto-card-badge.amber {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--accent-amber);
+      color: var(--accent-amber);
+    }
+    .oto-card-icon {
+      font-size: 2.75rem;
+      margin-bottom: 1rem;
+    }
+    .oto-card-title {
+      font-size: 1.45rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    .oto-card-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    .oto-feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .oto-feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+    .oto-feature-list li span.check {
+      color: var(--accent-cyan);
+      font-weight: bold;
+    }
+    .step-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.5rem;
+      position: relative;
+      text-align: left;
+    }
+    .step-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: #0B1929;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .faq-answer {
+      padding: 0 1.5rem 1.25rem 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    @media (max-width: 992px) {
+      .oto-grid-3, .step-timeline {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo">
+        <img src="../assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../index.html#home">Home</a></li>
+        <li><a href="../index.html#workshops">Workshop & Tour</a></li>
+        <li><a href="one-to-one.html" class="nav-current">One to One</a></li>
+        <li><a href="../index.html#team">Il Team</a></li>
+        <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="../blog/blog.html">Blog & Pubblicazioni</a></li>
+        <li><a href="../index.html#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-toggle-wrapper" id="lang-toggle-wrapper">
+          <button type="button" class="lang-btn lang-ita active" id="btn-lang-ita" onclick="switchLanguage('it')" title="Italiano">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <rect x="0" width="9.33" height="20" fill="#009246"/>
+              <rect x="9.33" width="9.33" height="20" fill="#ffffff"/>
+              <rect x="18.66" width="9.34" height="20" fill="#ce2b37"/>
+            </svg>
+            <span>ITA</span>
+          </button>
+          <button type="button" class="lang-btn lang-en" id="btn-lang-en" onclick="switchLanguage('en')" title="English (UK/USA)">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <defs>
+                <clipPath id="uk-clip">
+                  <polygon points="0,0 28,0 0,20"/>
+                </clipPath>
+                <clipPath id="usa-clip">
+                  <polygon points="28,0 28,20 0,20"/>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#uk-clip)">
+                <rect width="28" height="20" fill="#012169"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#fff" stroke-width="4"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#C8102E" stroke-width="2"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#fff" stroke-width="6"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#C8102E" stroke-width="3.5"/>
+              </g>
+              <g clip-path="url(#usa-clip)">
+                <rect width="28" height="20" fill="#B22234"/>
+                <path d="M0,3 H28 M0,6 H28 M0,9 H28 M0,12 H28 M0,15 H28 M0,18 H28" stroke="#fff" stroke-width="1.5"/>
+                <rect width="12" height="10" fill="#3C3B6E"/>
+                <circle cx="3" cy="2.5" r="0.6" fill="#fff"/>
+              </g>
+            </svg>
+            <span>ENG</span>
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-primary open-info-modal" data-subject="Sessione One to One">
+          ✉️ Richiedi Info
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="oto-hero">
+    <div class="container" style="text-align: center; max-width: 960px;">
+      <span class="section-eyebrow" style="color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.15em;">🎯 TUTORAGGIO & FORMAZIONE SU MISURA</span>
+      <h1 style="font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 1rem 0 1.25rem 0; line-height: 1.15;">
+        Sessioni <span class="gradient-text">One to One</span>
+      </h1>
+      <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 760px; margin: 0 auto 2rem auto; line-height: 1.7;">
+        Percorsi formativi individuali dedicati a chi desidera accelerare la propria crescita fotografica, superare i propri limiti tecnici e padroneggiare la luce, l'astrofotografia avanzata e la post-produzione professionale.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#percorsi" class="btn btn-primary">Esplora i Percorsi <span>↓</span></a>
+        <button type="button" class="btn btn-secondary open-info-modal" data-subject="Sessione One to One">Richiedi Disponibilità <span>↗</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VANTAGGI ONE TO ONE ==================== -->
+  <section class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header center">
+        <div class="sub-title">💎 IL VALORE DELL'INSEGNAMENTO INDIVIDUALE</div>
+        <h2 class="section-title">Perché scegliere un percorso 1-to-1?</h2>
+        <p class="section-desc">Un approccio totalmente cucito sulle tue esigenze, senza le distrazioni o i compromessi dei corsi di gruppo.</p>
+      </div>
+
+      <div class="oto-grid-3">
+        <div class="oto-card">
+          <div class="oto-card-icon">🎯</div>
+          <h3 class="oto-card-title">100% Personalizzato</h3>
+          <p class="oto-card-desc">Niente programmi preconfezionati. Analizziamo insieme il tuo punto di partenza, la tua attrezzatura e i tuoi obiettivi specifici per creare una roadmap su misura.</p>
+        </div>
+
+        <div class="oto-card">
+          <div class="oto-card-icon">⚡</div>
+          <h3 class="oto-card-title">Massima Efficacia</h3>
+          <p class="oto-card-desc">Tutta la mia attenzione è rivolta esclusivamente a te. Puoi fare qualsiasi domanda, approfondire ogni singolo passaggio tecnico e risolvere i blocchi che rallentano la tua crescita.</p>
+        </div>
+
+        <div class="oto-card">
+          <div class="oto-card-icon">📹</div>
+          <h3 class="oto-card-title">Registrazione HD Inclusa</h3>
+          <p class="oto-card-desc">Tutte le sessioni online vengono registrate integralmente in 1080p e ti vengono consegnate per poter rivedere e ripassare ogni dimostrazione tutte le volte che vuoi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== I PERCORSI FORMATIVI ==================== -->
+  <section class="section" id="percorsi">
+    <div class="container">
+      <div class="section-header center">
+        <div class="sub-title">📚 OFFERTA FORMATIVA</div>
+        <h2 class="section-title">I 3 Percorsi One to One</h2>
+        <p class="section-desc">Scegli la formula più adatta ai tuoi obiettivi: sul campo a contatto con la natura o comodamente online da casa tua.</p>
+      </div>
+
+      <div class="oto-grid-3">
+        
+        <!-- Percorso 1: Astrofotografia sul Campo -->
+        <article class="oto-card">
+          <span class="oto-card-badge cyan">🌌 SUL CAMPO • DAL TRAMONTO ALL'ALBA</span>
+          <div class="oto-card-icon">🔭</div>
+          <h3 class="oto-card-title">Astrofotografia & Paesaggio Notturno</h3>
+          <p class="oto-card-desc">Un'intera nottata sul campo fianco a fianco sotto cieli bui certificati, per imparare la gestione completa dello scatto astronomico.</p>
+          
+          <ul class="oto-feature-list">
+            <li><span class="check">✓</span> Pianificazione con PhotoPills & carte dell'inquinamento luminoso</li>
+            <li><span class="check">✓</span> Messa a fuoco precisa con maschere di Bahtinov</li>
+            <li><span class="check">✓</span> Uso intensivo di astroinseguitore (MSM Nomad / Star Adventurer)</li>
+            <li><span class="check">✓</span> Calcolo tempi, ISO, SNR e stacking multiesposizione</li>
+            <li><span class="check">✓</span> Composizione creativa tra primo piano terrestre e Via Lattea</li>
+          </ul>
+
+          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Astrofotografia sul Campo" style="width: 100%; text-align: center; justify-content: center;">
+            📩 Richiedi Questo Percorso
+          </button>
+        </article>
+
+        <!-- Percorso 2: Post-Produzione Digitale -->
+        <article class="oto-card">
+          <span class="oto-card-badge purple">💻 ONLINE • 1-TO-1 IN CONDIVISIONE SCHERMO</span>
+          <div class="oto-card-icon">🎨</div>
+          <h3 class="oto-card-title">Post-Produzione Avanzata Lightroom & Photoshop</h3>
+          <p class="oto-card-desc">Sessioni intensive da 2 o 4 ore via Google Meet per trasformare i tuoi file RAW in immagini dal forte impatto emotivo e pulizia tecnica.</p>
+          
+          <ul class="oto-feature-list">
+            <li><span class="check">✓</span> Sviluppo avanzato del file RAW in Adobe Lightroom</li>
+            <li><span class="check">✓</span> Maschere di luminanza, colore e range depth in Photoshop</li>
+            <li><span class="check">✓</span> Stacking astronomico (Sequator / Starry Landscape Stacker)</li>
+            <li><span class="check">✓</span> Tecniche di Star Reduction e pulizia del rumore termico</li>
+            <li><span class="check">✓</span> Blending naturale e preciso tra cielo e terreno</li>
+          </ul>
+
+          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Post-Produzione Avanzata" style="width: 100%; text-align: center; justify-content: center;">
+            📩 Richiedi Questo Percorso
+          </button>
+        </article>
+
+        <!-- Percorso 3: Fine Art & Portfolio Review -->
+        <article class="oto-card">
+          <span class="oto-card-badge amber">🖼️ ONLINE / IN STUDIO • DAL RAW ALLA STAMPA</span>
+          <div class="oto-card-icon">🖨️</div>
+          <h3 class="oto-card-title">Portfolio Review & Stampa Fine Art</h3>
+          <p class="oto-card-desc">Analisi critica e strategica della tua produzione fotografica, preparazione dei file per gallerie, concorsi e stampe Fine Art museali.</p>
+          
+          <ul class="oto-feature-list">
+            <li><span class="check">✓</span> Revisione critica e costruttiva dei tuoi migliori scatti</li>
+            <li><span class="check">✓</span> Gestione del colore, spazi colore (sRGB, AdobeRGB, ProPhoto)</li>
+            <li><span class="check">✓</span> Soft Proofing e profili ICC per carte cotone Hahnemühle</li>
+            <li><span class="check">✓</span> Tecniche di sharpening e interpolazione per grandi formati</li>
+            <li><span class="check">✓</span> Definizione della tua identità e coerenza stilistica</li>
+          </ul>
+
+          <button type="button" class="btn btn-primary open-info-modal" data-subject="One to One: Portfolio Review & Stampa" style="width: 100%; text-align: center; justify-content: center;">
+            📩 Richiedi Questo Percorso
+          </button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== COME FUNZIONA ==================== -->
+  <section class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header center">
+        <div class="sub-title">🧭 IL METODO DI LAVORO</div>
+        <h2 class="section-title">Come Funziona il Percorso</h2>
+        <p class="section-desc">Un processo semplice e trasparente in 4 passaggi per ottenere il massimo dalla tua esperienza formativa.</p>
+      </div>
+
+      <div class="step-timeline">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Primo Contatto</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Compili il modulo indicando il percorso scelto, la tua attrezzatura attuale e i tuoi desideri formativi.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Briefing & Data</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Fissiamo la data ideale e definiamo insieme la scaletta didattica degli argomenti da affrontare.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Sessione 1-to-1</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Svolgiamo la sessione (online o sul campo) concentrandoci su pratica, workflow e risoluzione problemi.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Video HD & Follow-up</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">Ricevi la registrazione integrale in alta definizione e rimani in contatto per la revisione dei tuoi progressi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FAQ ==================== -->
+  <section class="section">
+    <div class="container" style="max-width: 860px;">
+      <div class="section-header center">
+        <div class="sub-title">❓ DUBBI FREQUENTI</div>
+        <h2 class="section-title">Domande & Risposte</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">Quale attrezzatura mi serve per una sessione online? <span>+</span></div>
+          <div class="faq-answer">È sufficiente un computer con connessione internet stabile, microfono e i software installati (Adobe Lightroom Classic, Photoshop o software per stacking come Sequator). Lavoreremo direttamente sui tuoi file RAW.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Dove si svolgono le sessioni sul campo? <span>+</span></div>
+          <div class="faq-answer">Le sessioni sul campo possono essere concordate nelle migliori location panoramiche d'Italia (Alpi, Dolomiti, Appennino tosco-emiliano, Marche, Toscana) o nella tua zona di preferenza in base alle condizioni astronomiche e meteo.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Posso acquistare un pacchetto di ore per la post-produzione? <span>+</span></div>
+          <div class="faq-answer">Certamente! È possibile strutturare percorsi modulari da 2, 4 o 8 ore suddivise in più incontri settimanali per darti il tempo di esercitarti tra una lezione e l'altra.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Come ricevo la registrazione della lezione? <span>+</span></div>
+          <div class="faq-answer">Al termine di ogni sessione online riceverai un link privato protetto da cui potrai scaricare il file video in formato MP4 1080p, che rimarrà a tua completa disposizione per sempre.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA MODULO CONTATTI ==================== -->
+  <section class="section" style="background: radial-gradient(circle at center, rgba(0, 240, 255, 0.06) 0%, var(--bg-secondary) 100%); border-top: 1px solid var(--border-glass);">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <span class="section-eyebrow" style="color: var(--accent-cyan); font-weight: 700;">📬 PRENOTA LA TUA SESSIONE</span>
+      <h2 style="font-size: 2.2rem; margin: 0.75rem 0 1rem 0;" class="gradient-text">Inizia il tuo percorso su misura</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;">
+        Compila il modulo per concordare date, obiettivi e dettagli logistici. Riceverai una risposta dettagliata entro 24 ore direttamente da Davide Luongo.
+      </p>
+
+      <button type="button" class="btn btn-primary open-info-modal" data-subject="Sessione One to One" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);">
+        ✉️ Invia Richiesta per One to One
+      </button>
+
+      <div style="margin-top: 1.5rem;">
+        <a href="https://wa.me/393735096237?text=Ciao%20Davide,%20vorrei%20informazioni%20su%20un%20corso%20One%20to%20One!" target="_blank" style="color: #25D366; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+          💬 Preferisci WhatsApp? Scrivimi direttamente ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="footer-brand-header">
+          <img src="../assets/pittogramma.png" alt="Davide Luongo Logo" class="footer-logo-img" />
+          <h3 class="footer-brand-title">Davide Luongo</h3>
+        </div>
+        <p class="footer-claim">Night Sky & Landscape Photographer • SIGMA Art Ambassador</p>
+        <p class="footer-tax">P.IVA: IT03043130737 • Taranto (TA), Italy</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigazione</h4>
+        <ul class="footer-links">
+          <li><a href="../index.html#home">Home</a></li>
+          <li><a href="../index.html#workshops">Workshop & Tour</a></li>
+          <li><a href="one-to-one.html">One to One</a></li>
+          <li><a href="../index.html#team">Il Team</a></li>
+          <li><a href="../gear/gear.html">Gear & Attrezzatura</a></li>
+          <li><a href="../blog/blog.html">Blog & Pubblicazioni</a></li>
+          <li><a href="../index.html#chi-sono">Chi Sono</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contatti & Social</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:info@davideluongo.it">info@davideluongo.it</a></li>
+          <li><a href="https://wa.me/393735096237" target="_blank" rel="noopener noreferrer">WhatsApp: +39 373 509 6237</a></li>
+          <li><a href="https://www.instagram.com/daveluongo/" target="_blank" rel="noopener noreferrer">Instagram: @daveluongo</a></li>
+          <li><a href="https://www.facebook.com/davideluongoph/" target="_blank" rel="noopener noreferrer">Facebook: @davideluongoph</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <script src="../main.js"></script>
+  <script>
+    // FAQ accordion toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const ans = item.querySelector('.faq-answer');
+        const icon = q.querySelector('span');
+        if (ans.style.display === 'none' || !ans.style.display) {
+          ans.style.display = 'block';
+          icon.textContent = '−';
+        } else {
+          ans.style.display = 'none';
+          icon.textContent = '+';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
