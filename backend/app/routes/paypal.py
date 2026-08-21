@@ -47,6 +47,8 @@ _WEBHOOK_ID = settings.paypal_webhook_id
 _token_cache: dict = {"token": None, "expires_at": 0}
 _token_lock = threading.Lock()
 DEPOSIT_CENTS = 5000  # €50.00 caparra fissa
+FRIULI_WORKSHOP_ID = "friuli-2026"
+EXTRA_DAY_CENTS = 10000  # €100.00 per venerdì 9 ottobre
 
 
 def _get_token():
@@ -83,6 +85,7 @@ def _paypal_request(method: str, path: str, body=None):
 class CreateOrderRequest(BaseModel):
     workshopId: str
     formula: str = "caparra"
+    extraDay: bool = False
     couponCode: str = ""
     firstName: str
     lastName: str
@@ -130,7 +133,9 @@ async def create_paypal_order(
             raise HTTPException(status_code=404, detail="Workshop non disponibile.")
         if ws.available_seats < body.participants:
             raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
-        original_cents = ws.price_cents
+        extra_day_selected = bool(body.extraDay and body.workshopId == FRIULI_WORKSHOP_ID)
+        extra_day_cents = EXTRA_DAY_CENTS if extra_day_selected else 0
+        original_cents = ws.price_cents + extra_day_cents
         ws_name = ws.title
 
         discount_cents = 0
@@ -151,9 +156,12 @@ async def create_paypal_order(
             "intent": "CAPTURE",
             "purchase_units": [{
                 "reference_id": body.workshopId,
-                "description": f"{ws_name} — {'Caparra' if body.formula == 'caparra' else 'Saldo Completo'}",
+                "description": (
+                    f"{ws_name} — {'Caparra' if body.formula == 'caparra' else 'Saldo Completo'}"
+                    f"{' — con venerdì 9 ottobre' if extra_day_selected else ''}"
+                ),
                 "amount": {"currency_code": "EUR", "value": amount_due_str},
-                "custom_id": f"{body.formula}|{coupon_code}|{body.email}",
+                "custom_id": f"{body.formula}|{coupon_code}|{body.email}|extra_day={int(extra_day_selected)}",
             }],
             "application_context": {
                 "brand_name": "Davide Luongo Photography",
@@ -184,6 +192,8 @@ async def create_paypal_order(
             phone=body.phone,
             participants=body.participants,
             formula=body.formula,
+            extra_day_selected=extra_day_selected,
+            extra_day_cents=extra_day_cents,
             original_cents=original_cents,
             discount_cents=discount_cents,
             final_cents=final_cents,
@@ -206,6 +216,8 @@ async def create_paypal_order(
             "discountAmount": f"{discount_cents / 100:.2f}",
             "balanceDue": f"{balance_cents / 100:.2f}",
             "formula": body.formula,
+            "extraDay": extra_day_selected,
+            "extraDayAmount": f"{extra_day_cents / 100:.2f}",
         }
     finally:
         db.close()
@@ -231,6 +243,7 @@ async def capture_paypal_order(
             return {
                 "status": "already_paid", "bookingId": booking.id,
                 "formula": booking.formula, "amount": f"{booking.amount_due_cents / 100:.2f}",
+                "extraDay": bool(booking.extra_day_selected),
             }
 
         capture = _paypal_request("POST", f"/v2/checkout/orders/{order_id}/capture")
@@ -269,6 +282,7 @@ async def capture_paypal_order(
         return {
             "status": booking.status, "bookingId": booking.id, "captureId": capture_id,
             "formula": booking.formula, "amount": f"{booking.amount_due_cents / 100:.2f}",
+            "extraDay": bool(booking.extra_day_selected),
         }
     finally:
         db.close()

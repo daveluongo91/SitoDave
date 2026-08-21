@@ -80,6 +80,11 @@ def send_booking_confirmation(booking: dict) -> None:
     ws_name = booking.get("workshopName", "Workshop")
     final_eur = (booking.get("finalCents", 0) or 0) / 100
     balance_eur = (booking.get("balanceCents", 0) or 0) / 100
+    is_friuli = booking.get("workshopId") == "friuli-2026"
+    extra_day_selected = bool(booking.get("extraDay"))
+    extra_day_note = "Sì, da venerdì 9 ottobre (+€100)" if extra_day_selected else "No, dal sabato 10 ottobre"
+    client_extra_day_line = f"Arrivo anticipato: {extra_day_note}\n" if is_friuli else ""
+    admin_extra_day_line = f"Dal venerdì     : {extra_day_note}\n" if is_friuli else ""
     coupon_note = f" (codice: {booking['couponCode']})" if booking.get("couponCode") else ""
 
     if formula == "caparra":
@@ -87,6 +92,7 @@ def send_booking_confirmation(booking: dict) -> None:
             f"Ciao {booking.get('firstName', '')},\n\n"
             f"Abbiamo ricevuto la tua caparra di €50{coupon_note} per il workshop:\n\n"
             f"▸ {ws_name}\n\n"
+            f"{client_extra_day_line}"
             f"Prezzo finale: €{final_eur:.2f}\n"
             f"Saldo residuo: €{balance_eur:.2f} (in loco: bonifico, contanti o PayPal)\n\n"
             "Per informazioni rispondi a questa email.\n\n"
@@ -97,6 +103,7 @@ def send_booking_confirmation(booking: dict) -> None:
             f"Ciao {booking.get('firstName', '')},\n\n"
             f"Abbiamo ricevuto il pagamento completo di €{final_eur:.2f}{coupon_note} per:\n\n"
             f"▸ {ws_name}\n\n"
+            f"{client_extra_day_line}"
             "Non risultano importi residui.\n\n"
             "Davide Luongo\ninfo@davideluongo.it"
         )
@@ -107,6 +114,7 @@ def send_booking_confirmation(booking: dict) -> None:
         f"ID Prenotazione : {bk_id}\n"
         f"Workshop        : {ws_name}\n"
         f"Formula         : {'Caparra €50' if formula == 'caparra' else 'Pagamento completo'}\n"
+        f"{admin_extra_day_line}"
         f"Prezzo finale   : €{final_eur:.2f}\n"
         f"Codice sconto   : {booking.get('couponCode') or 'Nessuno'}\n"
     )

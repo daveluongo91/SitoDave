@@ -1,6 +1,8 @@
 # Cartelle di dipendenze / compilate
 davide-second-brain/
 __pycache__/
+.pytest_cache/
+backend/.pytest_cache/
 backend/.venv/
 .venv/
 backend/**/__pycache__/

@@ -29,7 +29,14 @@ def notify_availability_threshold(db: Session, workshop: Workshop) -> int:
 
     sent = 0
     now = datetime.now(timezone.utc).isoformat()
-    landing_url = f"{settings.site_public_url.rstrip('/')}/Friuli_2026/"
+    details_url = (workshop.details_url or "/").strip()
+    if details_url.startswith(("http://", "https://")):
+        landing_url = details_url
+    elif details_url.startswith("/"):
+        landing_url = f"{settings.site_public_url.rstrip('/')}{details_url}"
+    else:
+        landing_url = f"{settings.site_public_url.rstrip('/')}/{details_url.lstrip('/')}"
+    marker = f"[{workshop.workshop_key.replace('-', ' ').upper()}]"
 
     for subscriber in subscribers:
         unsubscribe_url = (
@@ -49,7 +56,7 @@ def notify_availability_threshold(db: Session, workshop: Workshop) -> int:
         )
         success, _ = send_email(
             subscriber.email,
-            f"📷 Workshop Friuli 2026 — restano {seat_label}",
+            f"📷 {marker} {workshop.title} — restano {seat_label}",
             body,
         )
         if success:
@@ -58,4 +65,3 @@ def notify_availability_threshold(db: Session, workshop: Workshop) -> int:
 
     db.commit()
     return sent
-

@@ -178,6 +178,7 @@ function renderParticipantsEditor() {
         const balEur   = (b.balanceCents || 30000) / 100;
         const dueEur   = (b.amountDueCents || 5000) / 100;
         const formulaLabel = b.formula === 'caparra' ? '💳 Caparra €50' : '💰 Saldo Completo';
+        const extraDayTag  = b.extraDay ? '<br><span style="color:#00f0ff;font-size:0.75rem;">+ venerdì (€100)</span>' : '';
         const couponTag    = b.couponCode ? `<span style="color:#4ade80; font-size:0.75rem;">🏷️ ${b.couponCode}</span>` : '—';
         const balanceBadge = b.formula === 'caparra'
           ? (b.balancePaid
@@ -197,7 +198,7 @@ function renderParticipantsEditor() {
           <td style="padding:0.65rem; color:var(--text-secondary); font-size:0.8rem;">${b.email}<br>
             <a href="https://wa.me/${(b.phone||'').replace(/[^0-9]/g,'')}" target="_blank" style="color:#25D366; font-size:0.75rem;">💬 ${b.phone}</a>
           </td>
-          <td style="padding:0.65rem; font-size:0.8rem;">${formulaLabel}<br>${couponTag}</td>
+          <td style="padding:0.65rem; font-size:0.8rem;">${formulaLabel}${extraDayTag}<br>${couponTag}</td>
           <td style="padding:0.65rem; font-size:0.8rem;">
             Finale: <strong>€${finalEur.toFixed(2)}</strong><br>
             Pagato: <strong style="color:var(--accent-cyan);">€${dueEur.toFixed(2)}</strong><br>

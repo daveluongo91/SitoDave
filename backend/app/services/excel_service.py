@@ -115,7 +115,7 @@ def generate_xlsx(
 
     headers_p = [
         "ID Prenotazione", "Nome", "Cognome", "Email", "Telefono",
-        "Workshop", "Data Iscrizione", "Modalità Pagamento",
+        "Workshop", "Data Iscrizione", "Modalità Pagamento", "Dal venerdì",
         "Importo Previsto (€)", "Saldo Pagato", "Stato Amministrativo",
         "Codice Sconto", "Sconto (€)", "Note", "Privacy Accettata",
     ]
@@ -140,6 +140,9 @@ def generate_xlsx(
             _safe_cell(b.workshop_name or workshop.title),
             b.created_at[:10] if b.created_at else "",      # data ISO → stringa
             _safe_cell(b.formula or ""),
+            (
+                "Sì (+€100)" if b.extra_day_selected else "No"
+            ) if b.workshop_id == "friuli-2026" else "—",
             float(final_eur),
             "Sì" if b.balance_paid else "No",
             _safe_cell(b.admin_status or b.status or ""),
@@ -154,10 +157,10 @@ def generate_xlsx(
             cell.fill = alt
             cell.alignment = Alignment(vertical="top", wrap_text=True)
             # Formato valuta per colonne importi
-            if col_idx in (9, 13):
+            if col_idx in (10, 14):
                 cell.number_format = fmt_euro
 
-    _set_col_widths(ws1, [14, 16, 16, 28, 16, 20, 13, 18, 16, 12, 18, 14, 12, 30, 14])
+    _set_col_widths(ws1, [14, 16, 16, 28, 16, 20, 13, 18, 14, 16, 12, 18, 14, 12, 30, 14])
 
     # ── Foglio 2: Riepilogo ────────────────────────────────────────────────
     ws2 = wb.create_sheet("Riepilogo")

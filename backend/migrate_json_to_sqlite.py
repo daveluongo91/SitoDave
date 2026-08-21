@@ -109,6 +109,8 @@ def migrate_bookings(db) -> int:
             phone=bd.get("phone"),
             participants=bd.get("participants", 1),
             formula=bd.get("formula"),
+            extra_day_selected=bd.get("extraDay", False),
+            extra_day_cents=bd.get("extraDayCents", 0),
             original_cents=bd.get("originalCents"),
             discount_cents=bd.get("discountCents", 0),
             final_cents=bd.get("finalCents"),

@@ -24,6 +24,8 @@ class Booking(Base):
     participants = Column(Integer, default=1)
 
     formula = Column(String(16), nullable=True)        # caparra | saldo
+    extra_day_selected = Column(Boolean, nullable=False, default=False)
+    extra_day_cents = Column(Integer, nullable=False, default=0)
 
     # Importi in centesimi (evita floating point)
     original_cents = Column(Integer, nullable=True)
@@ -68,6 +70,8 @@ class Booking(Base):
             "phone": self.phone,
             "participants": self.participants,
             "formula": self.formula,
+            "extraDay": bool(self.extra_day_selected),
+            "extraDayCents": self.extra_day_cents or 0,
             "originalCents": self.original_cents,
             "discountCents": self.discount_cents,
             "finalCents": self.final_cents,

@@ -203,6 +203,7 @@ class InfoRequest(BaseModel):
     name: str
     email: str
     phone: str = ""
+    source: str = ""
     subject: str = "Informazioni Workshop"
     message: str = ""
 
@@ -226,6 +227,14 @@ class InfoRequest(BaseModel):
         # Limita lunghezza messaggio
         return v[:2000].strip()
 
+    @field_validator("source")
+    @classmethod
+    def source_check(cls, value: str) -> str:
+        value = value.strip().lower()
+        if value and not re.fullmatch(r"[a-z0-9-]{3,64}", value):
+            raise ValueError("Sorgente non valida.")
+        return value
+
 
 @router.post("/send-info-email")
 async def send_info_email(
@@ -235,16 +244,27 @@ async def send_info_email(
     _rate: None = Depends(check_rate_limit),
 ):
     """Invia richiesta informazioni via email. Rate-limited."""
+    source_labels = {
+        "dardagna-2026": "DARDAGNA 2026",
+        "friuli-2026": "FRIULI 2026",
+        "canfaito-2026": "CANFAITO & CONERO 2026",
+        "foreste-casentinesi-2026": "FORESTE CASENTINESI 2026",
+    }
+    source_label = source_labels.get(body.source, body.source.upper() if body.source else "SITO WEB")
+    marker = f"[{source_label}]"
+    marked_subject = body.subject if marker in body.subject else f"{marker} {body.subject}"
     email_body = (
         f"Nuova Richiesta Informazioni:\n\n"
+        f"Provenienza: {marker}\n"
         f"Nome: {body.name}\n"
+        f"Email: {body.email}\n"
         f"Telefono: {body.phone or 'Non specificato'}\n"
-        f"Oggetto: {body.subject}\n\n"
+        f"Oggetto: {marked_subject}\n\n"
         f"Messaggio:\n{body.message}"
     )
     success, msg = send_email(
         settings.aruba_smtp_user,
-        f"✉️ Richiesta Info: {body.subject} ({body.name})",
+        f"✉️ Richiesta Info: {marked_subject} ({body.name})",
         email_body,
     )
     return {"status": "ok" if success else "error", "message": msg}
@@ -314,7 +334,7 @@ async def subscribe_availability_alerts(
         subscriber.name = body.name
         subscriber.active = True
         subscriber.consent_at = now
-        subscriber.consent_source = "friuli-landing"
+        subscriber.consent_source = f"{body.workshopId}-landing"
         subscriber.unsubscribed_at = None
     else:
         subscriber = AvailabilitySubscriber(
@@ -322,7 +342,7 @@ async def subscribe_availability_alerts(
             name=body.name,
             email=body.email,
             consent_at=now,
-            consent_source="friuli-landing",
+            consent_source=f"{body.workshopId}-landing",
             unsubscribe_token=secrets.token_urlsafe(32),
             active=True,
         )
@@ -350,10 +370,12 @@ async def unsubscribe_availability_alerts(token: str, db: Session = Depends(get_
 
     subscriber.active = False
     subscriber.unsubscribed_at = datetime.now(timezone.utc).isoformat()
+    workshop = db.query(Workshop).filter(Workshop.workshop_key == subscriber.workshop_id).first()
+    workshop_name = workshop.title if workshop else subscriber.workshop_id
     db.commit()
     return HTMLResponse(
         "<main><h1>Disiscrizione completata</h1>"
-        "<p>Non riceverai altri avvisi sulla disponibilità del Workshop Friuli 2026.</p></main>"
+        f"<p>Non riceverai altri avvisi sulla disponibilità di {workshop_name}.</p></main>"
     )
 
 

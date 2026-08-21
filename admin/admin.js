@@ -345,7 +345,7 @@ function renderParticipants(list) {
       <td>${escHtml(b.firstName)} ${escHtml(b.lastName)}</td>
       <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis">${escHtml(b.email)}</td>
       <td>${escHtml(b.workshopId || '—')}</td>
-      <td>${escHtml(b.formula || '—')}</td>
+      <td>${escHtml(b.formula || '—')}${b.extraDay ? '<br><span style="color:var(--accent);font-size:.75rem">+ venerdì (€100)</span>' : ''}</td>
       <td>${formatEuro(b.finalCents)}</td>
       <td>${badge(b.status)}</td>
       <td>${b.balancePaid ? '<span style="color:var(--green)">✅ Pagato</span>' : '<span style="color:var(--text-muted)">—</span>'}</td>
