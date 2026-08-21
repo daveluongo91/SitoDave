@@ -639,3 +639,79 @@ option { background: var(--bg-card); color: var(--text); }
     grid-template-columns: 1fr;
   }
 }
+
+/* ── CRM, Video & Wizard Extensions ────────────────────────────── */
+.modal-lg {
+  max-width: 860px !important;
+  width: 95% !important;
+}
+.tabs-nav-modal {
+  display: flex;
+  gap: .5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+  padding-bottom: .5rem;
+  overflow-x: auto;
+}
+.tabs-nav-modal .tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: .85rem;
+  font-weight: 600;
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tabs-nav-modal .tab-btn.active {
+  background: var(--bg-2);
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+.tab-pane {
+  display: none;
+}
+.tab-pane.active {
+  display: block;
+}
+.form-select, select {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: .85rem;
+  outline: none;
+}
+.form-input, input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], input[type="datetime-local"], textarea {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: .85rem;
+  outline: none;
+}
+.upload-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+.upload-dropzone:hover {
+  border-color: var(--accent);
+}
+.preview-table {
+  font-size: .78rem;
+}
+.badge-active { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+.badge-paid { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+.badge-pending { background: rgba(250,204,21,0.15); color: var(--yellow); border: 1px solid rgba(250,204,21,0.3); }
+.badge-draft { background: rgba(148,163,184,0.15); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.3); }
+.badge-soldout { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+

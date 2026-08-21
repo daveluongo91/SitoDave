@@ -243,12 +243,13 @@ async def send_info_email(
     db: Session = Depends(get_db),
     _rate: None = Depends(check_rate_limit),
 ):
-    """Invia richiesta informazioni via email. Rate-limited."""
+    """Invia richiesta informazioni via email e registra il contatto nel CRM. Rate-limited."""
     source_labels = {
         "dardagna-2026": "DARDAGNA 2026",
         "friuli-2026": "FRIULI 2026",
         "canfaito-2026": "CANFAITO & CONERO 2026",
         "foreste-casentinesi-2026": "FORESTE CASENTINESI 2026",
+        "one-to-one": "ONE TO ONE",
     }
     source_label = source_labels.get(body.source, body.source.upper() if body.source else "SITO WEB")
     marker = f"[{source_label}]"
@@ -262,6 +263,29 @@ async def send_info_email(
         f"Oggetto: {marked_subject}\n\n"
         f"Messaggio:\n{body.message}"
     )
+
+    # 1. Registra o aggiorna il contatto nel CRM
+    from backend.app.services.crm_service import get_or_create_contact_from_interaction
+    name_parts = body.name.strip().split(" ", 1)
+    f_name = name_parts[0]
+    l_name = name_parts[1] if len(name_parts) > 1 else ""
+
+    get_or_create_contact_from_interaction(
+        db=db,
+        email=body.email,
+        first_name=f_name,
+        last_name=l_name,
+        phone=body.phone,
+        source=body.source or "web_form",
+        interaction_type="info_request",
+        interaction_subject=marked_subject,
+        interaction_note=body.message,
+        workshop_or_trip_key=body.source if body.source else None,
+        privacy_consent=True,
+        consent_source=f"info_form_{body.source or 'general'}",
+    )
+
+    # 2. Invia email amministrativa
     success, msg = send_email(
         settings.aruba_smtp_user,
         f"✉️ Richiesta Info: {marked_subject} ({body.name})",
@@ -348,6 +372,27 @@ async def subscribe_availability_alerts(
         )
         db.add(subscriber)
     db.commit()
+
+    # Registra nel CRM
+    from backend.app.services.crm_service import get_or_create_contact_from_interaction
+    name_parts = body.name.strip().split(" ", 1)
+    f_name = name_parts[0]
+    l_name = name_parts[1] if len(name_parts) > 1 else ""
+
+    get_or_create_contact_from_interaction(
+        db=db,
+        email=body.email,
+        first_name=f_name,
+        last_name=l_name,
+        source=f"{body.workshopId}_alert",
+        interaction_type="info_request",
+        interaction_subject=f"Iscrizione avviso disponibilità {body.workshopId}",
+        interaction_note="Utente iscritto alla lista d'attesa/avvisi per ultimi posti.",
+        workshop_or_trip_key=body.workshopId,
+        marketing_consent=True,
+        privacy_consent=True,
+        consent_source=f"{body.workshopId}-landing",
+    )
 
     return {
         "status": "ok",

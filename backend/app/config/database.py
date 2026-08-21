@@ -65,6 +65,6 @@ def init_db():
     from backend.app.models import (  # noqa: F401 — importa per registrare i modelli
         user, session, page, block, page_revision,
         workshop, booking, coupon, media, cost, report, audit_log,
-        availability_subscriber,
+        availability_subscriber, contact, contact_interaction, tag, job,
     )
     Base.metadata.create_all(bind=engine)

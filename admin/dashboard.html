@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -28,17 +28,20 @@
       <li><a href="#dashboard" class="nav-item active" data-section="dashboard" aria-current="page">
         <span class="nav-icon" aria-hidden="true">📊</span> Dashboard
       </a></li>
-      <li><a href="#pages" class="nav-item" data-section="pages">
-        <span class="nav-icon" aria-hidden="true">📄</span> Pagine
-      </a></li>
-      <li><a href="#media" class="nav-item" data-section="media">
-        <span class="nav-icon" aria-hidden="true">🖼️</span> Media
-      </a></li>
       <li><a href="#workshops" class="nav-item" data-section="workshops">
-        <span class="nav-icon" aria-hidden="true">🏕️</span> Workshop
+        <span class="nav-icon" aria-hidden="true">🏕️</span> Esperienze & Viaggi
       </a></li>
       <li><a href="#participants" class="nav-item" data-section="participants">
         <span class="nav-icon" aria-hidden="true">👥</span> Partecipanti
+      </a></li>
+      <li><a href="#crm" class="nav-item" data-section="crm">
+        <span class="nav-icon" aria-hidden="true">📇</span> Contatti (CRM)
+      </a></li>
+      <li><a href="#media" class="nav-item" data-section="media">
+        <span class="nav-icon" aria-hidden="true">🖼️</span> Media & Video
+      </a></li>
+      <li><a href="#pages" class="nav-item" data-section="pages">
+        <span class="nav-icon" aria-hidden="true">📄</span> Pagine CMS
       </a></li>
       <li><a href="#coupons" class="nav-item" data-section="coupons">
         <span class="nav-icon" aria-hidden="true">🎟️</span> Coupon
@@ -48,6 +51,9 @@
       </a></li>
       <li><a href="#reports" class="nav-item" data-section="reports">
         <span class="nav-icon" aria-hidden="true">📈</span> Report
+      </a></li>
+      <li><a href="#security" class="nav-item" data-section="security">
+        <span class="nav-icon" aria-hidden="true">🔐</span> Sicurezza & Backup
       </a></li>
       <li><a href="#logs" class="nav-item" data-section="logs">
         <span class="nav-icon" aria-hidden="true">📋</span> Log Audit
@@ -107,6 +113,10 @@
 
         <div class="dashboard-grid">
           <div class="dash-card">
+            <h3 class="dash-card-title">📇 Pipeline CRM & Follow-up</h3>
+            <div id="crmPipelineWidget" aria-live="polite">Caricamento CRM...</div>
+          </div>
+          <div class="dash-card">
             <h3 class="dash-card-title">🔔 Prossimi Cutoff</h3>
             <div id="upcomingCutoffs" aria-live="polite">Caricamento...</div>
           </div>
@@ -115,89 +125,135 @@
             <div id="participantsByWorkshop" aria-live="polite">Caricamento...</div>
           </div>
           <div class="dash-card">
+            <h3 class="dash-card-title">💰 Ricavi Confermati per Fonte</h3>
+            <div id="revenueBySourceWidget" aria-live="polite">Caricamento ricavi...</div>
+          </div>
+          <div class="dash-card">
             <h3 class="dash-card-title">🎟️ Coupon Attivi</h3>
             <div id="activeCoupons" aria-live="polite">Caricamento...</div>
           </div>
           <div class="dash-card">
-            <h3 class="dash-card-title">📋 Contenuti in Bozza</h3>
-            <div id="draftPages" aria-live="polite">Caricamento...</div>
-          </div>
-          <div class="dash-card">
-            <h3 class="dash-card-title">📈 Report Disponibili</h3>
-            <div id="availableReports" aria-live="polite">Caricamento...</div>
-          </div>
-          <div class="dash-card">
-            <h3 class="dash-card-title">⚠️ Errori Job</h3>
-            <div id="jobErrors" aria-live="polite">Nessun errore</div>
+            <h3 class="dash-card-title">⚙️ Job in Background & Media</h3>
+            <div id="jobErrors" aria-live="polite">Nessun job attivo</div>
           </div>
         </div>
       </section>
 
-      <!-- ── WORKSHOP ─────────────────────────────────────────────────── -->
-      <section id="section-workshops" class="section" aria-label="Gestione Workshop" hidden>
+      <!-- ── 2. ESPERIENZE & VIAGGI ──────────────────────────────────── -->
+      <section id="section-workshops" class="section" aria-label="Gestione Esperienze e Viaggi" hidden>
         <div class="section-header">
-          <h2>Workshop</h2>
-          <button class="btn-primary" id="newWorkshopBtn" aria-label="Crea nuovo workshop">
-            + Nuovo Workshop
-          </button>
+          <div>
+            <h2>Esperienze, Workshop & Viaggi Internazionali</h2>
+            <p class="section-desc">Crea e gestisci le pagine del sito con template versionati e verifiche pre-pubblicazione</p>
+          </div>
+          <div class="header-actions">
+            <select id="experienceTypeFilter" class="form-select">
+              <option value="">Tutte le tipologie</option>
+              <option value="workshop">Workshop Nazionali</option>
+              <option value="international_trip">Viaggi Internazionali</option>
+            </select>
+            <button class="btn-primary" id="newWorkshopBtn">
+              + Nuova Esperienza
+            </button>
+          </div>
         </div>
-        <div id="workshopsList" class="cards-list" aria-live="polite">Caricamento...</div>
+        <div id="workshopsList" class="cards-list" aria-live="polite">Caricamento esperienze...</div>
 
-        <!-- Modal Workshop -->
-        <dialog id="workshopModal" class="modal" aria-modal="true" aria-labelledby="workshopModalTitle">
+        <!-- Modal Workshop & Viaggi -->
+        <dialog id="workshopModal" class="modal modal-lg" aria-modal="true" aria-labelledby="workshopModalTitle">
           <div class="modal-header">
-            <h3 id="workshopModalTitle">Workshop</h3>
+            <h3 id="workshopModalTitle">Nuova Esperienza</h3>
             <button class="modal-close" aria-label="Chiudi" onclick="document.getElementById('workshopModal').close()">✕</button>
           </div>
           <div class="modal-body">
             <form id="workshopForm" novalidate>
               <div class="form-grid">
                 <div class="form-group">
-                  <label for="ws-title">Titolo *</label>
-                  <input type="text" id="ws-title" required aria-required="true">
+                  <label for="ws-type">Tipologia Esperienza *</label>
+                  <select id="ws-type" required>
+                    <option value="workshop">Workshop Nazionale (1-4 giorni)</option>
+                    <option value="international_trip">Viaggio Fotografico Internazionale</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="ws-key">Workshop Key *</label>
-                  <input type="text" id="ws-key" required aria-required="true" pattern="[a-z0-9\-]+" placeholder="es. friuli-2026">
+                  <label for="ws-template">Template Versionato</label>
+                  <select id="ws-template">
+                    <option value="workshop-v1">workshop-v1 (Nazionale Standard)</option>
+                    <option value="international-trip-v1">international-trip-v1 (Spedizioni Internazionali)</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label for="ws-title">Titolo Esperienza *</label>
+                  <input type="text" id="ws-title" required placeholder="Es. Friuli & Alpi Giulie 2026">
                 </div>
                 <div class="form-group">
-                  <label for="ws-startDate">Data Inizio</label>
-                  <input type="date" id="ws-startDate">
+                  <label for="ws-key">Slug / Workshop Key *</label>
+                  <input type="text" id="ws-key" required pattern="[a-z0-9\-]+" placeholder="es. friuli-2026">
+                </div>
+                <div class="form-group">
+                  <label for="ws-status">Stato Iniziativa</label>
+                  <select id="ws-status">
+                    <option value="draft">Bozza (Draft)</option>
+                    <option value="active" selected>Attivo / Aperto</option>
+                    <option value="soldout">Sold Out</option>
+                    <option value="cancelled">Annullato</option>
+                    <option value="completed">Completato</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="ws-startDate">Data Inizio *</label>
+                  <input type="date" id="ws-startDate" required>
                 </div>
                 <div class="form-group">
                   <label for="ws-endDate">Data Fine</label>
                   <input type="date" id="ws-endDate">
                 </div>
                 <div class="form-group">
-                  <label for="ws-price">Prezzo (centesimi) *</label>
-                  <input type="number" id="ws-price" min="0" required aria-required="true" aria-describedby="ws-price-hint">
-                  <span id="ws-price-hint" class="field-hint">Es: 35000 = €350,00</span>
+                  <label for="ws-price">Prezzo Listino (in centesimi) *</label>
+                  <input type="number" id="ws-price" min="0" required placeholder="39000">
+                  <span class="field-hint">39000 = €390,00</span>
                 </div>
                 <div class="form-group">
-                  <label for="ws-seats">Posti Totali</label>
-                  <input type="number" id="ws-seats" min="1" value="8">
+                  <label for="ws-seats">Posti Totali *</label>
+                  <input type="number" id="ws-seats" min="1" value="8" required>
+                </div>
+                <div class="form-group">
+                  <label for="ws-availSeats">Posti Rimasti</label>
+                  <input type="number" id="ws-availSeats" min="0" value="8">
                 </div>
                 <div class="form-group">
                   <label for="ws-cutoff">Data/Ora Cutoff</label>
                   <input type="datetime-local" id="ws-cutoff">
                 </div>
+
+                <!-- Campi Logistica & Viaggi Internazionali -->
                 <div class="form-group">
-                  <label for="ws-status">Stato</label>
-                  <select id="ws-status">
-                    <option value="draft">Bozza</option>
-                    <option value="active" selected>Attivo</option>
-                    <option value="soldout">Sold Out</option>
-                    <option value="cancelled">Annullato</option>
-                    <option value="completed">Completato</option>
-                  </select>
+                  <label for="ws-country">Paese di destinazione</label>
+                  <input type="text" id="ws-country" placeholder="Italia, Norvegia, Islanda...">
+                </div>
+                <div class="form-group">
+                  <label for="ws-destination">Località / Destinazione</label>
+                  <input type="text" id="ws-destination" placeholder="Es. Tarvisio, Isole Lofoten">
+                </div>
+                <div class="form-group">
+                  <label for="ws-technicalOperator">Tour Operator / Agenzia Tecnica</label>
+                  <input type="text" id="ws-technicalOperator" placeholder="Nome agenzia viaggi autorizzata">
+                </div>
+                <div class="form-group">
+                  <label for="ws-documentsRequired">Documenti Richiesti</label>
+                  <input type="text" id="ws-documentsRequired" placeholder="Carta identità valida per espatrio / Passaporto">
                 </div>
                 <div class="form-group full">
-                  <label for="ws-location">Location</label>
-                  <input type="text" id="ws-location">
+                  <label for="ws-location">Ritrovo / Meeting Point</label>
+                  <input type="text" id="ws-location" placeholder="Punto di ritrovo o aeroporto">
                 </div>
                 <div class="form-group full">
-                  <label for="ws-description">Descrizione</label>
-                  <textarea id="ws-description" rows="3"></textarea>
+                  <label for="ws-description">Descrizione / Presentazione</label>
+                  <textarea id="ws-description" rows="3" placeholder="Sintesi per hero e social"></textarea>
+                </div>
+                <div class="form-group full">
+                  <label for="ws-dayByDay">Itinerario Sintetico (JSON array o testo)</label>
+                  <textarea id="ws-dayByDay" rows="2" placeholder='[{"day": "Giorno 1", "title": "Arrivo e tramonto", "desc": "Ritrovo e prima sessione"}]'></textarea>
                 </div>
                 <div class="form-group full">
                   <label for="ws-notes">Note operative (solo admin)</label>
@@ -207,8 +263,9 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button class="btn-secondary" onclick="document.getElementById('workshopModal').close()">Annulla</button>
-            <button class="btn-primary" id="saveWorkshopBtn">Salva</button>
+            <button type="button" class="btn-secondary" onclick="document.getElementById('workshopModal').close()">Annulla</button>
+            <button type="button" class="btn-secondary" id="validateWorkshopBtn">🔍 Verifica Completezza</button>
+            <button type="button" class="btn-primary" id="saveWorkshopBtn">Salva Modifiche</button>
           </div>
         </dialog>
       </section>
@@ -448,6 +505,292 @@
         <div id="reportsList" aria-live="polite">Caricamento...</div>
       </section>
 
+      <!-- ── 4. CRM CONTATTI ─────────────────────────────────────────── -->
+      <section id="section-crm" class="section" aria-label="CRM Contatti" hidden>
+        <div class="section-header">
+          <div>
+            <h2>CRM & Rubrica Contatti</h2>
+            <p class="section-desc">Tracciamento interazioni, lead commerciali, cronologia clienti e gestione blacklist</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-secondary" id="crmExportCsvBtn">📤 Esporta CSV</button>
+            <button class="btn-secondary" id="crmImportCsvBtn">📥 Importa CSV</button>
+            <button class="btn-primary" id="newContactBtn">+ Nuovo Contatto</button>
+          </div>
+        </div>
+
+        <div class="filters-bar-crm" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+          <input type="text" id="crmSearchInput" placeholder="Cerca nome, email, telefono..." class="form-input" style="flex: 1; min-width: 200px;">
+          <select id="crmStatusFilter" class="form-select">
+            <option value="">Tutti gli stati</option>
+            <option value="new_lead">Nuovo Lead</option>
+            <option value="to_contact">Da Contattare</option>
+            <option value="contacted">Contattato</option>
+            <option value="qualified">Qualificato</option>
+            <option value="quote_sent">Preventivo Inviato</option>
+            <option value="customer">Cliente</option>
+            <option value="loyal_customer">Cliente Fedele</option>
+            <option value="lost_lead">Lead Perso</option>
+            <option value="inactive">Inattivo</option>
+          </select>
+          <select id="crmPriorityFilter" class="form-select">
+            <option value="">Tutte le priorità</option>
+            <option value="urgent">🔴 Urgente</option>
+            <option value="high">🟠 Alta</option>
+            <option value="medium">🟡 Media</option>
+            <option value="low">🟢 Bassa</option>
+          </select>
+          <select id="crmFollowupFilter" class="form-select">
+            <option value="">Tutti i follow-up</option>
+            <option value="today">📅 Da contattare Oggi</option>
+            <option value="overdue">⚠️ Follow-up Scaduti</option>
+          </select>
+          <select id="crmBlacklistFilter" class="form-select">
+            <option value="">Tutti i contatti</option>
+            <option value="false">Solo Attivi</option>
+            <option value="true">⛔ In Blacklist</option>
+          </select>
+        </div>
+
+        <div class="table-wrapper" role="region" aria-label="Lista contatti CRM" tabindex="0">
+          <table id="crmTable" class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Contatto</th>
+                <th scope="col">Email & Telefono</th>
+                <th scope="col">Stato & Priorità</th>
+                <th scope="col">Fonte</th>
+                <th scope="col">Ultimo Contatto</th>
+                <th scope="col">Prossimo Follow-up</th>
+                <th scope="col">Totale Speso</th>
+                <th scope="col">Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="crmBody" aria-live="polite">
+              <tr><td colspan="8" class="table-empty">Caricamento rubrica CRM...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination-bar" id="crmPagination" style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 0.5rem;"></div>
+
+        <!-- Modal Contatto -->
+        <dialog id="contactModal" class="modal modal-lg" aria-modal="true" aria-labelledby="contactModalTitle">
+          <div class="modal-header">
+            <h3 id="contactModalTitle">Scheda Contatto</h3>
+            <button class="modal-close" aria-label="Chiudi" onclick="document.getElementById('contactModal').close()">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="contactForm" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="cnt-firstName">Nome *</label>
+                  <input type="text" id="cnt-firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="cnt-lastName">Cognome</label>
+                  <input type="text" id="cnt-lastName">
+                </div>
+                <div class="form-group">
+                  <label for="cnt-email">Email *</label>
+                  <input type="email" id="cnt-email" required>
+                </div>
+                <div class="form-group">
+                  <label for="cnt-phone">Telefono</label>
+                  <input type="tel" id="cnt-phone">
+                </div>
+                <div class="form-group">
+                  <label for="cnt-status">Stato Commerciale</label>
+                  <select id="cnt-status">
+                    <option value="new_lead">Nuovo Lead</option>
+                    <option value="to_contact">Da Contattare</option>
+                    <option value="contacted">Contattato</option>
+                    <option value="qualified">Qualificato</option>
+                    <option value="quote_sent">Preventivo Inviato</option>
+                    <option value="customer">Cliente</option>
+                    <option value="loyal_customer">Cliente Fedele</option>
+                    <option value="lost_lead">Lead Perso</option>
+                    <option value="inactive">Inattivo</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="cnt-priority">Priorità</label>
+                  <select id="cnt-priority">
+                    <option value="low">Bassa</option>
+                    <option value="medium" selected>Media</option>
+                    <option value="high">Alta</option>
+                    <option value="urgent">Urgente</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="cnt-followup">Prossimo Follow-up</label>
+                  <input type="date" id="cnt-followup">
+                </div>
+                <div class="form-group">
+                  <label for="cnt-country">Paese</label>
+                  <input type="text" id="cnt-country" value="IT">
+                </div>
+                <div class="form-group full">
+                  <label for="cnt-tags">Tag (separati da virgola)</label>
+                  <input type="text" id="cnt-tags" placeholder="astrofotografia, paesaggio, dolomiti">
+                </div>
+                <div class="form-group full">
+                  <label for="cnt-notes">Note Interne</label>
+                  <textarea id="cnt-notes" rows="2" placeholder="Informazioni generali, preferenze dell'utente..."></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <h4>Cronologia & Nuova Interazione</h4>
+                <div style="display: flex; gap: 0.5rem; margin: 0.75rem 0;">
+                  <select id="newIntType" style="width: 180px;">
+                    <option value="phone_call">📞 Telefonata</option>
+                    <option value="email">✉️ Email</option>
+                    <option value="whatsapp">💬 WhatsApp</option>
+                    <option value="quote">📄 Preventivo</option>
+                    <option value="internal_note" selected>📝 Nota Interna</option>
+                  </select>
+                  <input type="text" id="newIntNote" placeholder="Dettagli interazione..." style="flex: 1;">
+                  <button type="button" class="btn-secondary" id="addInteractionBtn">+ Aggiungi</button>
+                </div>
+                <div id="contactInteractionsTimeline" style="max-height: 200px; overflow-y: auto; font-size: 0.85rem;"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="toggleBlacklistBtn">⛔ Blacklist</button>
+            <button type="button" class="btn-secondary" onclick="document.getElementById('contactModal').close()">Chiudi</button>
+            <button type="button" class="btn-primary" id="saveContactBtn">Salva Contatto</button>
+          </div>
+        </dialog>
+
+        <!-- Modal Import CSV -->
+        <dialog id="csvImportModal" class="modal modal-lg" aria-modal="true">
+          <div class="modal-header">
+            <h3>Importazione Contatti da CSV</h3>
+            <button class="modal-close" onclick="document.getElementById('csvImportModal').close()">✕</button>
+          </div>
+          <div class="modal-body">
+            <div id="csvStep1">
+              <input type="file" id="csvFileInput" accept=".csv,text/csv">
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Seleziona un file CSV (delimitatore virgola o punto e virgola, UTF-8 o Latin-1).</p>
+            </div>
+            <div id="csvStep2" style="display: none;">
+              <div id="csvPreviewSummary" class="alert info" style="display: block; margin-bottom: 1rem;"></div>
+              <h4>Mappatura Colonne</h4>
+              <div id="csvMappingGrid" class="form-grid"></div>
+              <h4 style="margin-top: 1rem;">Strategia Duplicati</h4>
+              <select id="csvDuplicateStrategy">
+                <option value="update_empty" selected>Aggiorna solo campi vuoti del contatto esistente</option>
+                <option value="skip">Ignora duplicati</option>
+                <option value="overwrite">Sovrascrivi dati esistenti</option>
+                <option value="conflict">Marca come conflitto e aggiungi nota</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="document.getElementById('csvImportModal').close()">Annulla</button>
+            <button type="button" class="btn-primary" id="csvNextStepBtn">Avanti (Analizza)</button>
+            <button type="button" class="btn-primary" id="csvConfirmImportBtn" style="display: none;">Conferma Importazione</button>
+          </div>
+        </dialog>
+      </section>
+
+      <!-- ── 5. MEDIA & VIDEO ────────────────────────────────────────── -->
+      <section id="section-media" class="section" aria-label="Libreria Media" hidden>
+        <div class="section-header">
+          <div>
+            <h2>Libreria Media & Pipeline Video</h2>
+            <p class="section-desc">Immagini responsive e codifica video Web-ready 1080p/720p H.264</p>
+          </div>
+          <div class="header-actions">
+            <label class="upload-drop-label btn-primary" for="mediaUploadInput" tabindex="0" role="button">
+              📤 Carica Immagine
+              <input type="file" id="mediaUploadInput" accept="image/*" class="sr-only" aria-hidden="true">
+            </label>
+            <button class="btn-secondary" id="openVideoUploadBtn">🎥 Carica Video</button>
+          </div>
+        </div>
+        <div id="videoJobsBox" style="display: none; margin-bottom: 1rem;"></div>
+        <div id="uploadProgress" hidden aria-live="assertive">
+          <div class="progress-bar" role="progressbar" aria-label="Upload in corso">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p id="uploadStatus"></p>
+        </div>
+        <div id="mediaGrid" class="media-grid" aria-live="polite">Caricamento...</div>
+
+        <!-- Modal Upload Video -->
+        <dialog id="videoUploadModal" class="modal" aria-modal="true">
+          <div class="modal-header">
+            <h3>Carica Video Web-Ready (FFmpeg)</h3>
+            <button class="modal-close" onclick="document.getElementById('videoUploadModal').close()">✕</button>
+          </div>
+          <div class="modal-body">
+            <form id="videoUploadForm">
+              <div class="form-group">
+                <label for="vidFile">File Video (MP4, MOV, MKV, WebM - max 200 MB)</label>
+                <input type="file" id="vidFile" accept="video/*" required>
+              </div>
+              <div class="form-group">
+                <label for="vidAlt">Titolo / Descrizione Video</label>
+                <input type="text" id="vidAlt" placeholder="Es. Video anteprima workshop">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" onclick="document.getElementById('videoUploadModal').close()">Annulla</button>
+            <button class="btn-primary" id="confirmUploadVideoBtn">Avvia Elaborazione</button>
+          </div>
+        </dialog>
+      </section>
+
+      <!-- ── 10. SICUREZZA & BACKUP ──────────────────────────────────── -->
+      <section id="section-security" class="section" aria-label="Sicurezza e Backup" hidden>
+        <div class="section-header">
+          <div>
+            <h2>Sicurezza, 2FA & Backup Database</h2>
+            <p class="section-desc">Autenticazione a due fattori, codici di recupero, sessioni e copie atomiche SQLite</p>
+          </div>
+          <button class="btn-primary" id="triggerBackupNowBtn">💾 Esegui Backup Adesso</button>
+        </div>
+
+        <div class="dashboard-grid" style="margin-bottom: 2rem;">
+          <div class="dash-card">
+            <h3 class="dash-card-title">🔐 Autenticazione 2FA (Email OTP)</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Protezione attiva con codice monouso inviato via email ad ogni accesso.
+            </p>
+            <button class="btn-secondary" id="generateRecoveryCodesBtn">🔑 Genera 8 Codici di Recupero</button>
+            <div id="recoveryCodesDisplay" style="display: none; margin-top: 1rem; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);"></div>
+          </div>
+
+          <div class="dash-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 class="dash-card-title" style="margin: 0;">🌐 Sessioni Amministrative</h3>
+              <button class="btn-secondary" id="revokeOtherSessionsBtn" style="font-size: 0.75rem;">Revoca Altre Sessioni</button>
+            </div>
+            <div id="sessionsList" aria-live="polite">Caricamento sessioni...</div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 0.75rem;">Archivio Backup SQLite</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nome File</th>
+                <th>Data Creazione</th>
+                <th>Dimensione</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="backupsBody">
+              <tr><td colspan="4" class="table-empty">Caricamento backup...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- ── LOG AUDIT ────────────────────────────────────────────────── -->
       <section id="section-logs" class="section" aria-label="Log Audit" hidden>
         <div class="section-header">
@@ -470,28 +813,6 @@
             </tbody>
           </table>
         </div>
-      </section>
-
-      <!-- ── MEDIA ────────────────────────────────────────────────────── -->
-      <section id="section-media" class="section" aria-label="Libreria Media" hidden>
-        <div class="section-header">
-          <h2>Libreria Media</h2>
-          <div class="filters-row">
-            <input type="search" id="mediaSearch" placeholder="Cerca..." aria-label="Cerca media">
-            <label class="upload-drop-label btn-secondary" for="mediaUploadInput" tabindex="0"
-                   role="button" aria-label="Carica immagine">
-              📤 Carica Immagine
-              <input type="file" id="mediaUploadInput" accept="image/*" class="sr-only" aria-hidden="true">
-            </label>
-          </div>
-        </div>
-        <div id="uploadProgress" hidden aria-live="assertive">
-          <div class="progress-bar" role="progressbar" aria-label="Upload in corso">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          <p id="uploadStatus"></p>
-        </div>
-        <div id="mediaGrid" class="media-grid" aria-live="polite">Caricamento...</div>
       </section>
 
       <!-- ── CONFIGURAZIONE ──────────────────────────────────────────── -->

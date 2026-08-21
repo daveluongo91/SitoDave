@@ -30,6 +30,34 @@ class Workshop(Base):
     report_version = Column(Integer, default=0)
     operative_notes = Column(Text, nullable=True)
 
+    # Tipo di esperienza & Template
+    experience_type = Column(String(32), default="workshop", nullable=False)  # workshop | international_trip
+    template_version = Column(String(32), default="workshop-v1", nullable=False)
+
+    # Campi specifici per viaggi internazionali & logistica estesa
+    country = Column(String(128), nullable=True)
+    destination = Column(String(255), nullable=True)
+    arrival_airport = Column(String(128), nullable=True)
+    currency = Column(String(16), default="EUR", nullable=False)
+    flights_included = Column(Boolean, default=False, nullable=False)
+    baggage_info = Column(Text, nullable=True)
+    documents_required = Column(Text, nullable=True)
+    passport_or_id = Column(String(64), nullable=True)
+    visa_required = Column(Boolean, default=False, nullable=False)
+    insurance_info = Column(Text, nullable=True)
+    min_participants = Column(Integer, default=4, nullable=True)
+    technical_operator = Column(String(255), nullable=True)
+    sales_liability = Column(Text, nullable=True)
+    accommodation_type = Column(String(255), nullable=True)
+    room_type = Column(String(128), nullable=True)
+    single_supplement_cents = Column(Integer, default=0, nullable=False)
+    meals_included = Column(Text, nullable=True)
+    transfers_info = Column(Text, nullable=True)
+    weather_conditions = Column(Text, nullable=True)
+    physical_level = Column(String(64), nullable=True)
+    day_by_day_itinerary = Column(Text, nullable=True)  # JSON-encoded array of days
+    legal_notes = Column(Text, nullable=True)
+
     # Meta
     location = Column(String(255), nullable=True)
     duration = Column(String(64), nullable=True)
@@ -50,6 +78,8 @@ class Workshop(Base):
             "slug": self.slug,
             "title": self.title,
             "category": self.category,
+            "experienceType": self.experience_type or "workshop",
+            "templateVersion": self.template_version or "workshop-v1",
             "startDate": self.start_date,
             "endDate": self.end_date,
             "timezone": self.timezone,
@@ -63,6 +93,28 @@ class Workshop(Base):
             "reportGeneratedAt": self.report_generated_at,
             "reportVersion": self.report_version,
             "operativeNotes": self.operative_notes,
+            "country": self.country,
+            "destination": self.destination,
+            "arrivalAirport": self.arrival_airport,
+            "currency": self.currency,
+            "flightsIncluded": bool(self.flights_included),
+            "baggageInfo": self.baggage_info,
+            "documentsRequired": self.documents_required,
+            "passportOrId": self.passport_or_id,
+            "visaRequired": bool(self.visa_required),
+            "insuranceInfo": self.insurance_info,
+            "minParticipants": self.min_participants,
+            "technicalOperator": self.technical_operator,
+            "salesLiability": self.sales_liability,
+            "accommodationType": self.accommodation_type,
+            "roomType": self.room_type,
+            "singleSupplementCents": self.single_supplement_cents,
+            "mealsIncluded": self.meals_included,
+            "transfersInfo": self.transfers_info,
+            "weatherConditions": self.weather_conditions,
+            "physicalLevel": self.physical_level,
+            "dayByDayItinerary": self.day_by_day_itinerary,
+            "legalNotes": self.legal_notes,
             "location": self.location,
             "duration": self.duration,
             "description": self.description,

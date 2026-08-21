@@ -38,6 +38,110 @@ async def list_participants(
     return {"participants": [b.to_dict() for b in bookings]}
 
 
+@router.get("/export")
+async def export_participants(
+    request: Request,
+    workshopId: Optional[str] = None,
+    filterType: Optional[str] = "all",  # all | paid | caparra | saldo | pending | cancelled | refunded | balance_pending
+    startDate: Optional[str] = None,
+    endDate: Optional[str] = None,
+    current_user: User = Depends(get_admin_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Export estemporaneo dei partecipanti in formato XLSX.
+    Disponibile in qualsiasi momento: non modifica lo stato del cutoff e non tocca le prenotazioni.
+    """
+    from fastapi.responses import FileResponse
+    from backend.app.models.workshop import Workshop
+    from backend.app.models.cost import WorkshopCost
+    from backend.app.services.export_service import generate_participants_export_xlsx
+
+    query = db.query(Booking).filter(Booking.is_deleted.is_(False))
+
+    ws = None
+    if workshopId:
+        ws = db.query(Workshop).filter(Workshop.workshop_key == workshopId).first()
+        query = query.filter(Booking.workshop_id == workshopId)
+
+    # Filtro tipologia / stato
+    filter_labels = {
+        "all": "Tutti",
+        "paid": "Solo Pagati",
+        "caparra": "Caparra Versata",
+        "saldo": "Saldo Completo",
+        "pending": "In Attesa",
+        "cancelled": "Annullati",
+        "refunded": "Rimborsati",
+        "balance_pending": "Saldo Ancora da Riscuotere",
+    }
+    filter_label = filter_labels.get(filterType, "Personalizzato")
+
+    if filterType == "paid":
+        query = query.filter(Booking.status == "paid")
+    elif filterType == "caparra":
+        query = query.filter(Booking.status == "paid", Booking.formula == "caparra")
+    elif filterType == "saldo":
+        query = query.filter(Booking.status == "paid", Booking.formula == "saldo")
+    elif filterType == "pending":
+        query = query.filter(Booking.status == "pending")
+    elif filterType == "cancelled":
+        query = query.filter(Booking.status == "cancelled")
+    elif filterType == "refunded":
+        query = query.filter(Booking.status.in_(["refunded", "partially_refunded"]))
+    elif filterType == "balance_pending":
+        query = query.filter(
+            Booking.status == "paid",
+            Booking.formula == "caparra",
+            Booking.balance_paid.is_(False),
+        )
+
+    # Filtri intervallo date (created_at ISO string)
+    if startDate:
+        query = query.filter(Booking.created_at >= startDate)
+        filter_label += f" • Da: {startDate}"
+    if endDate:
+        query = query.filter(Booking.created_at <= (endDate + "T23:59:59"))
+        filter_label += f" • A: {endDate}"
+
+    bookings = query.order_by(Booking.created_at.asc()).all()
+
+    cost = None
+    if ws:
+        cost = db.query(WorkshopCost).filter(WorkshopCost.workshop_id == ws.workshop_key).first()
+
+    filepath, file_hash, filename = generate_participants_export_xlsx(
+        workshop=ws,
+        bookings=bookings,
+        cost=cost,
+        filter_label=filter_label,
+    )
+
+    # Audit log (SOLO metadati, nessun dato personale)
+    log_action(
+        db,
+        action="participants_export",
+        user_id=current_user.id,
+        resource_type="export",
+        resource_id=workshopId or "all",
+        details={
+            "workshopId": workshopId or "all",
+            "filterType": filterType,
+            "count": len(bookings),
+            "filename": filename,
+        },
+        ip=request.client.host if request.client else None,
+    )
+
+    return FileResponse(
+        path=filepath,
+        filename=filename,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+
 @router.get("/{booking_id}")
 async def get_participant(
     booking_id: str,

@@ -147,22 +147,85 @@ async function loadDashboard() {
         <div class="stat-value">${activeWs}</div>
       </div>
       <div class="stat-card">
+async function loadDashboard() {
+  try {
+    const [wsData, partsData, crmStats, jobsData] = await Promise.all([
+      api('GET', '/api/admin/workshops/'),
+      api('GET', '/api/admin/participants/'),
+      api('GET', '/api/admin/crm/stats').catch(() => null),
+      api('GET', '/api/admin/jobs/').catch(() => null),
+    ]);
+
+    const ws = wsData?.workshops || [];
+    const parts = partsData?.participants || [];
+    const paidParts = parts.filter(p => p.status === 'paid');
+    const pendingCount = parts.filter(p => p.status === 'pending').length;
+    const totalRevenue = paidParts.reduce((sum, p) => sum + (p.finalCents || 0), 0);
+
+    const activeWs = ws.filter(w => w.status === 'active').length;
+    const soldoutWs = ws.filter(w => w.status === 'soldout').length;
+
+    // Stat cards principali
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-icon" aria-hidden="true">🏕️</div>
+        <div class="stat-label">Iniziative Attive</div>
+        <div class="stat-value">${activeWs}</div>
+        ${soldoutWs > 0 ? `<div class="stat-trend" style="color:var(--yellow)">${soldoutWs} sold out</div>` : ''}
+      </div>
+      <div class="stat-card">
         <div class="stat-icon" aria-hidden="true">✅</div>
         <div class="stat-label">Prenotazioni Pagate</div>
-        <div class="stat-value">${paidCount}</div>
+        <div class="stat-value">${paidParts.length}</div>
         ${pendingCount > 0 ? `<div class="stat-trend">${pendingCount} in attesa</div>` : ''}
       </div>
       <div class="stat-card">
         <div class="stat-icon" aria-hidden="true">💰</div>
-        <div class="stat-label">Ricavi Totali</div>
+        <div class="stat-label">Incasso Online Confermato</div>
         <div class="stat-value">${formatEuro(totalRevenue)}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" aria-hidden="true">👥</div>
-        <div class="stat-label">Totale Partecipanti</div>
-        <div class="stat-value">${parts.length}</div>
+        <div class="stat-icon" aria-hidden="true">📇</div>
+        <div class="stat-label">Contatti in Rubrica CRM</div>
+        <div class="stat-value">${crmStats ? crmStats.totalContacts : parts.length}</div>
+        ${crmStats ? `<div class="stat-trend" style="color:var(--accent)">${crmStats.newLeads} nuovi lead (${crmStats.conversionRatePct}% conv.)</div>` : ''}
       </div>
     `;
+
+    // Widget CRM Pipeline
+    if (crmStats) {
+      document.getElementById('crmPipelineWidget').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;font-size:.875rem">
+          <div style="background:rgba(255,255,255,0.02);padding:.6rem;border-radius:6px;border:1px solid var(--border)">
+            <span style="color:var(--text-muted);font-size:.75rem">DA CONTATTARE</span>
+            <div style="font-size:1.25rem;font-weight:700;color:var(--accent)">${crmStats.toContact + crmStats.newLeads}</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:.6rem;border-radius:6px;border:1px solid var(--border)">
+            <span style="color:var(--text-muted);font-size:.75rem">FOLLOW-UP SCADUTI</span>
+            <div style="font-size:1.25rem;font-weight:700;color:${crmStats.overdueFollowups > 0 ? 'var(--red)' : 'var(--green)'}">${crmStats.overdueFollowups}</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:.6rem;border-radius:6px;border:1px solid var(--border)">
+            <span style="color:var(--text-muted);font-size:.75rem">CLIENTI CONFERMATI</span>
+            <div style="font-size:1.25rem;font-weight:700;color:var(--green)">${crmStats.customers} (${crmStats.loyalCustomers} fedeli)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:.6rem;border-radius:6px;border:1px solid var(--border)">
+            <span style="color:var(--text-muted);font-size:.75rem">IN BLACKLIST</span>
+            <div style="font-size:1.25rem;font-weight:700;color:var(--text-muted)">${crmStats.blacklistedCount}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Ricavi per fonte
+    if (crmStats && crmStats.revenueBySource) {
+      const revHtml = crmStats.revenueBySource.map(r => `
+        <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+          <span>${escHtml(r.source)}</span>
+          <span style="font-weight:700;color:var(--accent)">${r.totalFormatted}</span>
+        </div>
+      `).join('');
+      document.getElementById('revenueBySourceWidget').innerHTML = revHtml || '<p style="color:var(--text-muted);font-size:.85rem">Nessun incasso</p>';
+    }
 
     // Prossimi cutoff
     const now = new Date();
@@ -188,10 +251,28 @@ async function loadDashboard() {
       const title = w ? w.title : id;
       return `<div style="display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.875rem">
         <span>${escHtml(title)}</span>
-        <span style="font-weight:700;color:var(--accent)">${count}</span>
+        <span style="font-weight:700;color:var(--accent)">${count} pax</span>
       </div>`;
     }).join('');
     document.getElementById('participantsByWorkshop').innerHTML = byWsHtml || '<p style="color:var(--text-muted);font-size:.85rem">Nessun dato</p>';
+
+    // Coupon attivi
+    try {
+      const cData = await api('GET', '/api/admin/coupons/');
+      const coupons = cData?.coupons || [];
+      const activeC = coupons.filter(c => c.active);
+      document.getElementById('activeCoupons').innerHTML = activeC.length
+        ? activeC.map(c => `<div style="padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.85rem"><code>${escHtml(c.code)}</code> — ${c.valueDecimal}${c.type === 'percentage' ? '%' : '€'}</div>`).join('')
+        : '<p style="color:var(--text-muted);font-size:.85rem">Nessun coupon attivo</p>';
+    } catch {}
+
+    // Job in background
+    if (jobsData && jobsData.jobs && jobsData.jobs.length) {
+      const activeJobs = jobsData.jobs.filter(j => j.status === 'pending' || j.status === 'processing');
+      document.getElementById('jobErrors').innerHTML = activeJobs.length
+        ? activeJobs.map(j => `<div style="padding:.35rem 0;font-size:.85rem">⚙️ ${j.type} (${j.progressPercent}%)</div>`).join('')
+        : '<p style="color:var(--green);font-size:.85rem">Tutti i job completati</p>';
+    }
 
   } catch (err) {
     showMsg('Errore caricamento dashboard: ' + err.message, 'error');
@@ -392,9 +473,19 @@ document.getElementById('participantWorkshopFilter')?.addEventListener('change',
 document.getElementById('participantStatusFilter')?.addEventListener('change', loadParticipants);
 
 document.getElementById('exportParticipantsBtn')?.addEventListener('click', () => {
-  const wsId = document.getElementById('participantWorkshopFilter')?.value;
-  if (!wsId) { showMsg('Seleziona un workshop per esportare.', 'info'); return; }
-  window.location.href = `/api/admin/reports/${wsId}/generate?force=true`;
+  const wsId = document.getElementById('participantWorkshopFilter')?.value || '';
+  const filterType = document.getElementById('participantStatusFilter')?.value || 'all';
+  const startDate = document.getElementById('participantStartDate')?.value || '';
+  const endDate = document.getElementById('participantEndDate')?.value || '';
+
+  const params = new URLSearchParams();
+  if (wsId) params.append('workshopId', wsId);
+  if (filterType) params.append('filterType', filterType);
+  if (startDate) params.append('startDate', startDate);
+  if (endDate) params.append('endDate', endDate);
+
+  showMsg('Generazione export partecipanti in corso...', 'info', 2500);
+  window.location.href = `/api/admin/participants/export?${params.toString()}`;
 });
 
 sectionLoaders['participants'] = loadParticipants;
@@ -819,6 +910,421 @@ document.getElementById('mediaUploadInput')?.addEventListener('change', async (e
 });
 
 sectionLoaders['media'] = loadMedia;
+
+// ── CRM CONTATTI ─────────────────────────────────────────────────────────────
+
+let allContacts = [];
+let editingContactId = null;
+let csvParsedPreview = null;
+
+async function loadCrm() {
+  const tbody = document.getElementById('crmBody');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="8" class="table-empty">Caricamento contatti CRM...</td></tr>';
+  
+  const search = document.getElementById('crmSearchInput')?.value || '';
+  const status = document.getElementById('crmStatusFilter')?.value || '';
+  const priority = document.getElementById('crmPriorityFilter')?.value || '';
+  const followup = document.getElementById('crmFollowupFilter')?.value || '';
+  const isBlacklist = document.getElementById('crmBlacklistFilter')?.value || '';
+
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (status) params.append('status', status);
+  if (priority) params.append('priority', priority);
+  if (followup) params.append('followupFilter', followup);
+  if (isBlacklist) params.append('isBlacklisted', isBlacklist);
+
+  try {
+    const data = await api('GET', `/api/admin/crm/contacts?${params.toString()}`);
+    allContacts = data?.contacts || [];
+    renderCrm(allContacts);
+  } catch (err) {
+    showMsg('Errore CRM: ' + err.message, 'error');
+  }
+}
+
+function renderCrm(list) {
+  const tbody = document.getElementById('crmBody');
+  if (!tbody) return;
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="table-empty">Nessun contatto trovato.</td></tr>';
+    return;
+  }
+
+  const priorityBadges = {
+    urgent: '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red)">🔴 Urgente</span>',
+    high: '<span class="badge" style="background:rgba(249,115,22,0.2);color:var(--orange)">🟠 Alta</span>',
+    medium: '<span class="badge" style="background:rgba(234,179,8,0.2);color:var(--yellow)">🟡 Media</span>',
+    low: '<span class="badge" style="background:rgba(34,197,94,0.2);color:var(--green)">🟢 Bassa</span>',
+  };
+
+  tbody.innerHTML = list.map(c => `
+    <tr>
+      <td>
+        <strong>${escHtml(c.fullName)}</strong>
+        ${c.isBlacklisted ? '<br><span style="color:var(--red);font-size:.75rem">⛔ In Blacklist</span>' : ''}
+      </td>
+      <td>
+        <div>${escHtml(c.email)}</div>
+        <div style="font-size:.78rem;color:var(--text-muted)">${escHtml(c.phone || '—')}</div>
+      </td>
+      <td>
+        ${badge(c.status)} ${priorityBadges[c.priority] || ''}
+      </td>
+      <td><span style="font-size:.8rem;color:var(--text-muted)">${escHtml(c.firstSource || '—')}</span></td>
+      <td>${formatDate(c.lastContactAt)}</td>
+      <td>${c.nextFollowupAt ? `<strong style="color:var(--accent)">${formatDate(c.nextFollowupAt)}</strong>` : '—'}</td>
+      <td><strong>${c.totalSpentLabel}</strong></td>
+      <td>
+        <button class="btn-secondary btn-sm" onclick="openContactModal(${c.id})">🔍 Scheda</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function openContactModal(contactId = null) {
+  editingContactId = contactId;
+  const modal = document.getElementById('contactModal');
+  const title = document.getElementById('contactModalTitle');
+
+  if (!contactId) {
+    title.textContent = 'Nuovo Contatto';
+    document.getElementById('cnt-firstName').value = '';
+    document.getElementById('cnt-lastName').value = '';
+    document.getElementById('cnt-email').value = '';
+    document.getElementById('cnt-phone').value = '';
+    document.getElementById('cnt-status').value = 'new_lead';
+    document.getElementById('cnt-priority').value = 'medium';
+    document.getElementById('cnt-followup').value = '';
+    document.getElementById('cnt-country').value = 'IT';
+    document.getElementById('cnt-tags').value = '';
+    document.getElementById('cnt-notes').value = '';
+    document.getElementById('contactInteractionsTimeline').innerHTML = '<p style="color:var(--text-muted)">Le interazioni verranno registrate dopo la creazione.</p>';
+    document.getElementById('toggleBlacklistBtn').style.display = 'none';
+  } else {
+    title.textContent = 'Scheda Contatto CRM';
+    document.getElementById('toggleBlacklistBtn').style.display = 'inline-block';
+    try {
+      const c = await api('GET', `/api/admin/crm/contacts/${contactId}`);
+      document.getElementById('cnt-firstName').value = c.firstName || '';
+      document.getElementById('cnt-lastName').value = c.lastName || '';
+      document.getElementById('cnt-email').value = c.email || '';
+      document.getElementById('cnt-phone').value = c.phone || '';
+      document.getElementById('cnt-status').value = c.status || 'new_lead';
+      document.getElementById('cnt-priority').value = c.priority || 'medium';
+      document.getElementById('cnt-followup').value = c.nextFollowupAt ? c.nextFollowupAt.slice(0, 10) : '';
+      document.getElementById('cnt-country').value = c.country || 'IT';
+      document.getElementById('cnt-tags').value = (c.tags || []).map(t => t.label).join(', ');
+      document.getElementById('cnt-notes').value = c.notes || '';
+
+      const tl = document.getElementById('contactInteractionsTimeline');
+      const interactions = c.interactions || [];
+      if (!interactions.length) {
+        tl.innerHTML = '<p style="color:var(--text-muted)">Nessuna interazione registrata.</p>';
+      } else {
+        tl.innerHTML = interactions.map(i => `
+          <div style="padding:.5rem 0;border-bottom:1px solid var(--border)">
+            <div style="display:flex;justify-content:space-between;color:var(--text-muted);font-size:.75rem">
+              <span><strong>${escHtml(i.type.toUpperCase())}</strong> · ${escHtml(i.adminUserName || 'Sistema')}</span>
+              <span>${formatDateTime(i.createdAt)}</span>
+            </div>
+            <div style="margin-top:.2rem">${escHtml(i.note || i.subject)}</div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('toggleBlacklistBtn').textContent = c.isBlacklisted ? '✅ Rimuovi da Blacklist' : '⛔ Inserisci in Blacklist';
+      document.getElementById('toggleBlacklistBtn').dataset.blacklisted = String(c.isBlacklisted);
+    } catch (err) {
+      showMsg('Errore apertura contatto: ' + err.message, 'error');
+    }
+  }
+
+  modal.showModal();
+}
+
+document.getElementById('newContactBtn')?.addEventListener('click', () => openContactModal(null));
+document.getElementById('crmSearchInput')?.addEventListener('input', debounce(loadCrm, 350));
+document.getElementById('crmStatusFilter')?.addEventListener('change', loadCrm);
+document.getElementById('crmPriorityFilter')?.addEventListener('change', loadCrm);
+document.getElementById('crmFollowupFilter')?.addEventListener('change', loadCrm);
+document.getElementById('crmBlacklistFilter')?.addEventListener('change', loadCrm);
+
+document.getElementById('saveContactBtn')?.addEventListener('click', async () => {
+  const payload = {
+    firstName: document.getElementById('cnt-firstName').value.trim(),
+    lastName: document.getElementById('cnt-lastName').value.trim(),
+    email: document.getElementById('cnt-email').value.trim(),
+    phone: document.getElementById('cnt-phone').value.trim(),
+    status: document.getElementById('cnt-status').value,
+    priority: document.getElementById('cnt-priority').value,
+    nextFollowupAt: document.getElementById('cnt-followup').value || null,
+    country: document.getElementById('cnt-country').value.trim() || 'IT',
+    notes: document.getElementById('cnt-notes').value.trim(),
+    tags: document.getElementById('cnt-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+  };
+
+  if (!payload.firstName || !payload.email) {
+    showMsg('Nome ed Email sono obbligatori.', 'error');
+    return;
+  }
+
+  try {
+    if (editingContactId) {
+      await api('PUT', `/api/admin/crm/contacts/${editingContactId}`, payload);
+      showMsg('Contatto aggiornato con successo!', 'success');
+    } else {
+      await api('POST', '/api/admin/crm/contacts', payload);
+      showMsg('Contatto creato con successo!', 'success');
+    }
+    document.getElementById('contactModal').close();
+    loadCrm();
+  } catch (err) {
+    showMsg('Errore salvataggio: ' + err.message, 'error');
+  }
+});
+
+document.getElementById('addInteractionBtn')?.addEventListener('click', async () => {
+  if (!editingContactId) return;
+  const note = document.getElementById('newIntNote').value.trim();
+  const type = document.getElementById('newIntType').value;
+  if (!note) { showMsg('Inserisci una nota.', 'info'); return; }
+
+  try {
+    await api('POST', `/api/admin/crm/contacts/${editingContactId}/interactions`, { type, note });
+    document.getElementById('newIntNote').value = '';
+    showMsg('Interazione registrata.', 'success');
+    openContactModal(editingContactId);
+  } catch (err) {
+    showMsg('Errore: ' + err.message, 'error');
+  }
+});
+
+document.getElementById('toggleBlacklistBtn')?.addEventListener('click', async () => {
+  if (!editingContactId) return;
+  const currentlyBlacklisted = document.getElementById('toggleBlacklistBtn').dataset.blacklisted === 'true';
+  const reason = prompt(currentlyBlacklisted ? 'Confermi la rimozione dalla blacklist?' : 'Motivo inserimento in blacklist:');
+  if (reason === null) return;
+
+  try {
+    await api('POST', `/api/admin/crm/contacts/${editingContactId}/blacklist`, {
+      isBlacklisted: !currentlyBlacklisted,
+      reason: reason || 'N/A'
+    });
+    showMsg(!currentlyBlacklisted ? 'Contatto inserito in blacklist.' : 'Contatto rimosso da blacklist.', 'info');
+    openContactModal(editingContactId);
+    loadCrm();
+  } catch (err) {
+    showMsg('Errore: ' + err.message, 'error');
+  }
+});
+
+// CSV Export & Import
+document.getElementById('crmExportCsvBtn')?.addEventListener('click', () => {
+  const search = document.getElementById('crmSearchInput')?.value || '';
+  const status = document.getElementById('crmStatusFilter')?.value || '';
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (status) params.append('status', status);
+  window.location.href = `/api/admin/crm/contacts/export?${params.toString()}`;
+});
+
+document.getElementById('crmImportCsvBtn')?.addEventListener('click', () => {
+  document.getElementById('csvStep1').style.display = 'block';
+  document.getElementById('csvStep2').style.display = 'none';
+  document.getElementById('csvNextStepBtn').style.display = 'inline-block';
+  document.getElementById('csvConfirmImportBtn').style.display = 'none';
+  document.getElementById('csvFileInput').value = '';
+  document.getElementById('csvImportModal').showModal();
+});
+
+document.getElementById('csvNextStepBtn')?.addEventListener('click', async () => {
+  const fileInput = document.getElementById('csvFileInput');
+  if (!fileInput.files.length) { showMsg('Seleziona un file CSV.', 'info'); return; }
+
+  const fd = new FormData();
+  fd.append('file', fileInput.files[0]);
+
+  try {
+    const preview = await api('POST', '/api/admin/crm/contacts/import-preview', fd, true);
+    csvParsedPreview = preview;
+
+    document.getElementById('csvPreviewSummary').textContent = `Rilevate ${preview.totalRows} righe con delimitatore '${preview.delimiter}'.`;
+    
+    // Griglia mappatura
+    const grid = document.getElementById('csvMappingGrid');
+    const fields = [
+      { id: 'email', label: 'Email *' },
+      { id: 'first_name', label: 'Nome' },
+      { id: 'last_name', label: 'Cognome' },
+      { id: 'phone', label: 'Telefono' },
+      { id: 'status', label: 'Stato Commerciale' },
+      { id: 'notes', label: 'Note' },
+      { id: 'tags', label: 'Tag' },
+      { id: 'next_followup_at', label: 'Data Follow-up' },
+    ];
+
+    grid.innerHTML = fields.map(f => {
+      const suggestedIdx = preview.mappingSuggestions ? preview.mappingSuggestions[f.id] : undefined;
+      const opts = preview.headers.map((h, i) => `<option value="${i}" ${suggestedIdx === i ? 'selected' : ''}>Colonna: ${escHtml(h)}</option>`).join('');
+      return `
+        <div class="form-group">
+          <label>${f.label}</label>
+          <select id="map-${f.id}">
+            <option value="">— Non mappare —</option>
+            ${opts}
+          </select>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('csvStep1').style.display = 'none';
+    document.getElementById('csvStep2').style.display = 'block';
+    document.getElementById('csvNextStepBtn').style.display = 'none';
+    document.getElementById('csvConfirmImportBtn').style.display = 'inline-block';
+  } catch (err) {
+    showMsg('Errore analisi CSV: ' + err.message, 'error');
+  }
+});
+
+document.getElementById('csvConfirmImportBtn')?.addEventListener('click', async () => {
+  const fileInput = document.getElementById('csvFileInput');
+  if (!fileInput.files.length) return;
+
+  const mapping = {};
+  ['email', 'first_name', 'last_name', 'phone', 'status', 'notes', 'tags', 'next_followup_at'].forEach(k => {
+    const val = document.getElementById(`map-${k}`)?.value;
+    if (val !== '' && val !== undefined) mapping[k] = parseInt(val, 10);
+  });
+
+  const fd = new FormData();
+  fd.append('file', fileInput.files[0]);
+  fd.append('mappingJson', JSON.stringify(mapping));
+  fd.append('duplicateStrategy', document.getElementById('csvDuplicateStrategy').value);
+
+  try {
+    const res = await api('POST', '/api/admin/crm/contacts/import-confirm', fd, true);
+    showMsg(`Importazione completata: ${res.created} creati, ${res.updated} aggiornati, ${res.skipped} saltati.`, 'success', 5000);
+    document.getElementById('csvImportModal').close();
+    loadCrm();
+  } catch (err) {
+    showMsg('Errore importazione: ' + err.message, 'error');
+  }
+});
+
+sectionLoaders['crm'] = loadCrm;
+
+// ── VIDEO & MEDIA ─────────────────────────────────────────────────────────────
+
+document.getElementById('openVideoUploadBtn')?.addEventListener('click', () => {
+  document.getElementById('vidFile').value = '';
+  document.getElementById('vidAlt').value = '';
+  document.getElementById('videoUploadModal').showModal();
+});
+
+document.getElementById('confirmUploadVideoBtn')?.addEventListener('click', async () => {
+  const fileInput = document.getElementById('vidFile');
+  if (!fileInput.files.length) { showMsg('Seleziona un file video.', 'info'); return; }
+
+  const fd = new FormData();
+  fd.append('file', fileInput.files[0]);
+  fd.append('altText', document.getElementById('vidAlt').value.trim());
+
+  try {
+    const res = await api('POST', '/api/admin/media/upload-video', fd, true);
+    showMsg('Video caricato. Elaborazione H.264/WebP avviata in background!', 'success');
+    document.getElementById('videoUploadModal').close();
+    loadMedia();
+  } catch (err) {
+    showMsg('Errore caricamento video: ' + err.message, 'error');
+  }
+});
+
+// ── SICUREZZA & BACKUP ────────────────────────────────────────────────────────
+
+async function loadSecurity() {
+  try {
+    const [sessionsData, backupsData] = await Promise.all([
+      api('GET', '/api/admin/auth/sessions'),
+      api('GET', '/api/admin/backups/'),
+    ]);
+
+    // Render sessioni
+    const sessions = sessionsData?.sessions || [];
+    const sessContainer = document.getElementById('sessionsList');
+    if (sessContainer) {
+      sessContainer.innerHTML = sessions.map(s => `
+        <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+          <div>
+            <strong>${s.isCurrent ? '🟢 Sessione Corrente' : 'Dispositivo'}</strong> (${escHtml(s.ip)})
+            <div style="font-size:.75rem;color:var(--text-muted)">Ultima attività: ${formatDateTime(s.lastActivity)}</div>
+          </div>
+          <div>${s.isCurrent ? '<span class="badge badge-active">Attiva</span>' : ''}</div>
+        </div>
+      `).join('') || '<p style="color:var(--text-muted)">Nessuna sessione attiva</p>';
+    }
+
+    // Render backup
+    const backups = backupsData?.backups || [];
+    const tbody = document.getElementById('backupsBody');
+    if (tbody) {
+      tbody.innerHTML = backups.map(b => `
+        <tr>
+          <td><code>${escHtml(b.filename)}</code></td>
+          <td>${formatDateTime(b.modifiedAt)}</td>
+          <td>${escHtml(b.sizeFormatted)}</td>
+          <td>
+            <a href="/api/admin/backups/${escAttr(b.filename)}/download" class="btn-secondary btn-sm" download>📥 Scarica</a>
+          </td>
+        </tr>
+      `).join('') || '<tr><td colspan="4" class="table-empty">Nessun backup trovato.</td></tr>';
+    }
+  } catch (err) {
+    showMsg('Errore sicurezza: ' + err.message, 'error');
+  }
+}
+
+document.getElementById('generateRecoveryCodesBtn')?.addEventListener('click', async () => {
+  if (!await confirm2('Generare una nuova serie di 8 codici di recupero monouso?')) return;
+  try {
+    const res = await api('POST', '/api/admin/auth/generate-recovery-codes');
+    const disp = document.getElementById('recoveryCodesDisplay');
+    disp.style.display = 'block';
+    disp.innerHTML = `
+      <h4 style="color:var(--accent);margin-bottom:.5rem">Codici di Recupero (Salvali Adesso):</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-family:monospace;font-size:1.1rem;font-weight:700">
+        ${res.codes.map(c => `<div>${c}</div>`).join('')}
+      </div>
+      <p style="font-size:.75rem;color:var(--text-muted);margin-top:.75rem">Ciascun codice può essere usato una sola volta per accedere in caso di mancata ricezione dell'OTP via email.</p>
+    `;
+  } catch (err) {
+    showMsg('Errore generazione codici: ' + err.message, 'error');
+  }
+});
+
+document.getElementById('revokeOtherSessionsBtn')?.addEventListener('click', async () => {
+  if (!await confirm2('Revocare tutte le altre sessioni attive?')) return;
+  try {
+    await api('DELETE', '/api/admin/auth/sessions');
+    showMsg('Tutte le altre sessioni sono state revocate.', 'success');
+    loadSecurity();
+  } catch (err) {
+    showMsg('Errore: ' + err.message, 'error');
+  }
+});
+
+document.getElementById('triggerBackupNowBtn')?.addEventListener('click', async () => {
+  showMsg('Creazione copia atomica database in corso...', 'info', 2000);
+  try {
+    const res = await api('POST', '/api/admin/backups/create');
+    showMsg(`Backup creato con successo! (${res.backup.filename} - ${res.backup.sizeFormatted})`, 'success');
+    loadSecurity();
+  } catch (err) {
+    showMsg('Errore backup: ' + err.message, 'error');
+  }
+});
+
+sectionLoaders['security'] = loadSecurity;
 
 // ── SETTINGS ─────────────────────────────────────────────────────────────────
 

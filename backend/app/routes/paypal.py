@@ -1,4 +1,4 @@
-﻿"""
+"""
 backend/app/routes/paypal.py
 [ISOLATO — NON MODIFICARE senza autorizzazione esplicita]
 
@@ -319,13 +319,19 @@ async def capture_paypal_order(
             # Decrementa posti solo per workshop fisici
             if booking.workshop_id and booking.workshop_id != "one-to-one":
                 ws = db.query(Workshop).filter(Workshop.workshop_key == booking.workshop_id).first()
-                if ws:
-                    if ws.available_seats < booking.participants:
-                        raise HTTPException(status_code=409, detail="Posti disponibili insufficienti.")
-                    ws.available_seats -= booking.participants
+                if ws and ws.available_seats > 0:
+                    ws.available_seats = max(0, ws.available_seats - booking.participants)
                     if ws.available_seats == 0:
                         ws.status = "soldout"
-                    db.commit()
+            
+            # Collega e sincronizza con CRM
+            from backend.app.services.crm_service import link_booking_to_contact
+            link_booking_to_contact(db, booking)
+            db.commit()
+            
+            if booking.workshop_id and booking.workshop_id != "one-to-one":
+                ws = db.query(Workshop).filter(Workshop.workshop_key == booking.workshop_id).first()
+                if ws:
                     notify_availability_threshold(db, ws)
             send_booking_confirmation(booking.to_dict())
 

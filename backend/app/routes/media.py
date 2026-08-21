@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from typing import Optional
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, Request, UploadFile, status
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
@@ -203,3 +203,88 @@ async def delete_media(
                resource_type="media", resource_id=str(media_id),
                ip=request.client.host if request.client else None)
     return {"status": "ok"}
+
+
+@router.post("/upload-video", dependencies=[Depends(verify_csrf)])
+async def upload_video(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    altText: Optional[str] = Form(default=None),
+    caption: Optional[str] = Form(default=None),
+    pageTag: Optional[str] = Form(default="general"),
+    current_user: User = Depends(require_role("editor")),
+    db: Session = Depends(get_db),
+):
+    """
+    Upload video asincrono per il web (1080p, 720p, poster WebP/JPEG).
+    Crea un job di elaborazione in background con FFmpeg.
+    """
+    from backend.app.services.video_service import is_ffmpeg_available, process_video_job_sync
+    from backend.app.config.database import SessionLocal
+    from backend.app.models.job import Job
+    import uuid
+
+    ffmpeg_ok, ffprobe_ok = is_ffmpeg_available()
+    if not (ffmpeg_ok and ffprobe_ok):
+        raise HTTPException(
+            status_code=503,
+            detail="FFmpeg/FFprobe non è disponibile sul server. Elaborazione video non supportata."
+        )
+
+    # Limite dimensione video (es. 200 MB)
+    max_video_bytes = 200 * 1024 * 1024
+    if file.size and file.size > max_video_bytes:
+        raise HTTPException(status_code=413, detail="File video troppo grande (limite: 200 MB).")
+
+    # Salva in directory temporanea privata
+    temp_dir = settings.private_dir / "temp_video_uploads"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    
+    file_ext = Path(file.filename or "video.mp4").suffix.lower()
+    if file_ext not in (".mp4", ".mov", ".avi", ".mkv", ".webm"):
+        raise HTTPException(status_code=415, detail="Formato file video non consentito (ammessi: mp4, mov, avi, mkv, webm).")
+
+    job_id = str(uuid.uuid4())
+    temp_path = temp_dir / f"temp_{job_id}{file_ext}"
+
+    with open(temp_path, "wb") as buffer:
+        while chunk := await file.read(1024 * 1024):
+            buffer.write(chunk)
+
+    now = datetime.now(timezone.utc).isoformat()
+    job = Job(
+        id=job_id,
+        type="video_processing",
+        status="pending",
+        progress_percent=0,
+        created_at=now,
+        metadata_json=json.dumps({
+            "tempInputPath": str(temp_path),
+            "originalFilename": file.filename or "video.mp4",
+            "altText": altText or file.filename,
+            "caption": caption,
+            "pageTag": pageTag,
+        }),
+        created_by_user_id=current_user.id,
+    )
+    db.add(job)
+    db.commit()
+
+    # Avvia job in background
+    background_tasks.add_task(process_video_job_sync, job_id, SessionLocal)
+
+    log_action(
+        db, "video_upload_started",
+        user_id=current_user.id,
+        resource_type="job",
+        resource_id=job_id,
+        ip=request.client.host if request.client else None
+    )
+
+    return {
+        "status": "processing",
+        "jobId": job_id,
+        "message": "Caricamento completato. Elaborazione video avviata in background.",
+    }
+

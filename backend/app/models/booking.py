@@ -16,6 +16,7 @@ class Booking(Base):
 
     workshop_id = Column(String(64), ForeignKey("workshops.workshop_key"), nullable=True)
     workshop_name = Column(String(255), nullable=True)
+    contact_id = Column(Integer, ForeignKey("contacts.id"), nullable=True, index=True)
 
     first_name = Column(String(128), nullable=False)
     last_name = Column(String(128), nullable=False)
@@ -64,6 +65,7 @@ class Booking(Base):
             "status": self.status,
             "workshopId": self.workshop_id,
             "workshopName": self.workshop_name,
+            "contactId": self.contact_id,
             "firstName": self.first_name,
             "lastName": self.last_name,
             "email": self.email,

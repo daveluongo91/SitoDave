@@ -22,12 +22,16 @@ from backend.app.routes import (
     auth,
     public,
     workshops,
+    experiences,
     participants,
+    crm,
     coupons,
     media,
     costs,
     content,
     reports,
+    jobs,
+    backup,
     audit,
     paypal,
 )
@@ -83,12 +87,16 @@ app.add_middleware(SecurityHeadersMiddleware)
 app.include_router(auth.router)
 app.include_router(public.router)
 app.include_router(workshops.router)
+app.include_router(experiences.router)
 app.include_router(participants.router)
+app.include_router(crm.router)
 app.include_router(coupons.router)
 app.include_router(media.router)
 app.include_router(costs.router)
 app.include_router(content.router)
 app.include_router(reports.router)
+app.include_router(jobs.router)
+app.include_router(backup.router)
 app.include_router(audit.router)
 app.include_router(paypal.router)  # [ISOLATO]
 

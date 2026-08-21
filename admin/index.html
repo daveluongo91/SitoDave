@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -43,7 +43,7 @@
       border-radius: var(--radius);
       padding: 2.5rem;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       box-shadow: var(--shadow);
     }
     .logo {
@@ -92,7 +92,13 @@
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
-    input[aria-invalid="true"] { border-color: var(--error); }
+    .otp-input-field {
+      text-align: center;
+      letter-spacing: 0.35em;
+      font-size: 1.5rem !important;
+      font-weight: 700;
+      color: var(--accent) !important;
+    }
     .btn {
       width: 100%;
       background: linear-gradient(135deg, #38bdf8, #818cf8);
@@ -110,7 +116,17 @@
     .btn:hover:not(:disabled) { opacity: 0.9; }
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0.25rem;
+      margin-top: 0.75rem;
+      display: inline-block;
+    }
     .alert {
       border-radius: 8px;
       padding: 0.75rem 1rem;
@@ -120,6 +136,7 @@
     }
     .alert.error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--error); }
     .alert.success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--success); }
+    .alert.info { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); }
     .alert[aria-live] { display: block; }
     .spinner {
       display: inline-block;
@@ -143,128 +160,228 @@
       <p>Davide Luongo Photography</p>
     </div>
 
-    <form id="loginForm" novalidate aria-label="Modulo di accesso amministrativo">
+    <!-- FASE 1: Username & Password -->
+    <form id="loginFormPhase1" novalidate aria-label="Modulo di accesso amministrativo (Fase 1)">
       <div class="form-group">
         <label for="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          autocomplete="username"
-          required
-          aria-required="true"
-          aria-describedby="username-error"
-          spellcheck="false"
-        >
+        <input type="text" id="username" name="username" autocomplete="username" required spellcheck="false">
         <span id="username-error" class="error-msg" role="alert"></span>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          autocomplete="current-password"
-          required
-          aria-required="true"
-          aria-describedby="password-error"
-        >
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
         <span id="password-error" class="error-msg" role="alert"></span>
       </div>
 
-      <button type="submit" id="submitBtn" class="btn">
-        Accedi
+      <button type="submit" id="submitBtnPhase1" class="btn">
+        Continua
+      </button>
+    </form>
+
+    <!-- FASE 2: Codice OTP Email o Codice Recupero -->
+    <form id="loginFormPhase2" novalidate aria-label="Modulo verifica codice OTP (Fase 2)" style="display: none;">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span style="font-size: 2rem;">🔐</span>
+        <h3 style="font-size: 1.1rem; margin: 0.5rem 0 0.25rem 0; color: var(--text);">Verifica a Due Fattori</h3>
+        <p id="otpInfoText" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Abbiamo inviato un codice OTP a 6 cifre alla tua email.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="otpCode" id="otpLabel" style="text-align: center;">Codice OTP (6 cifre)</label>
+        <input type="text" id="otpCode" name="otpCode" class="otp-input-field" maxlength="10" placeholder="••••••" required autocomplete="one-time-code">
+        <span id="otp-error" class="error-msg" role="alert" style="text-align: center;"></span>
+      </div>
+
+      <button type="submit" id="submitBtnPhase2" class="btn">
+        Verifica ed Entra
       </button>
 
-      <div id="alertMsg" class="alert" role="alert" aria-live="polite"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
+        <button type="button" id="resendOtpBtn" class="btn-link" style="color: var(--text-muted);">
+          Reinvia codice (60s)
+        </button>
+        <button type="button" id="toggleRecoveryBtn" class="btn-link">
+          Usa codice di recupero
+        </button>
+      </div>
     </form>
+
+    <div id="alertMsg" class="alert" role="alert" aria-live="polite"></div>
   </main>
 
   <script>
-    // Recupera CSRF token dal cookie
-    function getCookie(name) {
-      const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-      return v ? v.pop() : '';
-    }
+    let challengeToken = '';
+    let cooldownTimer = null;
+    let isRecoveryMode = false;
 
-    const form = document.getElementById('loginForm');
-    const submitBtn = document.getElementById('submitBtn');
+    const formPhase1 = document.getElementById('loginFormPhase1');
+    const formPhase2 = document.getElementById('loginFormPhase2');
     const alertMsg = document.getElementById('alertMsg');
+    const submitBtnPhase1 = document.getElementById('submitBtnPhase1');
+    const submitBtnPhase2 = document.getElementById('submitBtnPhase2');
+    const resendOtpBtn = document.getElementById('resendOtpBtn');
+    const toggleRecoveryBtn = document.getElementById('toggleRecoveryBtn');
+    const otpCodeInput = document.getElementById('otpCode');
+    const otpLabel = document.getElementById('otpLabel');
 
-    function showAlert(msg, type = 'error') {
-      alertMsg.textContent = msg;
-      alertMsg.className = `alert ${type}`;
-      alertMsg.setAttribute('aria-live', 'polite');
+    function showAlert(text, type = 'error') {
+      alertMsg.textContent = text;
+      alertMsg.className = 'alert ' + type;
+      alertMsg.style.display = 'block';
     }
 
-    function setLoading(loading) {
-      submitBtn.disabled = loading;
-      submitBtn.innerHTML = loading
-        ? '<span class="spinner" aria-hidden="true"></span>Accesso in corso...'
-        : 'Accedi';
+    function hideAlert() {
+      alertMsg.style.display = 'none';
+      alertMsg.textContent = '';
     }
 
-    function validateField(input, errorEl) {
-      if (!input.value.trim()) {
-        input.setAttribute('aria-invalid', 'true');
-        errorEl.textContent = 'Campo obbligatorio.';
-        errorEl.style.display = 'block';
-        return false;
-      }
-      input.removeAttribute('aria-invalid');
-      errorEl.textContent = '';
-      errorEl.style.display = 'none';
-      return true;
+    function startCooldown(seconds) {
+      let rem = seconds;
+      resendOtpBtn.disabled = true;
+      resendOtpBtn.textContent = `Reinvia codice (${rem}s)`;
+      if (cooldownTimer) clearInterval(cooldownTimer);
+      cooldownTimer = setInterval(() => {
+        rem--;
+        if (rem <= 0) {
+          clearInterval(cooldownTimer);
+          resendOtpBtn.disabled = false;
+          resendOtpBtn.textContent = 'Reinvia codice';
+        } else {
+          resendOtpBtn.textContent = `Reinvia codice (${rem}s)`;
+        }
+      }, 1000);
     }
 
-    form.addEventListener('submit', async (e) => {
+    // Fase 1: Invio credenziali
+    formPhase1.addEventListener('submit', async (e) => {
       e.preventDefault();
-      alertMsg.className = 'alert';
+      hideAlert();
 
-      const usernameEl = document.getElementById('username');
-      const passwordEl = document.getElementById('password');
-      const usernameErr = document.getElementById('username-error');
-      const passwordErr = document.getElementById('password-error');
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
 
-      const v1 = validateField(usernameEl, usernameErr);
-      const v2 = validateField(passwordEl, passwordErr);
-      if (!v1 || !v2) return;
+      if (!username || !password) {
+        showAlert('Inserisci sia username che password.');
+        return;
+      }
 
-      setLoading(true);
+      submitBtnPhase1.disabled = true;
+      submitBtnPhase1.innerHTML = '<span class="spinner"></span> Verifica in corso...';
 
       try {
-        const res = await fetch('/api/admin/auth/login', {
+        const res = await fetch('/api/admin/auth/login-phase1', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            username: usernameEl.value.trim(),
-            password: passwordEl.value,
-          }),
+          body: JSON.stringify({ username, password }),
         });
 
         const data = await res.json();
-
-        if (res.ok) {
-          showAlert('Accesso effettuato. Reindirizzamento...', 'success');
-          setTimeout(() => { window.location.href = '/admin/dashboard.html'; }, 800);
-        } else {
-          showAlert(data.detail || 'Credenziali non valide.');
-          passwordEl.value = '';
-          passwordEl.focus();
+        if (!res.ok) {
+          throw new Error(data.detail || 'Credenziali non valide.');
         }
+
+        challengeToken = data.challengeToken;
+        document.getElementById('otpInfoText').textContent = `Abbiamo inviato un codice a 6 cifre a ${data.emailMasked || 'tua email'}.`;
+        formPhase1.style.display = 'none';
+        formPhase2.style.display = 'block';
+        otpCodeInput.focus();
+        startCooldown(data.cooldownSeconds || 60);
       } catch (err) {
-        showAlert('Errore di connessione. Riprova.');
+        showAlert(err.message, 'error');
       } finally {
-        setLoading(false);
+        submitBtnPhase1.disabled = false;
+        submitBtnPhase1.textContent = 'Continua';
       }
     });
 
-    // Se già autenticato, redirect diretto
-    fetch('/api/admin/auth/me', { credentials: 'include' })
-      .then(r => { if (r.ok) window.location.href = '/admin/dashboard.html'; })
-      .catch(() => {});
+    // Fase 2: Verifica OTP o Recovery Code
+    formPhase2.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const code = otpCodeInput.value.trim();
+      if (!code) {
+        showAlert(isRecoveryMode ? 'Inserisci il codice di recupero.' : 'Inserisci il codice OTP a 6 cifre.');
+        return;
+      }
+
+      submitBtnPhase2.disabled = true;
+      submitBtnPhase2.innerHTML = '<span class="spinner"></span> Accesso in corso...';
+
+      try {
+        const res = await fetch('/api/admin/auth/login-phase2', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ challengeToken, otpCode: code }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.detail || 'Codice errato o scaduto.');
+        }
+
+        showAlert('Accesso autorizzato! Reindirizzamento...', 'success');
+        setTimeout(() => {
+          window.location.href = '/admin/dashboard.html';
+        }, 500);
+      } catch (err) {
+        showAlert(err.message, 'error');
+        submitBtnPhase2.disabled = false;
+        submitBtnPhase2.textContent = 'Verifica ed Entra';
+      }
+    });
+
+    // Reinvia OTP
+    resendOtpBtn.addEventListener('click', async () => {
+      if (resendOtpBtn.disabled || !challengeToken) return;
+      hideAlert();
+      resendOtpBtn.disabled = true;
+      resendOtpBtn.textContent = 'Invio...';
+
+      try {
+        const res = await fetch('/api/admin/auth/resend-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ challengeToken }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || 'Impossibile reinviare il codice.');
+
+        challengeToken = data.challengeToken;
+        showAlert('Nuovo codice OTP inviato alla tua email.', 'info');
+        startCooldown(data.cooldownSeconds || 60);
+      } catch (err) {
+        showAlert(err.message, 'error');
+        resendOtpBtn.disabled = false;
+        resendOtpBtn.textContent = 'Reinvia codice';
+      }
+    });
+
+    // Toggle Recovery Mode
+    toggleRecoveryBtn.addEventListener('click', () => {
+      isRecoveryMode = !isRecoveryMode;
+      hideAlert();
+      if (isRecoveryMode) {
+        otpLabel.textContent = 'Codice di Recupero (8 caratteri)';
+        otpCodeInput.placeholder = 'XXXXXXXX';
+        otpCodeInput.className = '';
+        otpCodeInput.maxLength = 16;
+        toggleRecoveryBtn.textContent = 'Usa codice OTP email';
+        resendOtpBtn.style.display = 'none';
+      } else {
+        otpLabel.textContent = 'Codice OTP (6 cifre)';
+        otpCodeInput.placeholder = '••••••';
+        otpCodeInput.className = 'otp-input-field';
+        otpCodeInput.maxLength = 6;
+        toggleRecoveryBtn.textContent = 'Usa codice di recupero';
+        resendOtpBtn.style.display = 'inline-block';
+      }
+      otpCodeInput.value = '';
+      otpCodeInput.focus();
+    });
   </script>
 </body>
 </html>

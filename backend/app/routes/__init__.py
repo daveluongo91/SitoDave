@@ -11,4 +11,9 @@ from . import (
     reports,
     audit,
     paypal,
+    crm,
+    experiences,
+    jobs,
+    backup,
 )
+
