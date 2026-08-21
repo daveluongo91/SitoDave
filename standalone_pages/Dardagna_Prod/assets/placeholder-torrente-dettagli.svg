@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="t d">
+  <title id="t">Segnaposto dettagli del torrente</title><desc id="d">Sostituire con una fotografia definitiva.</desc>
+  <rect width="1200" height="700" fill="#171327"/><path d="M0 420c210-130 350 120 560-15s360 100 640-90v385H0z" fill="#273c53"/><path d="M0 475c220-130 360 130 570-5s370 95 630-85" fill="none" stroke="#ffd166" stroke-width="34" opacity=".72"/>
+  <rect x="165" y="265" width="870" height="170" rx="24" fill="#07090e" fill-opacity=".88" stroke="#ffd166" stroke-width="4"/><text x="600" y="335" text-anchor="middle" fill="#ffd166" font-family="Arial,sans-serif" font-size="44" font-weight="700">FOTO DA INSERIRE</text><text x="600" y="390" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="30">Torrente, rocce e dettagli</text>
+</svg>
