@@ -1691,11 +1691,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   Team Section Styles
+   Team Section Styles (Layout 4 sopra + 2 sotto centrati)
    ========================================================================== */
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
   margin-top: 2.5rem;
 }
@@ -1711,6 +1712,23 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
+  flex: 0 0 calc(25% - 1.5rem);
+  max-width: calc(25% - 1.5rem);
+  box-sizing: border-box;
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+  .team-card {
+    flex: 0 0 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .team-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .team-card:hover {
@@ -1893,9 +1911,6 @@ h1, h2, h3, h4, h5, h6 {
   }
   .hero-brand-logo {
     max-width: 290px;
-  }
-  .team-grid {
-    grid-template-columns: 1fr;
   }
   .blog-grid {
     grid-template-columns: 1fr;
