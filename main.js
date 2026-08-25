@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateUrgencyCounters();
   setup3DCarousels();
   setupAwardsModal();
+  setupGalleriesModal();
 });
 
 // Calculate Urgency Counter (Seats available minus 20% for FOMO urgency)
@@ -797,5 +798,188 @@ function closeAwardVerifyModal() {
   const modal = document.getElementById('award-verify-modal-overlay');
   if (modal) modal.classList.remove('active');
 }
+
+/* ==========================================================================
+   Gallerie Fotografiche (Modal & Lightbox Engine per 10 Foto)
+   ========================================================================== */
+
+let galleriesStore = [];
+let currentActiveGallery = null;
+let currentLightboxIndex = 0;
+
+async function setupGalleriesModal() {
+  try {
+    const res = await fetch('data/galleries.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        galleriesStore = data;
+      }
+    }
+  } catch (e) {
+    // Failover silenzioso
+  }
+
+  // Event listener per le card verticali
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.gallery-vertical-card');
+    if (card) {
+      e.preventDefault();
+      const galleryId = card.getAttribute('data-gallery-id');
+      openGalleryModal(galleryId);
+      return;
+    }
+
+    const photoItem = e.target.closest('.gallery-photo-item');
+    if (photoItem) {
+      e.preventDefault();
+      const index = parseInt(photoItem.getAttribute('data-photo-index'), 10);
+      openGalleryLightbox(index);
+    }
+  });
+
+  // Supporto tastiera per le card
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const card = document.activeElement.closest('.gallery-vertical-card');
+      if (card) {
+        e.preventDefault();
+        const galleryId = card.getAttribute('data-gallery-id');
+        openGalleryModal(galleryId);
+      }
+    }
+  });
+}
+
+function openGalleryModal(galleryId) {
+  const gallery = galleriesStore.find(g => g.id === galleryId);
+  if (!gallery) return;
+  currentActiveGallery = gallery;
+
+  let modal = document.getElementById('gallery-modal-overlay');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'gallery-modal-overlay';
+    modal.className = 'modal-overlay';
+    modal.style.zIndex = '99990';
+    document.body.appendChild(modal);
+  }
+
+  const escapeHtml = str => String(str ?? '').replace(/[&<>"]/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+  }[c]));
+
+  const photosHtml = (gallery.photos || []).map((photo, idx) => `
+    <div class="gallery-photo-item" data-photo-index="${idx}" tabindex="0" role="button" aria-label="${escapeHtml(photo.title)}">
+      <span class="gallery-photo-badge">${idx + 1} / 10</span>
+      <img src="${escapeHtml(photo.image)}" alt="${escapeHtml(photo.title)}" class="gallery-photo-thumb" loading="lazy" />
+      <div class="gallery-photo-info">
+        <h4 class="gallery-photo-title">${escapeHtml(photo.title)}</h4>
+        <p class="gallery-photo-caption">${escapeHtml(photo.caption)}</p>
+      </div>
+    </div>
+  `).join('');
+
+  modal.innerHTML = `
+    <div class="modal-content" style="max-width: 1040px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
+      <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1.25rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.12em;">Galleria Fotografica Ufficiale</span>
+          <h3 style="font-size: 1.85rem; color: #fff; margin: 0.25rem 0 0 0;">${escapeHtml(gallery.name)}</h3>
+        </div>
+        <span class="gallery-card-badge" style="position: static; font-size: 0.85rem; padding: 0.4rem 1rem;">
+          ${escapeHtml(gallery.badge || '10 FOTO')}
+        </span>
+      </div>
+
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 820px;">
+        ${escapeHtml(gallery.description)}
+      </p>
+
+      <div class="gallery-modal-grid">
+        ${photosHtml}
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem; border-top: 1px solid var(--border-glass); padding-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeGalleryModal()" style="padding: 0.65rem 2.5rem; font-size: 0.95rem;">
+          Chiudi Galleria
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+}
+
+function openGalleryLightbox(index) {
+  if (!currentActiveGallery || !currentActiveGallery.photos) return;
+  currentLightboxIndex = index;
+  const photo = currentActiveGallery.photos[index];
+  if (!photo) return;
+
+  let lb = document.getElementById('gallery-lightbox-overlay');
+  if (!lb) {
+    lb = document.createElement('div');
+    lb.id = 'gallery-lightbox-overlay';
+    lb.className = 'modal-overlay';
+    lb.style.zIndex = '99999';
+    document.body.appendChild(lb);
+  }
+
+  const escapeHtml = str => String(str ?? '').replace(/[&<>"]/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+  }[c]));
+
+  lb.innerHTML = `
+    <div class="modal-content" style="max-width: 900px; padding: 1.5rem; text-align: center; background: rgba(4, 9, 20, 0.95); border: 1px solid var(--border-glow);">
+      <button class="modal-close" onclick="closeGalleryLightbox()">&times;</button>
+      
+      <div style="position: relative; overflow: hidden; border-radius: var(--radius-md); max-height: 62vh; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="${escapeHtml(photo.image)}" alt="${escapeHtml(photo.title)}" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain;" />
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; text-align: left; gap: 1rem; flex-wrap: wrap;">
+        <div>
+          <div style="font-size: 0.78rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase;">
+            ${escapeHtml(currentActiveGallery.name)} • Foto ${index + 1} di ${currentActiveGallery.photos.length}
+          </div>
+          <h4 style="font-size: 1.2rem; color: #fff; margin: 0.2rem 0;">${escapeHtml(photo.title)}</h4>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;">${escapeHtml(photo.caption)}</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="carousel-nav-btn" onclick="prevLightboxPhoto()" aria-label="Foto precedente">←</button>
+          <button type="button" class="carousel-nav-btn" onclick="nextLightboxPhoto()" aria-label="Foto successiva">→</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  lb.classList.add('active');
+}
+
+function prevLightboxPhoto() {
+  if (!currentActiveGallery || !currentActiveGallery.photos) return;
+  const newIndex = (currentLightboxIndex - 1 + currentActiveGallery.photos.length) % currentActiveGallery.photos.length;
+  openGalleryLightbox(newIndex);
+}
+
+function nextLightboxPhoto() {
+  if (!currentActiveGallery || !currentActiveGallery.photos) return;
+  const newIndex = (currentLightboxIndex + 1) % currentActiveGallery.photos.length;
+  openGalleryLightbox(newIndex);
+}
+
+function closeGalleryModal() {
+  const modal = document.getElementById('gallery-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
+
+function closeGalleryLightbox() {
+  const lb = document.getElementById('gallery-lightbox-overlay');
+  if (lb) lb.classList.remove('active');
+}
+
 
 
