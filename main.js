@@ -546,34 +546,54 @@ const DEFAULT_AWARDS_DATA = [
     "description": "Riconoscimenti internazionali ufficiali assegnati dalla giuria di Best Photography Awards per eccellenza tecnica, astrofotografia e fotografia di paesaggio.",
     "awards": [
       {
-        "id": "bpa-silver",
-        "year": "2025/2026",
-        "title": "Silver Medal Winner • Nature & Landscape",
-        "work": "Autumn Symphony & Alpine Light",
+        "id": "bpa-silver-3909",
+        "year": "2025 / 2026",
+        "title": "2° Posto (Silver Medal) • Categoria Nature",
+        "work": "Autumn Symphony & Alpine Light (Entry #3909)",
         "badgeText": "Silver Medal (2° Posto)",
         "medalImage": "assets/awards/bpa_silver_medal.png",
         "bannerImage": "assets/awards/bpa_nature_01.jpg",
-        "verifyUrl": "https://bestphotographyawards.com/"
+        "verifyUrl": "https://bestphotographyawards.com/gallery/?type=Amateur&cat=NATURE&entry=3909&place=2nd&form_id=2398"
       },
       {
-        "id": "bpa-bronze",
-        "year": "2025/2026",
-        "title": "Bronze Medal Winner • Landscape & Atmosphere",
-        "work": "Reflections in the Julian Waters",
+        "id": "bpa-bronze-3908",
+        "year": "2025 / 2026",
+        "title": "3° Posto (Bronze Medal) • Categoria Night Photography",
+        "work": "Where Mountains Embrace the Sky — Colle del Nivolet (Entry #3908)",
         "badgeText": "Bronze Medal (3° Posto)",
         "medalImage": "assets/awards/bpa_bronze_medal.png",
-        "bannerImage": "assets/awards/bpa_nature_02.jpg",
-        "verifyUrl": "https://bestphotographyawards.com/"
+        "bannerImage": "assets/awards/bpa_night_2025.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/gallery/?type=Amateur&cat=NIGHT-PHOTOGRAPHY&entry=3908&place=3rd&form_id=2398"
       },
       {
-        "id": "bpa-blue",
-        "year": "2025/2026",
-        "title": "Blue Medal • Official Selection & Nightscapes",
-        "work": "Where Mountains Embrace the Sky (Colle del Nivolet)",
-        "badgeText": "Blue Medal (Official Selection)",
+        "id": "bpa-blue-3908",
+        "year": "2025 / 2026",
+        "title": "Menzione d'Onore (Blue Medal) • Categoria Nature",
+        "work": "Reflections in the Julian Waters — Laghi di Fusine (Entry #3908)",
+        "badgeText": "Blue Medal (Honorable Mention)",
         "medalImage": "assets/awards/bpa_blue_medal.png",
-        "bannerImage": "assets/awards/bpa_night_2025.jpg",
-        "verifyUrl": "https://bestphotographyawards.com/"
+        "bannerImage": "assets/awards/bpa_nature_02.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/gallery/?type=Amateur&cat=Nature&entry=3908&blue=1&place=HONORABLE%20MENTION&form_id=2398"
+      },
+      {
+        "id": "bpa-blue-4075",
+        "year": "2025 / 2026",
+        "title": "Menzione d'Onore (Blue Medal) • Categoria Nature",
+        "work": "Alpine Forest Mist & Light (Entry #4075)",
+        "badgeText": "Blue Medal (Honorable Mention)",
+        "medalImage": "assets/awards/bpa_blue_medal.png",
+        "bannerImage": "assets/awards/bpa_nature_4075.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/gallery/?type=Amateur&cat=Nature&entry=4075&blue=1&place=HONORABLE%20MENTION&form_id=2398"
+      },
+      {
+        "id": "bpa-blue-2477",
+        "year": "2024 / 2025",
+        "title": "Menzione d'Onore (Blue Medal) • Categoria Nature",
+        "work": "Pan di marmotta — Colle del Nivolet (Entry #2477)",
+        "badgeText": "Blue Medal (Honorable Mention)",
+        "medalImage": "assets/awards/bpa_blue_medal.png",
+        "bannerImage": "assets/awards/bpa_nature_02.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/gallery/?type=Amateur&cat=Nature&entry=2477&blue=1&place=HONORABLE%20MENTION&form_id=2240"
       }
     ]
   },
