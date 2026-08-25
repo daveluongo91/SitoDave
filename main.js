@@ -423,25 +423,58 @@ function applyLanguage(lang) {
   });
 }
 
-/* Homepage Blog Preview — alimentato da data/articles.json */
+/* Homepage Blog Preview — alimentato da data/articles.json con fallback offline/file protocol */
 (async function initHomepageBlogPreview() {
   const grid = document.getElementById('homepage-blog-grid');
   if (!grid) return;
+
   const escapeHtml = value => String(value ?? '').replace(/[&<>"]/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
   }[char]));
+
   const safeUrl = value => {
     const url = String(value ?? '').trim();
     return /^(https?:\/\/|[a-zA-Z0-9_./-]+$)/.test(url) ? url.replace(/^\.\.\//, '') : '#';
   };
-  try {
-    const response = await fetch('data/articles.json');
-    if (!response.ok) throw new Error('Impossibile caricare gli articoli');
-    const articles = await response.json();
-    articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-    const featured = articles.filter(article => article.featured);
-    const picks = [...featured, ...articles.filter(article => !article.featured)].slice(0, 3);
-    grid.innerHTML = picks.map(article => {
+
+  const DEFAULT_HOMEPAGE_ARTICLES = [
+    {
+      "title": "Sigma 14mm F1.4 DG DN Art: L'obiettivo che ha cambiato il mio modo di fotografare",
+      "excerpt": "La mia analisi sul campo: nitidezza, gestione del coma a f/1.4, resa diurna della sunstar, collare Arca Swiss e tabella comparativa.",
+      "publisher": "SIGMA ART SERIES",
+      "publisherIcon": "📷",
+      "image": "assets/sigma_14_f1-4dn_01.jpg",
+      "url": "blog/test-sigma-14mm-art.html",
+      "external": false,
+      "date": "2026-06-22",
+      "featured": true
+    },
+    {
+      "title": "Vanguard LBP-50S: una testa a sfera compatta che non teme i carichi difficili",
+      "excerpt": "Prima di entrare negli aspetti tecnici, voglio soffermarmi sul design. Il contrasto tra il corpo nero e gli elementi arancioni è semplicemente perfetto.",
+      "publisher": "VANGUARD WORLD",
+      "publisherIcon": "🎒",
+      "image": "https://www.davideluongo.it/wp-content/uploads/2026/07/cover-image_blog-it_lbp50s_julio2026_3c3b3048-16a9-4369-8062-558d13e304b6_2048x-768x307.webp",
+      "url": "https://www.vanguardworld.it/blogs/articoli/vanguard-lbp-50s-una-testa-a-sfera-compatta-che-non-teme-i-carichi-difficili",
+      "external": true,
+      "date": "2026-07-10",
+      "featured": true
+    },
+    {
+      "title": "Sigma 24-70mm F2.8 DG DN Art II: Lo zoom tuttofare di riferimento",
+      "excerpt": "La mia analisi completa: versatilità da 24 a 70mm, resa a f/2.8 su sensori ad alta risoluzione, motore HLA e ghiera diaframmi fisica.",
+      "publisher": "SIGMA ART SERIES",
+      "publisherIcon": "📷",
+      "image": "assets/sigma_2470_f2-8dn_01.jpg",
+      "url": "blog/test-sigma-24-70mm-art.html",
+      "external": false,
+      "date": "2026-05-10",
+      "featured": false
+    }
+  ];
+
+  const renderArticles = (articlesList) => {
+    grid.innerHTML = articlesList.map(article => {
       const external = Boolean(article.external);
       const publisher = escapeHtml(article.publisher);
       const date = new Date(article.date).toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
@@ -455,8 +488,18 @@ function applyLanguage(lang) {
         class="btn ${external ? 'btn-primary' : 'btn-secondary'}">${external ? `Leggi su ${publisher.split(' ')[0]} ↗` : "Leggi l'Articolo →"}</a>
         </div></div></div>`;
     }).join('');
+  };
+
+  try {
+    const response = await fetch('data/articles.json');
+    if (!response.ok) throw new Error('Fetch failed');
+    const articles = await response.json();
+    articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const featured = articles.filter(article => article.featured);
+    const picks = [...featured, ...articles.filter(article => !article.featured)].slice(0, 3);
+    renderArticles(picks.length ? picks : DEFAULT_HOMEPAGE_ARTICLES);
   } catch (error) {
-    grid.innerHTML = '<p><a href="blog/blog.html">Vai al Blog completo →</a></p>';
+    renderArticles(DEFAULT_HOMEPAGE_ARTICLES);
   }
 })();
 
