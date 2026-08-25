@@ -537,95 +537,137 @@ function setup3DCarousels() {
 
 const DEFAULT_AWARDS_DATA = [
   {
-    id: "bpa",
-    name: "Best Photography Awards",
-    shortName: "BPA",
-    icon: "🏅",
-    accentColor: "#FFB800",
-    description: "Riconoscimenti internazionali ufficiali assegnati dalla giuria di Best Photography Awards per eccellenza tecnica e composizione.",
-    awards: [
+    "id": "bpa",
+    "name": "Best Photography Awards",
+    "shortName": "BPA",
+    "badge": "BPA",
+    "icon": "🏅",
+    "accentColor": "#FFB800",
+    "description": "Riconoscimenti internazionali ufficiali assegnati dalla giuria di Best Photography Awards per eccellenza tecnica, astrofotografia e fotografia di paesaggio.",
+    "awards": [
       {
-        id: "bpa-2024-gold",
-        year: "2024",
-        title: "Gold Winner • Astrophotography & Nightscapes",
-        work: "Where Mountains Embrace the Sky (Colle del Nivolet)",
-        badgeText: "1° Posto Oro",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Certificato BPA 2024 — Gold Winner"
+        "id": "bpa-silver",
+        "year": "2025/2026",
+        "title": "Silver Medal Winner • Nature & Landscape",
+        "work": "Autumn Symphony & Alpine Light",
+        "badgeText": "Silver Medal (2° Posto)",
+        "medalImage": "assets/awards/bpa_silver_medal.png",
+        "bannerImage": "assets/awards/bpa_nature_01.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/"
       },
       {
-        id: "bpa-2023-silver",
-        year: "2023",
-        title: "Silver Award • Mountain Landscape",
-        work: "Laghi di Fusine Autumn Reflection",
-        badgeText: "2° Posto Argento",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Certificato BPA 2023 — Silver Award"
+        "id": "bpa-bronze",
+        "year": "2025/2026",
+        "title": "Bronze Medal Winner • Landscape & Atmosphere",
+        "work": "Reflections in the Julian Waters",
+        "badgeText": "Bronze Medal (3° Posto)",
+        "medalImage": "assets/awards/bpa_bronze_medal.png",
+        "bannerImage": "assets/awards/bpa_nature_02.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/"
+      },
+      {
+        "id": "bpa-blue",
+        "year": "2025/2026",
+        "title": "Blue Medal • Official Selection & Nightscapes",
+        "work": "Where Mountains Embrace the Sky (Colle del Nivolet)",
+        "badgeText": "Blue Medal (Official Selection)",
+        "medalImage": "assets/awards/bpa_blue_medal.png",
+        "bannerImage": "assets/awards/bpa_night_2025.jpg",
+        "verifyUrl": "https://bestphotographyawards.com/"
       }
     ]
   },
   {
-    id: "one-eyeland",
-    name: "One Eyeland",
-    shortName: "One Eyeland",
-    icon: "👁️",
-    accentColor: "#00F0FF",
-    description: "Premi e menzioni speciali nel network internazionale d'élite One Eyeland per la fotografia di paesaggio e Fine Art.",
-    awards: [
+    "id": "1x",
+    "name": "1x.com",
+    "shortName": "1x.com",
+    "badge": "1X",
+    "icon": "💎",
+    "accentColor": "#A855F7",
+    "description": "Certificazioni e opere pubblicate e premiate dal team curatoriale di 1x.com, la galleria di fotografia d'arte più selettiva al mondo.",
+    "awards": [
       {
-        id: "oe-2024-bronze",
-        year: "2024",
-        title: "Bronze Award • Fine Art Landscape",
-        work: "Cascate del Dardagna Silky Flow",
-        badgeText: "Bronze Award",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Certificato One Eyeland 2024 — Bronze"
+        "id": "1x-cert",
+        "year": "2024 - 2026",
+        "title": "Official Awarded Photographer Certificate",
+        "work": "Certificato di Fotografo Premiato Ufficiale • Membro ID 796527",
+        "badgeText": "Certificato Ufficiale",
+        "bannerImage": "assets/awards/1x_certificate_796527.jpg",
+        "verifyUrl": "https://1x.com/member/daveluongo"
       },
       {
-        id: "oe-2023-finalist",
-        year: "2023",
-        title: "Finalist • Nature & Night Sky",
-        work: "Zelenci Springs Emerald Light",
-        badgeText: "Finalista",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Certificato One Eyeland 2023 — Finalist"
+        "id": "1x-3496868",
+        "year": "2025",
+        "title": "Awarded Photograph • Nightscapes & Alps",
+        "work": "Curator's Choice Selection #3496868",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3496868.jpg",
+        "verifyUrl": "https://1x.com/photo/3496868"
+      },
+      {
+        "id": "1x-3498663",
+        "year": "2025",
+        "title": "Awarded Photograph • Landscape Mood",
+        "work": "Curator's Choice Selection #3498663",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3498663.jpg",
+        "verifyUrl": "https://1x.com/photo/3498663"
+      },
+      {
+        "id": "1x-3505996",
+        "year": "2025",
+        "title": "Awarded Photograph • Vertical Fine Art",
+        "work": "Curator's Choice Selection #3505996",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3505996.jpg",
+        "verifyUrl": "https://1x.com/photo/3505996"
+      },
+      {
+        "id": "1x-3568397",
+        "year": "2025",
+        "title": "Awarded Photograph • Atmosphere & Silence",
+        "work": "Curator's Choice Selection #3568397",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3568397.jpg",
+        "verifyUrl": "https://1x.com/photo/3568397"
+      },
+      {
+        "id": "1x-3576087",
+        "year": "2025",
+        "title": "Awarded Photograph • Water & Long Exposure",
+        "work": "Curator's Choice Selection #3576087",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3576087.jpg",
+        "verifyUrl": "https://1x.com/photo/3576087"
+      },
+      {
+        "id": "1x-3598273",
+        "year": "2025",
+        "title": "Awarded Photograph • Mountain Geometry",
+        "work": "Curator's Choice Selection #3598273",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/awards/1x_awarded_3598273.jpg",
+        "verifyUrl": "https://1x.com/photo/3598273"
       }
     ]
   },
   {
-    id: "1x",
-    name: "1x.com",
-    shortName: "1x.com",
-    icon: "💎",
-    accentColor: "#A855F7",
-    description: "Opere selezionate e curate dal team editoriale di 1x.com, la galleria di fotografia d'arte più selettiva e prestigiosa al mondo.",
-    awards: [
+    "id": "one-eyeland",
+    "name": "One Eyeland",
+    "shortName": "One Eyeland",
+    "badge": "ONE EYELAND",
+    "icon": "👁️",
+    "accentColor": "#00F0FF",
+    "description": "Riconoscimenti nel network internazionale d'élite One Eyeland per la fotografia di paesaggio e Fine Art.",
+    "awards": [
       {
-        id: "1x-2024-curators",
-        year: "2024",
-        title: "Curator's Choice & Awarded Photograph",
-        work: "Silent Majesty of the Julian Alps",
-        badgeText: "Curator Choice",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Curator Choice"
-      },
-      {
-        id: "1x-2024-night",
-        year: "2024",
-        title: "Awarded Photograph • Nightscapes",
-        work: "Galactic Arch over Lake Serrù",
-        badgeText: "Awarded",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Awarded"
-      },
-      {
-        id: "1x-2023-published",
-        year: "2023",
-        title: "Published Work • Mood & Landscape",
-        work: "Autumn Mist in Canfaito Forest",
-        badgeText: "Published",
-        verifyUrl: "#",
-        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Published"
+        "id": "oe-country-winner",
+        "year": "2025",
+        "title": "Fine Art Photography Awards • Country Winner",
+        "work": "Vincitore Nazionale Italia • Rank 1 (10 Punti)",
+        "badgeText": "Country Winner • Rank 1",
+        "bannerImage": "assets/awards/bpa_nature_01.jpg",
+        "verifyUrl": "https://oneeyeland.com/"
       }
     ]
   }
@@ -813,7 +855,294 @@ function closeAwardVerifyModal() {
    Gallerie Fotografiche (Modal & Lightbox Engine per 10 Foto)
    ========================================================================== */
 
-let galleriesStore = [];
+const DEFAULT_GALLERIES_DATA = [
+  {
+    "id": "islanda",
+    "name": "Islanda",
+    "title": "Galleria Fotografica • Islanda",
+    "badge": "🇮🇸 10 FOTO",
+    "coverImage": "assets/islanda_photo_tour.png",
+    "accentColor": "#00F0FF",
+    "description": "Un viaggio visivo tra aurore boreali, cascate impetuose, ghiacciai millenari e desolazioni vulcaniche d'Islanda.",
+    "photos": [
+      {
+        "id": "is-01",
+        "title": "Danza Boreale sul Ghiacciaio",
+        "caption": "Aurora boreale di grado G2 che si riflette sulla laguna glaciale di Jökulsárlón.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-02",
+        "title": "Il Risveglio di Skógafoss",
+        "caption": "Luce radente dell'alba tra gli spruzzi della maestosa cascata.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-03",
+        "title": "Vestrahorn e la Spiaggia Nera",
+        "caption": "Riflessi perfetti sui banchi di marea di Stokksnes sotto cieli tempestosi.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-04",
+        "title": "Canyon di Fjaðrárgljúfur",
+        "caption": "Geometrie serpeggianti e muschio smeraldo nelle gole del sud.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-05",
+        "title": "Grotta di Ghiaccio nel Vatnajökull",
+        "caption": "Texture blu profondo e luce filtrante all'interno del ghiacciaio perenne.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-06",
+        "title": "Arco di Seljalandsfoss al Tramonto",
+        "caption": "La prospettiva dietro la cortina d'acqua con luce dorata atlantica.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-07",
+        "title": "Piana Vulcanica di Landmannalaugar",
+        "caption": "Riolite policroma e contrasti primordiali negli altipiani interni.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-08",
+        "title": "Arco Boreale su Kirkjufell",
+        "caption": "La montagna iconica incorniciata dalle cascate e dalla via boreale.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-09",
+        "title": "Spiaggia dei Diamanti",
+        "caption": "Blocchi di ghiaccio cristallino arenati sulla sabbia basaltica nera.",
+        "image": "assets/islanda_photo_tour.png"
+      },
+      {
+        "id": "is-10",
+        "title": "Fumo e Zolfo a Hverir",
+        "caption": "Sfumature marziane e fumarole solforose nella regione di Mývatn.",
+        "image": "assets/islanda_photo_tour.png"
+      }
+    ]
+  },
+  {
+    "id": "tenerife",
+    "name": "Tenerife",
+    "title": "Galleria Fotografica • Tenerife",
+    "badge": "🇪🇸 10 FOTO",
+    "coverImage": "assets/minorca_photo_tour.png",
+    "accentColor": "#FFB800",
+    "description": "Paesaggi lunari del Parco Nazionale del Teide, mari di nubi e uno dei cieli stellati Starlight più puri del pianeta.",
+    "photos": [
+      {
+        "id": "tf-01",
+        "title": "La Via Lattea sul Teide",
+        "caption": "Arco galattico estivo sopra le formazioni rocciose di Roques de García.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-02",
+        "title": "Mare di Nubi al Mirador de Chipeque",
+        "caption": "Il tramonto infuocato che tinge il mare di nubi attorno alla cima del vulcano.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-03",
+        "title": "Paesaggio Lunare di Vilaflor",
+        "caption": "Pinnacoli di tufo bianco scolpiti dal vento nella caldera meridionale.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-04",
+        "title": "L'Osservatorio del Teide sotto le Stelle",
+        "caption": "I telescopi solari ed astrofisici illuminati solo dalla luce zodiacale.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-05",
+        "title": "Punta de Teno e il Faro",
+        "caption": "Scogliere a picco e onde oceaniche al calare della notte atlantica.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-06",
+        "title": "Foresta di Laurisilva ad Anaga",
+        "caption": "Nebbie fitte e felci giganti nel polmone verde più antico dell'isola.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-07",
+        "title": "Pini Canari tra la Lava",
+        "caption": "Resistenza e contrasti cromatici tra aghi verdi e basalto nero vulcanico.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-08",
+        "title": "Alba sul Cratere del Pico Viejo",
+        "caption": "I primi raggi che disegnano l'ombra piramidale del Teide sull'oceano.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-09",
+        "title": "Cielo Profondo su Las Cañadas",
+        "caption": "Dettaglio delle nebulose della Via Lattea in assenza di inquinamento luminoso.",
+        "image": "assets/minorca_photo_tour.png"
+      },
+      {
+        "id": "tf-10",
+        "title": "I Giganti dall'Oceano",
+        "caption": "Scogliere monumentali di Los Gigantes che scendono verticali nell'Atlantico.",
+        "image": "assets/minorca_photo_tour.png"
+      }
+    ]
+  },
+  {
+    "id": "madeira",
+    "name": "Madeira",
+    "title": "Galleria Fotografica • Madeira",
+    "badge": "🇵🇹 10 FOTO",
+    "coverImage": "assets/azzorre_photo_tour.png",
+    "accentColor": "#A855F7",
+    "description": "L'isola dell'eterna primavera: scogliere a picco sull'oceano, la foresta millenaria di Fanal e vette che emergono dalle nuvole.",
+    "photos": [
+      {
+        "id": "md-01",
+        "title": "La Magica Nebbia di Fanal",
+        "caption": "Faggi centenari di Tis avvolti nella nebbia densa della foresta Laurissilva.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-02",
+        "title": "Alba sul Pico do Arieiro",
+        "caption": "Creste affilate che galleggiano su un soffice tappeto di nuvole dorate.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-03",
+        "title": "Faraglioni di Ribeira da Janela",
+        "caption": "Onde imponenti dell'Atlantico che si infrangono sui giganti di roccia lavica.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-04",
+        "title": "Ponta de São Lourenço",
+        "caption": "Colori ocra e scogliere battute dal vento nella penisola orientale.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-05",
+        "title": "Cascata Dos Anjos",
+        "caption": "La cascata naturale che cade direttamente sulla vecchia strada costiera.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-06",
+        "title": "Sentiero tra Pico do Arieiro e Pico Ruivo",
+        "caption": "Percorso escursionistico mozzafiato sospeso sopra le valli scoscese.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-07",
+        "title": "Piscine Naturali di Porto Moniz",
+        "caption": "Bacini vulcanici scavati nella lava costantemente alimentati dalle maree.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-08",
+        "title": "Miradouro do Guindaste all'Alba",
+        "caption": "La passerella di vetro sospesa sulla scogliera durante le prime luci.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-09",
+        "title": "Luce Filtrante lungo la Levada",
+        "caption": "Canali d'acqua storici immersi nella vegetazione lussureggiante dell'isola.",
+        "image": "assets/azzorre_photo_tour.png"
+      },
+      {
+        "id": "md-10",
+        "title": "Tramonto a Ponta do Pargo",
+        "caption": "Il faro solitario sull'estremo lembo occidentale illuminato dagli ultimi raggi.",
+        "image": "assets/azzorre_photo_tour.png"
+      }
+    ]
+  },
+  {
+    "id": "montagna",
+    "name": "Montagna",
+    "title": "Galleria Fotografica • Montagna & Alpi",
+    "badge": "🏔️ 10 FOTO",
+    "coverImage": "assets/timelapse_nivolet_poster.jpg",
+    "accentColor": "#00F0FF",
+    "description": "Vette alpine selvagge, riflessi sui laghi glaciali, foliage autunnale e notti sotto le stelle in alta quota.",
+    "photos": [
+      {
+        "id": "mt-01",
+        "title": "Colle del Nivolet e Lago Serrù",
+        "caption": "L'arco della Via Lattea specchiato nelle acque cristalline a 2600m.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-02",
+        "title": "Laghi di Fusine in Autunno",
+        "caption": "Il Mangart riflesso nello specchio d'acqua circondato dal foliage dorato.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-03",
+        "title": "Cascate del Dardagna in Piena",
+        "caption": "Lunga esposizione setosa sui salti d'acqua dell'Appennino Tosco-Emiliano.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-04",
+        "title": "Foliage Monumentale a Canfaito",
+        "caption": "Nebbia mattutina tra i rami contorti dei faggi plurisecolari marchigiani.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-05",
+        "title": "Tre Cime di Lavaredo all'Enrosadira",
+        "caption": "Dolomiti tinte di rosa e magenta durante gli ultimi istanti del tramonto.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-06",
+        "title": "Sorgenti di Zelenci all'Alba",
+        "caption": "Laguna smeraldo con il ghiaccio sottile e vapore acqueo all'aurora.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-07",
+        "title": "Fontanon di Goriuda",
+        "caption": "La spettacolare grotta e cascata nascosta nella Val Raccolana.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-08",
+        "title": "Notte Stellata sul Gran Paradiso",
+        "caption": "Cieli alpini incontaminati a 3000 metri con inseguimento siderale.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-09",
+        "title": "Foreste Casentinesi nel Picco Autunnale",
+        "caption": "Un mare di foglie rosse, oro e arancio nelle faggete patrimonio UNESCO.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      },
+      {
+        "id": "mt-10",
+        "title": "Lago del Predil e Alpi Giulie",
+        "caption": "Silenzio mattutino e riflessi d'alta montagna al confine italo-sloveno.",
+        "image": "assets/timelapse_nivolet_poster.jpg"
+      }
+    ]
+  }
+];
+
+let galleriesStore = DEFAULT_GALLERIES_DATA;
 let currentActiveGallery = null;
 let currentLightboxIndex = 0;
 
