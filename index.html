@@ -707,24 +707,22 @@
     </div>
   </section>
 
-  <!-- ==================== BLOG & PUBBLICAZIONI SHOWCASE ==================== -->
-  <section id="blog-preview" class="section">
+  <!-- ==================== BLOG & PUBBLICAZIONI BANNER ==================== -->
+  <section id="blog-preview" class="section" style="padding: 2.5rem 0;">
     <div class="container">
-      <div class="section-header" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
-        <div>
-          <div class="sub-title">Articoli &amp; Pubblicazioni</div>
-          <h2 class="section-title">Dal Blog &amp; Dai Portali Terzi</h2>
-          <p class="section-desc">Pensieri personali, guide tecniche sul campo e articoli scritti per SIGMA Italia, Vanguard World e UniversoFoto.</p>
+      <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; box-shadow: var(--shadow-card); backdrop-filter: blur(16px);">
+        <div style="max-width: 680px;">
+          <div class="sub-title" style="margin-bottom: 0.4rem;">Articoli &amp; Pubblicazioni</div>
+          <h2 class="section-title" style="margin-bottom: 0.6rem; font-size: clamp(1.6rem, 3vw, 2.2rem);">Dal Blog &amp; Dai Portali Terzi</h2>
+          <p class="section-desc" style="margin: 0; color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6;">
+            Pensieri personali, guide tecniche sul campo e articoli scritti per SIGMA Italia, Vanguard World e UniversoFoto.
+          </p>
         </div>
-        <a href="blog/blog.html" class="btn btn-secondary">Vedi Tutti gli Articoli</a>
-      </div>
-
-      <!-- Le card vengono iniettate da JS leggendo data/articles.json -->
-      <div class="blog-grid" id="homepage-blog-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-        <!-- skeleton loader -->
-        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite;"></div>
-        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite 0.2s;"></div>
-        <div class="blog-card skeleton-card" style="min-height:340px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-glass); animation: pulse 1.5s ease-in-out infinite 0.4s;"></div>
+        <div>
+          <a href="blog/blog.html" class="btn btn-secondary" style="padding: 0.75rem 1.6rem; font-size: 0.95rem; white-space: nowrap;">
+            Vedi Tutti gli Articoli →
+          </a>
+        </div>
       </div>
     </div>
   </section>
