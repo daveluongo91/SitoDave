@@ -1,0 +1,98 @@
+﻿[
+  {
+    "id": "bpa",
+    "name": "Best Photography Awards",
+    "shortName": "BPA",
+    "badge": "BPA",
+    "icon": "🏅",
+    "accentColor": "#FFB800",
+    "description": "Riconoscimenti internazionali ufficiali assegnati dalla giuria di Best Photography Awards per eccellenza tecnica e composizione.",
+    "awards": [
+      {
+        "id": "bpa-2024-gold",
+        "year": "2024",
+        "title": "Gold Winner • Astrophotography & Nightscapes",
+        "work": "Where Mountains Embrace the Sky (Colle del Nivolet)",
+        "verifyUrl": "#",
+        "badgeText": "1° Posto Oro",
+        "bannerImage": "assets/award_bpa_placeholder.jpg"
+      },
+      {
+        "id": "bpa-2023-silver",
+        "year": "2023",
+        "title": "Silver Award • Mountain Landscape",
+        "work": "Laghi di Fusine Autumn Reflection",
+        "verifyUrl": "#",
+        "badgeText": "2° Posto Argento",
+        "bannerImage": "assets/award_bpa_placeholder.jpg"
+      }
+    ]
+  },
+  {
+    "id": "one-eyeland",
+    "name": "One Eyeland",
+    "shortName": "One Eyeland",
+    "badge": "ONE EYELAND",
+    "icon": "👁️",
+    "accentColor": "#00F0FF",
+    "description": "Premi e menzioni speciali nel network internazionale d'élite One Eyeland per la fotografia di paesaggio e Fine Art.",
+    "awards": [
+      {
+        "id": "oe-2024-bronze",
+        "year": "2024",
+        "title": "Bronze Award • Fine Art Landscape",
+        "work": "Cascate del Dardagna Silky Flow",
+        "verifyUrl": "#",
+        "badgeText": "Bronze Award",
+        "bannerImage": "assets/award_oneeyeland_placeholder.jpg"
+      },
+      {
+        "id": "oe-2023-finalist",
+        "year": "2023",
+        "title": "Finalist • Nature & Night Sky",
+        "work": "Zelenci Springs Emerald Light",
+        "verifyUrl": "#",
+        "badgeText": "Finalista",
+        "bannerImage": "assets/award_oneeyeland_placeholder.jpg"
+      }
+    ]
+  },
+  {
+    "id": "1x",
+    "name": "1x.com",
+    "shortName": "1x.com",
+    "badge": "1X",
+    "icon": "💎",
+    "accentColor": "#A855F7",
+    "description": "Opere selezionate e curate dal team editoriale di 1x.com, la galleria di fotografia d'arte più selettiva e prestigiosa al mondo.",
+    "awards": [
+      {
+        "id": "1x-2024-curators",
+        "year": "2024",
+        "title": "Curator's Choice & Awarded Photograph",
+        "work": "Silent Majesty of the Julian Alps",
+        "verifyUrl": "#",
+        "badgeText": "Curator Choice",
+        "bannerImage": "assets/award_1x_placeholder.jpg"
+      },
+      {
+        "id": "1x-2024-night",
+        "year": "2024",
+        "title": "Awarded Photograph • Nightscapes",
+        "work": "Galactic Arch over Lake Serrù",
+        "verifyUrl": "#",
+        "badgeText": "Awarded",
+        "bannerImage": "assets/award_1x_placeholder.jpg"
+      },
+      {
+        "id": "1x-2023-published",
+        "year": "2023",
+        "title": "Published Work • Mood & Landscape",
+        "work": "Autumn Mist in Canfaito Forest",
+        "verifyUrl": "#",
+        "badgeText": "Published",
+        "bannerImage": "assets/award_1x_placeholder.jpg"
+      }
+    ]
+  }
+]

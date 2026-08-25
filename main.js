@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGlobalClickDelegation();
   updateUrgencyCounters();
   setup3DCarousels();
+  setupAwardsModal();
 });
 
 // Calculate Urgency Counter (Seats available minus 20% for FOMO urgency)
@@ -565,4 +566,273 @@ function setup3DCarousels() {
     render();
   });
 }
+
+/* ==========================================================================
+   Premi & Riconoscimenti (Awards & Contest Verification Modal System)
+   ========================================================================== */
+
+const DEFAULT_AWARDS_DATA = [
+  {
+    id: "bpa",
+    name: "Best Photography Awards",
+    shortName: "BPA",
+    icon: "🏅",
+    accentColor: "#FFB800",
+    description: "Riconoscimenti internazionali ufficiali assegnati dalla giuria di Best Photography Awards per eccellenza tecnica e composizione.",
+    awards: [
+      {
+        id: "bpa-2024-gold",
+        year: "2024",
+        title: "Gold Winner • Astrophotography & Nightscapes",
+        work: "Where Mountains Embrace the Sky (Colle del Nivolet)",
+        badgeText: "1° Posto Oro",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Certificato BPA 2024 — Gold Winner"
+      },
+      {
+        id: "bpa-2023-silver",
+        year: "2023",
+        title: "Silver Award • Mountain Landscape",
+        work: "Laghi di Fusine Autumn Reflection",
+        badgeText: "2° Posto Argento",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Certificato BPA 2023 — Silver Award"
+      }
+    ]
+  },
+  {
+    id: "one-eyeland",
+    name: "One Eyeland",
+    shortName: "One Eyeland",
+    icon: "👁️",
+    accentColor: "#00F0FF",
+    description: "Premi e menzioni speciali nel network internazionale d'élite One Eyeland per la fotografia di paesaggio e Fine Art.",
+    awards: [
+      {
+        id: "oe-2024-bronze",
+        year: "2024",
+        title: "Bronze Award • Fine Art Landscape",
+        work: "Cascate del Dardagna Silky Flow",
+        badgeText: "Bronze Award",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Certificato One Eyeland 2024 — Bronze"
+      },
+      {
+        id: "oe-2023-finalist",
+        year: "2023",
+        title: "Finalist • Nature & Night Sky",
+        work: "Zelenci Springs Emerald Light",
+        badgeText: "Finalista",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Certificato One Eyeland 2023 — Finalist"
+      }
+    ]
+  },
+  {
+    id: "1x",
+    name: "1x.com",
+    shortName: "1x.com",
+    icon: "💎",
+    accentColor: "#A855F7",
+    description: "Opere selezionate e curate dal team editoriale di 1x.com, la galleria di fotografia d'arte più selettiva e prestigiosa al mondo.",
+    awards: [
+      {
+        id: "1x-2024-curators",
+        year: "2024",
+        title: "Curator's Choice & Awarded Photograph",
+        work: "Silent Majesty of the Julian Alps",
+        badgeText: "Curator Choice",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Curator Choice"
+      },
+      {
+        id: "1x-2024-night",
+        year: "2024",
+        title: "Awarded Photograph • Nightscapes",
+        work: "Galactic Arch over Lake Serrù",
+        badgeText: "Awarded",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Awarded"
+      },
+      {
+        id: "1x-2023-published",
+        year: "2023",
+        title: "Published Work • Mood & Landscape",
+        work: "Autumn Mist in Canfaito Forest",
+        badgeText: "Published",
+        verifyUrl: "#",
+        bannerPlaceholder: "Banner Pubblicazione Ufficiale 1x.com — Published"
+      }
+    ]
+  }
+];
+
+let awardsStore = DEFAULT_AWARDS_DATA;
+
+async function setupAwardsModal() {
+  try {
+    const res = await fetch('data/awards.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        awardsStore = data;
+      }
+    }
+  } catch (e) {
+    // Usa fallback predefinito
+  }
+
+  // Aggiorna i contatori incrementali su ciascun pulsante concorso
+  awardsStore.forEach(contest => {
+    const countEl = document.querySelector(`[data-award-count="${contest.id}"]`);
+    if (countEl) {
+      countEl.textContent = contest.awards ? contest.awards.length : 0;
+    }
+  });
+
+  // Event delegation per i click sui pulsanti concorso
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.award-contest-btn');
+    if (btn) {
+      e.preventDefault();
+      const contestId = btn.getAttribute('data-award-contest');
+      openAwardContestModal(contestId);
+      return;
+    }
+
+    const verifyBtn = e.target.closest('.award-verify-btn');
+    if (verifyBtn) {
+      e.preventDefault();
+      const contestId = verifyBtn.getAttribute('data-contest-id');
+      const awardId = verifyBtn.getAttribute('data-award-id');
+      openAwardVerificationModal(contestId, awardId);
+    }
+  });
+}
+
+function openAwardContestModal(contestId) {
+  const contest = awardsStore.find(c => c.id === contestId);
+  if (!contest) return;
+
+  let modal = document.getElementById('award-modal-overlay');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'award-modal-overlay';
+    modal.className = 'modal-overlay';
+    document.body.appendChild(modal);
+  }
+
+  const escapeHtml = str => String(str ?? '').replace(/[&<>"]/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+  }[c]));
+
+  const awardsListHtml = (contest.awards || []).map(a => `
+    <div class="award-item-card">
+      <div class="award-item-header">
+        <span class="award-item-tag" style="background: rgba(255, 184, 0, 0.15); color: ${contest.accentColor || '#FFB800'}; border-color: ${contest.accentColor || '#FFB800'};">
+          ${escapeHtml(a.badgeText || 'Riconoscimento')}
+        </span>
+        <span class="award-item-year">📅 Anno ${escapeHtml(a.year)}</span>
+      </div>
+      <h4 class="award-item-title">${escapeHtml(a.title)}</h4>
+      <div class="award-item-work">📷 Opera: <strong>${escapeHtml(a.work)}</strong></div>
+      <button type="button" class="btn btn-primary award-verify-btn" data-contest-id="${contest.id}" data-award-id="${a.id}">
+        🔍 Verifica Riconoscimento ↗
+      </button>
+    </div>
+  `).join('');
+
+  modal.innerHTML = `
+    <div class="modal-content" style="max-width: 620px; max-height: 88vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
+      <button class="modal-close" onclick="closeAwardModal()">&times;</button>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.8rem;">${contest.icon}</span>
+          <h3 style="font-size: 1.5rem; color: var(--accent-cyan); margin: 0;">${escapeHtml(contest.name)}</h3>
+        </div>
+        <span class="award-contest-count" style="font-size: 0.82rem; padding: 0.25rem 0.75rem;">
+          ${contest.awards ? contest.awards.length : 0} Riconoscimenti Ufficiali
+        </span>
+      </div>
+
+      <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        ${escapeHtml(contest.description)}
+      </p>
+
+      <div class="awards-items-wrapper">
+        ${awardsListHtml}
+      </div>
+
+      <div style="text-align: center; margin-top: 1.5rem; border-top: 1px solid var(--border-glass); padding-top: 1.25rem;">
+        <button type="button" class="btn btn-secondary" onclick="closeAwardModal()" style="padding: 0.6rem 2rem; font-size: 0.9rem;">
+          Chiudi
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+}
+
+function openAwardVerificationModal(contestId, awardId) {
+  const contest = awardsStore.find(c => c.id === contestId);
+  if (!contest) return;
+  const award = (contest.awards || []).find(a => a.id === awardId);
+  if (!award) return;
+
+  let verifyModal = document.getElementById('award-verify-modal-overlay');
+  if (!verifyModal) {
+    verifyModal = document.createElement('div');
+    verifyModal.id = 'award-verify-modal-overlay';
+    verifyModal.className = 'modal-overlay';
+    verifyModal.style.zIndex = '99999';
+    document.body.appendChild(verifyModal);
+  }
+
+  const escapeHtml = str => String(str ?? '').replace(/[&<>"]/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+  }[c]));
+
+  verifyModal.innerHTML = `
+    <div class="modal-content" style="max-width: 540px; text-align: center; padding: 2.25rem 2rem;">
+      <button class="modal-close" onclick="closeAwardVerifyModal()">&times;</button>
+      
+      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏆</div>
+      <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">Verifica Riconoscimento Ufficiale</h3>
+      <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        ${escapeHtml(contest.name)} • Edizione ${escapeHtml(award.year)}
+      </div>
+
+      <div class="award-banner-preview-box">
+        <div style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">${escapeHtml(award.title)}</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Opera: <em>${escapeHtml(award.work)}</em></div>
+        <div class="award-banner-preview-text">🖼️ [Banner / Certificato Ufficiale in fase di caricamento]</div>
+      </div>
+
+      <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 1.25rem; line-height: 1.5;">
+        I banner e i certificati ad alta risoluzione dei premi vinti sono in fase di organizzazione e verranno collegati direttamente ai portali ufficiali dei concorsi.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-primary" onclick="closeAwardVerifyModal()" style="padding: 0.6rem 2rem; font-size: 0.9rem;">
+          Torna all'Elenco
+        </button>
+      </div>
+    </div>
+  `;
+
+  verifyModal.classList.add('active');
+}
+
+function closeAwardModal() {
+  const modal = document.getElementById('award-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
+
+function closeAwardVerifyModal() {
+  const modal = document.getElementById('award-verify-modal-overlay');
+  if (modal) modal.classList.remove('active');
+}
+
 
