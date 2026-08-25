@@ -61,6 +61,35 @@
     ]
   },
   {
+    "id": "one-eyeland",
+    "name": "One Eyeland",
+    "shortName": "One Eyeland",
+    "badge": "ONE EYELAND",
+    "icon": "👁️",
+    "accentColor": "#00F0FF",
+    "description": "Riconoscimenti internazionali nel network d'élite One Eyeland per il concorso World's Top 10 Fine Art Photo Contest.",
+    "awards": [
+      {
+        "id": "oe-rank1-italy",
+        "year": "2025",
+        "title": "World's Top 10 Fine Art Photo Contest • Italy Rank #1",
+        "work": "Roque Cinchado under the Galactic Core — Tenerife",
+        "badgeText": "Italy Rank #1",
+        "bannerImage": "assets/awards/one_eyeland_rank1_italy_2025.jpg",
+        "verifyUrl": "https://oneeyeland.com/"
+      },
+      {
+        "id": "oe-silver-2025",
+        "year": "2025",
+        "title": "World's Top 10 Fine Art Photo Contest • Silver Award",
+        "work": "Roque Cinchado under the Galactic Core — Tenerife",
+        "badgeText": "Silver Award",
+        "bannerImage": "assets/awards/one_eyeland_silver_2025.jpg",
+        "verifyUrl": "https://oneeyeland.com/"
+      }
+    ]
+  },
+  {
     "id": "1x",
     "name": "1x.com",
     "shortName": "1x.com",
@@ -131,26 +160,6 @@
         "badgeText": "Awarded",
         "bannerImage": "assets/awards/1x_awarded_3598273.jpg",
         "verifyUrl": "https://1x.com/photo/3598273"
-      }
-    ]
-  },
-  {
-    "id": "one-eyeland",
-    "name": "One Eyeland",
-    "shortName": "One Eyeland",
-    "badge": "ONE EYELAND",
-    "icon": "👁️",
-    "accentColor": "#00F0FF",
-    "description": "Riconoscimenti nel network internazionale d'élite One Eyeland per la fotografia di paesaggio e Fine Art.",
-    "awards": [
-      {
-        "id": "oe-country-winner",
-        "year": "2025",
-        "title": "Fine Art Photography Awards • Country Winner",
-        "work": "Vincitore Nazionale Italia • Rank 1 (10 Punti)",
-        "badgeText": "Country Winner • Rank 1",
-        "bannerImage": "assets/awards/bpa_nature_01.jpg",
-        "verifyUrl": "https://oneeyeland.com/"
       }
     ]
   }
