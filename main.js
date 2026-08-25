@@ -691,23 +691,29 @@ function openAwardContestModal(contestId) {
   }[c]));
 
   const awardsListHtml = (contest.awards || []).map(a => `
-    <div class="award-item-card">
-      <div class="award-item-header">
-        <span class="award-item-tag" style="background: rgba(255, 184, 0, 0.15); color: ${contest.accentColor || '#FFB800'}; border-color: ${contest.accentColor || '#FFB800'};">
-          ${escapeHtml(a.badgeText || 'Riconoscimento')}
-        </span>
-        <span class="award-item-year">📅 Anno ${escapeHtml(a.year)}</span>
+    <div class="award-item-card" style="display: flex; flex-direction: row; gap: 1.25rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+      <div style="display: flex; gap: 1rem; align-items: center; flex: 1; min-width: 260px;">
+        ${a.medalImage ? `<img src="${escapeHtml(a.medalImage)}" alt="Medaglia ${escapeHtml(a.badgeText)}" style="width: 52px; height: 52px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));" />` : ''}
+        ${a.bannerImage && !a.medalImage ? `<img src="${escapeHtml(a.bannerImage)}" alt="${escapeHtml(a.title)}" style="width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); flex-shrink: 0;" />` : ''}
+        <div>
+          <div class="award-item-header" style="margin-bottom: 0.25rem;">
+            <span class="award-item-tag" style="background: rgba(255, 184, 0, 0.15); color: ${contest.accentColor || '#FFB800'}; border-color: ${contest.accentColor || '#FFB800'};">
+              ${escapeHtml(a.badgeText || 'Riconoscimento')}
+            </span>
+            <span class="award-item-year">📅 ${escapeHtml(a.year)}</span>
+          </div>
+          <h4 class="award-item-title" style="font-size: 1.05rem;">${escapeHtml(a.title)}</h4>
+          <div class="award-item-work" style="font-size: 0.84rem;">📷 Opera: <strong>${escapeHtml(a.work)}</strong></div>
+        </div>
       </div>
-      <h4 class="award-item-title">${escapeHtml(a.title)}</h4>
-      <div class="award-item-work">📷 Opera: <strong>${escapeHtml(a.work)}</strong></div>
-      <button type="button" class="btn btn-primary award-verify-btn" data-contest-id="${contest.id}" data-award-id="${a.id}">
-        🔍 Verifica Riconoscimento ↗
+      <button type="button" class="btn btn-primary award-verify-btn" data-contest-id="${contest.id}" data-award-id="${a.id}" style="align-self: center; white-space: nowrap;">
+        🔍 Mostra Certificato ↗
       </button>
     </div>
   `).join('');
 
   modal.innerHTML = `
-    <div class="modal-content" style="max-width: 620px; max-height: 88vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
+    <div class="modal-content" style="max-width: 740px; max-height: 88vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
       <button class="modal-close" onclick="closeAwardModal()">&times;</button>
       
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -759,27 +765,31 @@ function openAwardVerificationModal(contestId, awardId) {
   }[c]));
 
   verifyModal.innerHTML = `
-    <div class="modal-content" style="max-width: 540px; text-align: center; padding: 2.25rem 2rem;">
+    <div class="modal-content" style="max-width: 680px; text-align: center; padding: 2rem 1.75rem;">
       <button class="modal-close" onclick="closeAwardVerifyModal()">&times;</button>
       
-      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏆</div>
-      <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">Verifica Riconoscimento Ufficiale</h3>
-      <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+      <div style="font-size: 2.2rem; margin-bottom: 0.35rem;">🏆</div>
+      <h3 style="font-size: 1.35rem; color: var(--accent-cyan); margin-bottom: 0.25rem;">Certificato &amp; Banner Ufficiale</h3>
+      <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
         ${escapeHtml(contest.name)} • Edizione ${escapeHtml(award.year)}
       </div>
 
-      <div class="award-banner-preview-box">
-        <div style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">${escapeHtml(award.title)}</div>
-        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Opera: <em>${escapeHtml(award.work)}</em></div>
-        <div class="award-banner-preview-text">🖼️ [Banner / Certificato Ufficiale in fase di caricamento]</div>
+      <div style="position: relative; overflow: hidden; border-radius: var(--radius-md); max-height: 56vh; background: #000; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-glow); box-shadow: 0 10px 30px rgba(0,0,0,0.6); margin-bottom: 1.25rem;">
+        <img src="${escapeHtml(award.bannerImage)}" alt="${escapeHtml(award.title)}" style="width: 100%; height: auto; max-height: 54vh; object-fit: contain;" />
       </div>
 
-      <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 1.25rem; line-height: 1.5;">
-        I banner e i certificati ad alta risoluzione dei premi vinti sono in fase di organizzazione e verranno collegati direttamente ai portali ufficiali dei concorsi.
-      </p>
+      <div style="text-align: left; background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem;">${escapeHtml(award.title)}</div>
+        <div style="font-size: 0.84rem; color: var(--text-secondary);">Opera / Assegnazione: <em>${escapeHtml(award.work)}</em></div>
+      </div>
 
-      <div style="display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
-        <button type="button" class="btn btn-primary" onclick="closeAwardVerifyModal()" style="padding: 0.6rem 2rem; font-size: 0.9rem;">
+      <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+        ${award.verifyUrl && award.verifyUrl !== '#' ? `
+          <a href="${escapeHtml(award.verifyUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.6rem 1.6rem; font-size: 0.88rem;">
+            Verifica su ${escapeHtml(contest.shortName || contest.name)} ↗
+          </a>
+        ` : ''}
+        <button type="button" class="btn btn-secondary" onclick="closeAwardVerifyModal()" style="padding: 0.6rem 1.6rem; font-size: 0.88rem;">
           Torna all'Elenco
         </button>
       </div>
