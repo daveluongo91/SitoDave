@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupInfoModal();
   setupGlobalClickDelegation();
   updateUrgencyCounters();
+  setup3DCarousels();
 });
 
 // Calculate Urgency Counter (Seats available minus 20% for FOMO urgency)
@@ -457,3 +458,111 @@ function applyLanguage(lang) {
     grid.innerHTML = '<p><a href="blog/blog.html">Vai al Blog completo →</a></p>';
   }
 })();
+
+/* ==========================================================================
+   3D Rotating Carousel Engine (Workshops, Viaggi, Blog & Pubblicazioni)
+   ========================================================================== */
+
+function setup3DCarousels() {
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+    if (carousel.dataset.carouselInit === 'true') return;
+    carousel.dataset.carouselInit = 'true';
+
+    const slides = Array.from(carousel.querySelectorAll('[data-slide]'));
+    if (!slides.length) return;
+
+    const status = carousel.querySelector('.carousel-status');
+    const prevBtn = carousel.querySelector('[data-carousel-prev]');
+    const nextBtn = carousel.querySelector('[data-carousel-next]');
+    let activeIndex = 0;
+    let isRotating = false;
+
+    carousel.tabIndex = 0;
+    carousel.setAttribute('aria-label', 'Carosello: clicca sulle card laterali, usa i pulsanti o le frecce della tastiera per ruotare');
+
+    const wrappedDistance = (index) => {
+      let distance = index - activeIndex;
+      const half = slides.length / 2;
+      if (distance > half) distance -= slides.length;
+      if (distance < -half) distance += slides.length;
+      return distance;
+    };
+
+    const render = () => {
+      slides.forEach((slide, index) => {
+        const distance = wrappedDistance(index);
+        slide.classList.remove('is-active', 'is-previous', 'is-next', 'is-hidden');
+        if (distance === 0) slide.classList.add('is-active');
+        else if (distance === -1) slide.classList.add('is-previous');
+        else if (distance === 1) slide.classList.add('is-next');
+        else slide.classList.add('is-hidden');
+        slide.setAttribute('aria-hidden', Math.abs(distance) > 1 ? 'true' : 'false');
+      });
+
+      if (status) {
+        status.textContent = `${activeIndex + 1} / ${slides.length}`;
+      }
+    };
+
+    const rotateTo = (index) => {
+      if (index === activeIndex || isRotating) return;
+      isRotating = true;
+      activeIndex = (index + slides.length) % slides.length;
+      render();
+      window.setTimeout(() => { isRotating = false; }, 400);
+    };
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        rotateTo(activeIndex - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        rotateTo(activeIndex + 1);
+      });
+    }
+
+    slides.forEach((slide, index) => {
+      slide.addEventListener('pointerenter', (event) => {
+        const isSideCard = slide.classList.contains('is-previous') || slide.classList.contains('is-next');
+        if (event.pointerType === 'mouse' && isSideCard) rotateTo(index);
+      });
+
+      slide.addEventListener('click', (event) => {
+        const isSideCard = slide.classList.contains('is-previous') || slide.classList.contains('is-next');
+        if (isSideCard) {
+          event.preventDefault();
+          rotateTo(index);
+        }
+      });
+    });
+
+    carousel.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') rotateTo(activeIndex - 1);
+      if (event.key === 'ArrowRight') rotateTo(activeIndex + 1);
+    });
+
+    // Touch Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    carousel.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 45) {
+        rotateTo(activeIndex + 1);
+      } else if (touchEndX - touchStartX > 45) {
+        rotateTo(activeIndex - 1);
+      }
+    }, { passive: true });
+
+    render();
+  });
+}
+
