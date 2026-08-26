@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel & Hospitality Videomaker • Davide Luongo</title>
+  <meta name="description" content="Cinematic Storytelling & Visual Content per Hotel, Resort e Strutture Ricettive. Produzione video verticali 4K, reels e fotografia d'ambiente di Davide Luongo." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .hosp-hero {
+      position: relative;
+      padding: 8rem 0 5rem 0;
+      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.08) 0%, rgba(4, 9, 20, 0.95) 100%);
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .hosp-hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('assets/travel_hospitality_aurora.jpg') center center / cover no-repeat;
+      opacity: 0.22;
+      filter: blur(4px);
+      transform: scale(1.05);
+      z-index: 1;
+    }
+    .hosp-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hosp-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--accent-amber);
+      color: var(--accent-amber);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hosp-hero-title {
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+    .hosp-hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 2.25rem;
+    }
+    .hosp-metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3rem;
+      padding: 1.5rem;
+      background: rgba(10, 18, 30, 0.75);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(16px);
+    }
+    .hosp-metric-item {
+      text-align: center;
+    }
+    .hosp-metric-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-amber);
+      font-family: var(--font-heading);
+    }
+    .hosp-metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+    .hosp-services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .hosp-service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .hosp-service-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-amber);
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+    }
+    .hosp-service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .hosp-service-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+    .hosp-service-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .hosp-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+    .hosp-case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .hosp-case-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-amber);
+      box-shadow: 0 12px 35px rgba(245, 158, 11, 0.18);
+    }
+    .hosp-case-header {
+      padding: 1.75rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .hosp-case-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .hosp-case-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.85rem;
+    }
+    .hosp-case-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    .hosp-case-cta {
+      padding: 1.25rem 1.75rem;
+      background: rgba(0, 0, 0, 0.35);
+      border-top: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hosp-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .hosp-step-card {
+      background: rgba(10, 20, 35, 0.6);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .hosp-step-num {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 1rem auto;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--accent-amber);
+      color: var(--accent-amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .hosp-step-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .hosp-step-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .hosp-contact-box {
+      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.08) 0%, rgba(10, 15, 25, 0.9) 100%);
+      border: 1px solid var(--accent-amber);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 4rem auto 0 auto;
+      box-shadow: 0 0 40px rgba(245, 158, 11, 0.12);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/pittogramma.png" alt="Davide Luongo" class="logo-img" />
+        <span>Davide Luongo</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="workshops_2026/friuli-2026.html">Workshop 2026</a></li>
+        <li><a href="index.html#workshops">Viaggi 2027</a></li>
+        <li><a href="gear/gear.html">Gear & Attrezzatura</a></li>
+        <li><a href="blog/blog.html">Blog & Pubblicazioni</a></li>
+        <li><a href="travel-hospitality.html" class="nav-current">Travel & Hospitality</a></li>
+        <li><a href="index.html#chi-sono">Chi Sono</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="lang-toggle-wrapper" id="lang-toggle-wrapper">
+          <button type="button" class="lang-btn lang-ita active" id="btn-lang-ita" onclick="switchLanguage('it')" title="Italiano">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <rect x="0" width="9.33" height="20" fill="#009246"/>
+              <rect x="9.33" width="9.33" height="20" fill="#ffffff"/>
+              <rect x="18.66" width="9.34" height="20" fill="#ce2b37"/>
+            </svg>
+            <span>ITA</span>
+          </button>
+          <button type="button" class="lang-btn lang-en" id="btn-lang-en" onclick="switchLanguage('en')" title="English (UK/USA)">
+            <svg width="22" height="16" viewBox="0 0 28 20" class="flag-svg">
+              <defs>
+                <clipPath id="uk-clip">
+                  <polygon points="0,0 28,0 0,20"/>
+                </clipPath>
+                <clipPath id="usa-clip">
+                  <polygon points="28,0 28,20 0,20"/>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#uk-clip)">
+                <rect width="28" height="20" fill="#012169"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#fff" stroke-width="4"/>
+                <path d="M0,0 L28,20 M28,0 L0,20" stroke="#C8102E" stroke-width="2"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#fff" stroke-width="6"/>
+                <path d="M14,0 V20 M0,10 H28" stroke="#C8102E" stroke-width="3.5"/>
+              </g>
+              <g clip-path="url(#usa-clip)">
+                <rect width="28" height="20" fill="#B22234"/>
+                <path d="M0,3 H28 M0,6 H28 M0,9 H28 M0,12 H28 M0,15 H28 M0,18 H28" stroke="#fff" stroke-width="1.5"/>
+                <rect width="12" height="10" fill="#3C3B6E"/>
+                <circle cx="3" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="9" cy="2.5" r="0.6" fill="#fff"/>
+                <circle cx="6" cy="5" r="0.6" fill="#fff"/>
+              </g>
+              <line x1="0" y1="20" x2="28" y2="0" stroke="#040914" stroke-width="1.5"/>
+            </svg>
+            <span>ENG</span>
+          </button>
+        </div>
+        <a href="#contatti-hospitality" class="btn btn-primary">Collabora con Me</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hosp-hero">
+      <div class="hosp-hero-bg"></div>
+      <div class="container hosp-hero-content">
+        <div class="hosp-pill">
+          <span>✈️ TRAVEL &amp; HOSPITALITY VIDEOMAKER</span>
+        </div>
+        <h1 class="hosp-hero-title">Visual Content &amp; Cinematic Storytelling per Hotel e Strutture Ricettive</h1>
+        <p class="hosp-hero-subtitle">
+          Trasformo l'esperienza di soggiorno e l'identità del vostro hotel in video verticali 4K ad alto impatto emotivo. Unisco il racconto del comfort, del design e dell'accoglienza alla bellezza del territorio circostante.
+        </p>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary open-info-modal" data-subject="Collaborazione Travel &amp; Hospitality" style="background: linear-gradient(135deg, var(--accent-amber), #F97316); border: none; padding: 0.85rem 2rem; font-size: 1rem;">
+            Proponi una Collaborazione →
+          </button>
+          <a href="#portfolio-reels" class="btn btn-secondary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+            Guarda i Reel di Esempio ↓
+          </a>
+        </div>
+
+        <!-- METRICS BAR -->
+        <div class="hosp-metrics-bar">
+          <div class="hosp-metric-item">
+            <div class="hosp-metric-value">4K HDR</div>
+            <div class="hosp-metric-label">Riprese &amp; Master Verticali</div>
+          </div>
+          <div class="hosp-metric-item">
+            <div class="hosp-metric-value">100%</div>
+            <div class="hosp-metric-label">Diritti d'Uso Commerciale</div>
+          </div>
+          <div class="hosp-metric-item">
+            <div class="hosp-metric-value">Global</div>
+            <div class="hosp-metric-label">Islanda, Canarie, Alpi, Italia</div>
+          </div>
+          <div class="hosp-metric-item">
+            <div class="hosp-metric-value">Multi-format</div>
+            <div class="hosp-metric-label">Reel, TikTok, Foto &amp; Stories</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: COSA POSSO FARE PER IL VOSTRO BRAND -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header center">
+          <div class="sub-title" style="color: var(--accent-amber);">VALORE PER LA VOSTRA STRUTTURA</div>
+          <h2 class="section-title">Servizi &amp; Deliverables</h2>
+          <p class="section-desc">
+            Contenuti visivi pensati specificamente per il marketing turistico moderno: dinamici, coinvolgenti e pronti all'uso per i vostri canali digitali.
+          </p>
+        </div>
+
+        <div class="hosp-services-grid">
+          <!-- Card 1 -->
+          <div class="hosp-service-card">
+            <div class="hosp-service-icon">🎬</div>
+            <h3 class="hosp-service-title">Reel &amp; Short-Form Video</h3>
+            <p class="hosp-service-desc">
+              Video verticali 4K (9:16) con montaggio cinematico ritmato, color grading professionale e sound design immersivo. Studiati per catturare l'attenzione nei primi 3 secondi su Instagram Reels e TikTok.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="hosp-service-card">
+            <div class="hosp-service-icon">📷</div>
+            <h3 class="hosp-service-title">Fotografia d'Ambiente &amp; Lifestyle</h3>
+            <p class="hosp-service-desc">
+              Libreria di immagini ad altissima risoluzione per interni, suite, dettagli di design, area wellness, gastronomia e momenti di relax. Perfette per il sito web ufficiale, brochure e portali OTA (Booking, Expedia).
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="hosp-service-card">
+            <div class="hosp-service-icon">🌄</div>
+            <h3 class="hosp-service-title">Integrazione con la Destinazione</h3>
+            <p class="hosp-service-desc">
+              Il vero punto di forza differenziante: legare la struttura alla magia del territorio circostante (aurore boreali, tramonti oceanici, cieli stellati o vette alpine) per vendere l'emozione autentica del viaggio.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="hosp-service-card">
+            <div class="hosp-service-icon">💼</div>
+            <h3 class="hosp-service-title">Licenza Commerciale &amp; Social Reach</h3>
+            <p class="hosp-service-desc">
+              Consegna di tutti i file master con piena licenza d'uso per le vostre campagne promozionali e campagne social ads, unita alla pubblicazione in collaborazione o tag sul mio profilo Instagram con una community attiva.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PORTFOLIO REELS & CASE STUDIES -->
+    <section class="section" id="portfolio-reels" style="background: rgba(4, 9, 20, 0.4); border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass);">
+      <div class="container">
+        <div class="section-header center">
+          <div class="sub-title" style="color: var(--accent-amber);">PORTFOLIO RECENTE</div>
+          <h2 class="section-title">Case Studies &amp; Collaborazioni</h2>
+          <p class="section-desc">
+            Alcuni degli ultimi lavori realizzati per strutture ricettive internazionali, con concept concordati su misura.
+          </p>
+        </div>
+
+        <div class="hosp-case-grid">
+          <!-- Case 1: Hotel Keflavik -->
+          <article class="hosp-case-card">
+            <div style="height: 240px; overflow: hidden; position: relative;">
+              <img src="assets/islanda_photo_tour.png" alt="Hotel Keflavik Islanda" style="width: 100%; height: 100%; object-fit: cover;" />
+              <div style="position: absolute; top: 1rem; left: 1rem; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-amber); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; color: var(--accent-amber);">
+                🇮🇸 KEFLAVÍK, ISLANDA
+              </div>
+            </div>
+            <div class="hosp-case-header">
+              <span class="hosp-case-tag">COLLABORAZIONE UFFICIALE</span>
+              <h3 class="hosp-case-title">Hotel Keflavík</h3>
+              <p class="hosp-case-text">
+                Racconto dell'ospitalità nordica e del comfort di alto livello come punto di riferimento strategico per i viaggiatori in arrivo in Islanda, valorizzando l'atmosfera calda degli interni e la gastronomia locale in vista delle escursioni verso l'aurora boreale.
+              </p>
+              <div style="margin-top: auto;">
+                <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">Deliverable: Video Reel 4K + Instagram Collab</div>
+              </div>
+            </div>
+            <div class="hosp-case-cta">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;">Pubblicato da @hotelkeflavik</span>
+              <a href="https://www.instagram.com/reel/DTTC2x6iCTv/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.45rem 1.1rem; background: linear-gradient(135deg, var(--accent-amber), #F97316); border: none;">
+                Guarda Reel ↗
+              </a>
+            </div>
+          </article>
+
+          <!-- Case 2: Hotel Monopol -->
+          <article class="hosp-case-card">
+            <div style="height: 240px; overflow: hidden; position: relative;">
+              <img src="assets/cinque_terre_workshop.png" alt="Hotel Monopol Tenerife" style="width: 100%; height: 100%; object-fit: cover;" />
+              <div style="position: absolute; top: 1rem; left: 1rem; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-amber); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; color: var(--accent-amber);">
+                🇪🇸 PUERTO DE LA CRUZ, TENERIFE
+              </div>
+            </div>
+            <div class="hosp-case-header">
+              <span class="hosp-case-tag">COLLABORAZIONE UFFICIALE</span>
+              <h3 class="hosp-case-title">Hotel Monopol</h3>
+              <p class="hosp-case-text">
+                Valorizzazione del fascino dell'architettura tradizionale canaria, con il suo iconico patio interno ricco di vegetazione tropicale, il silenzio, il relax e la vicinanza strategica al centro storico e alle scogliere vulcaniche del nord di Tenerife.
+              </p>
+              <div style="margin-top: auto;">
+                <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">Deliverable: Reel Cinematico + Testo Trilingue (IT/EN/ES)</div>
+              </div>
+            </div>
+            <div class="hosp-case-cta">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;">Pubblicato da @davepics_91</span>
+              <a href="https://www.instagram.com/reel/DNyEEpsWmie/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.45rem 1.1rem; background: linear-gradient(135deg, var(--accent-amber), #F97316); border: none;">
+                Guarda Reel ↗
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: COME FUNZIONA LA COLLABORAZIONE -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header center">
+          <div class="sub-title" style="color: var(--accent-amber);">IL METODO DI LAVORO</div>
+          <h2 class="section-title">Come Collaboriamo</h2>
+          <p class="section-desc">
+            Un processo fluido, professionale e senza intoppi per la gestione della struttura ricettiva.
+          </p>
+        </div>
+
+        <div class="hosp-steps-grid">
+          <div class="hosp-step-card">
+            <div class="hosp-step-num">1</div>
+            <h3 class="hosp-step-title">Briefing &amp; Concept</h3>
+            <p class="hosp-step-desc">Definiamo insieme il mood, i servizi chiave da valorizzare (spa, food, suite, outdoor) e le esigenze di comunicazione.</p>
+          </div>
+
+          <div class="hosp-step-card">
+            <div class="hosp-step-num">2</div>
+            <h3 class="hosp-step-title">Soggiorno &amp; Shooting</h3>
+            <p class="hosp-step-desc">Produzione discreta sul campo con attrezzatura professionale, catturando la luce perfetta sia di giorno che di notte.</p>
+          </div>
+
+          <div class="hosp-step-card">
+            <div class="hosp-step-num">3</div>
+            <h3 class="hosp-step-title">Post-Produzione</h3>
+            <p class="hosp-step-desc">Montaggio video dinamico in 4K, color grading dedicato, sound design ed editing fotografico fine art.</p>
+          </div>
+
+          <div class="hosp-step-card">
+            <div class="hosp-step-num">4</div>
+            <h3 class="hosp-step-title">Consegna &amp; Boost</h3>
+            <p class="hosp-step-desc">Invio dei file master in cloud pronti all'uso per il vostro marketing e pubblicazione concordata sui canali social.</p>
+          </div>
+        </div>
+
+        <!-- BOX DI CONTATTO DEDICATO -->
+        <div class="hosp-contact-box" id="contatti-hospitality">
+          <span style="font-size: 2.5rem; display: block; margin-bottom: 1rem;">🤝</span>
+          <h2 style="font-size: 2rem; color: var(--text-primary); font-weight: 800; margin-bottom: 1rem;">
+            Sei una Struttura Ricettiva o un Brand di Viaggio?
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 1.05rem; line-height: 1.75; max-width: 620px; margin: 0 auto 2rem auto;">
+            Se desideri valorizzare il tuo hotel, boutique resort o destinazione con contenuti video e fotografici cinematici d'eccellenza, parliamone. Sono disponibile sia per collaborazioni hosted-stay sia per produzioni commerciali su misura.
+          </p>
+
+          <button type="button" class="btn btn-primary open-info-modal" data-subject="Collaborazione Travel &amp; Hospitality" style="background: linear-gradient(135deg, var(--accent-amber), #F97316); border: none; padding: 0.95rem 2.5rem; font-size: 1.05rem;">
+            Invia una Proposta di Collaborazione →
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALE PRENOTAZIONE / INFO -->
+  <div id="reservation-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">&times;</button>
+      <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;" class="gradient-text">Richiesta Informazioni &amp; Collaborazione</h3>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Compila il modulo sottostante con i dettagli della struttura o del progetto.</p>
+
+      <form id="reservation-form">
+        <div class="form-group">
+          <label class="form-label" for="modal-subject">Oggetto / Struttura</label>
+          <input type="text" id="modal-subject" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modal-name">Nome e Cognome / Referente *</label>
+          <input type="text" id="modal-name" class="form-control" placeholder="es. Marco Rossi" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modal-email">Email di Contatto *</label>
+          <input type="email" id="modal-email" class="form-control" placeholder="es. info@hotel.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modal-phone">Telefono / WhatsApp (Opzionale)</label>
+          <input type="tel" id="modal-phone" class="form-control" placeholder="+39 333 1234567" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modal-notes">Dettagli della Struttura / Periodo Indicativo</label>
+          <textarea id="modal-notes" class="form-control" rows="4" placeholder="Descrivi brevemente la struttura, la location e il tipo di collaborazione desiderata..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, var(--accent-amber), #F97316); border: none;">
+          Invia Richiesta di Collaborazione
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>&copy; 2026 Davide Luongo Photography. Tutti i diritti riservati. — P.IVA IT03043130737</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
