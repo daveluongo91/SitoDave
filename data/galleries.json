@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "id": "islanda",
     "name": "Islanda",
@@ -60,27 +60,6 @@
       { "id": "md-08", "title": "Miradouro do Guindaste all'Alba", "caption": "La passerella di vetro sospesa sulla scogliera durante le prime luci.", "image": "assets/azzorre_photo_tour.png" },
       { "id": "md-09", "title": "Luce Filtrante lungo la Levada", "caption": "Canali d'acqua storici immersi nella vegetazione lussureggiante dell'isola.", "image": "assets/azzorre_photo_tour.png" },
       { "id": "md-10", "title": "Tramonto a Ponta do Pargo", "caption": "Il faro solitario sull'estremo lembo occidentale illuminato dagli ultimi raggi.", "image": "assets/azzorre_photo_tour.png" }
-    ]
-  },
-  {
-    "id": "montagna",
-    "name": "Montagna",
-    "title": "Galleria Fotografica • Montagna & Alpi",
-    "badge": "🏔️ 10 FOTO",
-    "coverImage": "assets/timelapse_nivolet_poster.jpg",
-    "accentColor": "#00F0FF",
-    "description": "Vette alpine selvagge, riflessi sui laghi glaciali, foliage autunnale e notti sotto le stelle in alta quota.",
-    "photos": [
-      { "id": "mt-01", "title": "Colle del Nivolet e Lago Serrù", "caption": "L'arco della Via Lattea specchiato nelle acque cristalline a 2600m.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-02", "title": "Laghi di Fusine in Autunno", "caption": "Il Mangart riflesso nello specchio d'acqua circondato dal foliage dorato.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-03", "title": "Cascate del Dardagna in Piena", "caption": "Lunga esposizione setosa sui salti d'acqua dell'Appennino Tosco-Emiliano.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-04", "title": "Foliage Monumentale a Canfaito", "caption": "Nebbia mattutina tra i rami contorti dei faggi plurisecolari marchigiani.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-05", "title": "Tre Cime di Lavaredo all'Enrosadira", "caption": "Dolomiti tinte di rosa e magenta durante gli ultimi istanti del tramonto.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-06", "title": "Sorgenti di Zelenci all'Alba", "caption": "Laguna smeraldo con il ghiaccio sottile e vapore acqueo all'aurora.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-07", "title": "Fontanon di Goriuda", "caption": "La spettacolare grotta e cascata nascosta nella Val Raccolana.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-08", "title": "Notte Stellata sul Gran Paradiso", "caption": "Cieli alpini incontaminati a 3000 metri con inseguimento siderale.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-09", "title": "Foreste Casentinesi nel Picco Autunnale", "caption": "Un mare di foglie rosse, oro e arancio nelle faggete patrimonio UNESCO.", "image": "assets/timelapse_nivolet_poster.jpg" },
-      { "id": "mt-10", "title": "Lago del Predil e Alpi Giulie", "caption": "Silenzio mattutino e riflessi d'alta montagna al confine italo-sloveno.", "image": "assets/timelapse_nivolet_poster.jpg" }
     ]
   }
 ]
