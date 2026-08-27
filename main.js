@@ -1476,7 +1476,7 @@ function openGalleryLightbox(index) {
 
   lb.innerHTML = `
     <div class="gallery-lightbox-modal">
-      <button class="modal-close" onclick="closeGalleryLightbox()" title="Chiudi (Esc)">&times;</button>
+      <button type="button" class="lightbox-close-btn" onclick="closeGalleryLightbox()" aria-label="Chiudi (Esc)" title="Chiudi (Esc)">✕</button>
       
       <!-- Frecce di Navigazione Laterali -->
       <button type="button" class="lightbox-nav-arrow prev" onclick="prevLightboxPhoto()" aria-label="Foto precedente (Freccia Sinistra)">&#10094;</button>
