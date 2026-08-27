@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 500" width="27" height="18">
+  <rect width="750" height="500" fill="#c60b1e"/>
+  <rect y="125" width="750" height="250" fill="#ffc400"/>
+  <g transform="translate(180, 250) scale(0.6)">
+    <!-- simplified coat of arms crown & pillars -->
+    <rect x="-45" y="-70" width="90" height="140" rx="20" fill="#c60b1e" stroke="#ffc400" stroke-width="6"/>
+    <rect x="-35" y="-60" width="70" height="120" rx="15" fill="#ffc400"/>
+    <circle cx="0" cy="-85" r="18" fill="#c60b1e"/>
+    <circle cx="0" cy="-85" r="10" fill="#ffc400"/>
+    <rect x="-80" y="-80" width="16" height="160" fill="#ffffff" stroke="#c60b1e" stroke-width="4"/>
+    <rect x="64" y="-80" width="16" height="160" fill="#ffffff" stroke="#c60b1e" stroke-width="4"/>
+  </g>
+</svg>

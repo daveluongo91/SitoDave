@@ -2205,13 +2205,27 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  padding: 0.35rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 9999px;
-  background: rgba(4, 9, 20, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(4, 9, 20, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
   backdrop-filter: blur(8px);
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.flag-icon {
+  width: 1.25rem;
+  height: 0.9rem;
+  object-fit: cover;
+  border-radius: 2px;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
 }
 
 .gallery-card-content {

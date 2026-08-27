@@ -1416,6 +1416,13 @@ function openGalleryModal(galleryId) {
     `;
   }).join('');
 
+  const flagMap = {
+    'islanda': 'assets/flags/islanda.svg',
+    'tenerife': 'assets/flags/spagna.svg',
+    'madeira': 'assets/flags/portogallo.svg'
+  };
+  const flagSvg = flagMap[gallery.id] || '';
+
   modal.innerHTML = `
     <div class="modal-content" style="max-width: 1140px; max-height: 92vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
       <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
@@ -1423,7 +1430,10 @@ function openGalleryModal(galleryId) {
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1.25rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
         <div>
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.12em;">Galleria Fotografica</span>
-          <h3 style="font-size: 2rem; color: #fff; margin: 0.25rem 0 0 0; font-family: var(--font-heading);">${escapeHtml(gallery.name)}</h3>
+          <h3 style="font-size: 2rem; color: #fff; margin: 0.25rem 0 0 0; font-family: var(--font-heading); display: flex; align-items: center; gap: 0.75rem;">
+            ${flagSvg ? `<img src="${flagSvg}" alt="Bandiera" class="flag-icon" style="width: 1.6rem; height: 1.15rem;" />` : ''}
+            ${escapeHtml(gallery.name)}
+          </h3>
         </div>
       </div>
 
@@ -1465,6 +1475,13 @@ function openGalleryLightbox(index) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
   }[c]));
 
+  const flagMap = {
+    'islanda': 'assets/flags/islanda.svg',
+    'tenerife': 'assets/flags/spagna.svg',
+    'madeira': 'assets/flags/portogallo.svg'
+  };
+  const flagSvg = flagMap[currentActiveGallery.id] || '';
+
   let badgeHtml = '';
   if (photo.badge === '1X Awarded') {
     badgeHtml = '<span class="gallery-photo-badge badge-awarded" style="position: static; font-size: 0.85rem; padding: 0.35rem 0.85rem;">🏆 1X Awarded</span>';
@@ -1487,7 +1504,8 @@ function openGalleryLightbox(index) {
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1rem; padding: 0 0.5rem; min-height: 32px;">
-        <div style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;">
+        <div style="font-size: 0.9rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.5rem;">
+          ${flagSvg ? `<img src="${flagSvg}" alt="Bandiera" class="flag-icon" style="width: 1.25rem; height: 0.9rem;" />` : ''}
           ${escapeHtml(currentActiveGallery.name)}
         </div>
         <div>
