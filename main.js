@@ -881,7 +881,7 @@ function closeAwardVerifyModal() {
 }
 
 /* ==========================================================================
-   Gallerie Fotografiche (Modal & Lightbox Engine per 10 Foto)
+   Gallerie Fotografiche (Modal & Immersive Lightbox Engine)
    ========================================================================== */
 
 const DEFAULT_GALLERIES_DATA = [
@@ -889,141 +889,153 @@ const DEFAULT_GALLERIES_DATA = [
     "id": "islanda",
     "name": "Islanda",
     "title": "Galleria Fotografica • Islanda",
-    "badge": "🇮🇸 10 FOTO",
-    "coverImage": "assets/islanda_photo_tour.png",
+    "coverImage": "assets/galleries/cover_islanda.jpg",
     "accentColor": "#00F0FF",
     "description": "Un viaggio visivo tra aurore boreali, cascate impetuose, ghiacciai millenari e desolazioni vulcaniche d'Islanda.",
     "photos": [
       {
-        "id": "is-01",
-        "title": "Danza Boreale sul Ghiacciaio",
-        "caption": "Aurora boreale di grado G2 che si riflette sulla laguna glaciale di Jökulsárlón.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-01",
+        "filename": "1X_02_awarded-3505996.jpg",
+        "badge": "1X Awarded",
+        "image": "assets/galleries/islanda/islanda_01_1X_02_awarded-3505996.jpg"
       },
       {
-        "id": "is-02",
-        "title": "Il Risveglio di Skógafoss",
-        "caption": "Luce radente dell'alba tra gli spruzzi della maestosa cascata.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-02",
+        "filename": "1X_03_published-3496438.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_02_1X_03_published-3496438.jpg"
       },
       {
-        "id": "is-03",
-        "title": "Vestrahorn e la Spiaggia Nera",
-        "caption": "Riflessi perfetti sui banchi di marea di Stokksnes sotto cieli tempestosi.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-03",
+        "filename": "1X_04_published-3503283.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_03_1X_04_published-3503283.jpg"
       },
       {
-        "id": "is-04",
-        "title": "Canyon di Fjaðrárgljúfur",
-        "caption": "Geometrie serpeggianti e muschio smeraldo nelle gole del sud.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-04",
+        "filename": "1X_05_published-3504458.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_04_1X_05_published-3504458.jpg"
       },
       {
-        "id": "is-05",
-        "title": "Grotta di Ghiaccio nel Vatnajökull",
-        "caption": "Texture blu profondo e luce filtrante all'interno del ghiacciaio perenne.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-05",
+        "filename": "1X_06_published-3505996.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_05_1X_06_published-3505996.jpg"
       },
       {
-        "id": "is-06",
-        "title": "Arco di Seljalandsfoss al Tramonto",
-        "caption": "La prospettiva dietro la cortina d'acqua con luce dorata atlantica.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-06",
+        "filename": "1X_07_published-3517205.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_06_1X_07_published-3517205.jpg"
       },
       {
-        "id": "is-07",
-        "title": "Piana Vulcanica di Landmannalaugar",
-        "caption": "Riolite policroma e contrasti primordiali negli altipiani interni.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-07",
+        "filename": "1X_08_published-3635693.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/islanda/islanda_07_1X_08_published-3635693.jpg"
       },
       {
-        "id": "is-08",
-        "title": "Arco Boreale su Kirkjufell",
-        "caption": "La montagna iconica incorniciata dalle cascate e dalla via boreale.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-08",
+        "filename": "1X_01_accepted-3515028.jpg",
+        "badge": "1X Accepted",
+        "image": "assets/galleries/islanda/islanda_08_1X_01_accepted-3515028.jpg"
       },
       {
-        "id": "is-09",
-        "title": "Spiaggia dei Diamanti",
-        "caption": "Blocchi di ghiaccio cristallino arenati sulla sabbia basaltica nera.",
-        "image": "assets/islanda_photo_tour.png"
+        "id": "islanda-09",
+        "filename": "TOP10_02_BF_00060-Enhanced-NR.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_09_TOP10_02_BF_00060-Enhanced-NR.jpg"
       },
       {
-        "id": "is-10",
-        "title": "Fumo e Zolfo a Hverir",
-        "caption": "Sfumature marziane e fumarole solforose nella regione di Mývatn.",
-        "image": "assets/islanda_photo_tour.png"
-      }
-    ]
-  },
-  {
-    "id": "tenerife",
-    "name": "Tenerife",
-    "title": "Galleria Fotografica • Tenerife",
-    "badge": "🇪🇸 10 FOTO",
-    "coverImage": "assets/minorca_photo_tour.png",
-    "accentColor": "#FFB800",
-    "description": "Paesaggi lunari del Parco Nazionale del Teide, mari di nubi e uno dei cieli stellati Starlight più puri del pianeta.",
-    "photos": [
-      {
-        "id": "tf-01",
-        "title": "La Via Lattea sul Teide",
-        "caption": "Arco galattico estivo sopra le formazioni rocciose di Roques de García.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-10",
+        "filename": "TOP10_04_BF_00105-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_10_TOP10_04_BF_00105-Edit.jpg"
       },
       {
-        "id": "tf-02",
-        "title": "Mare di Nubi al Mirador de Chipeque",
-        "caption": "Il tramonto infuocato che tinge il mare di nubi attorno alla cima del vulcano.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-11",
+        "filename": "TOP10_05_IMG01623.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_11_TOP10_05_IMG01623.jpg"
       },
       {
-        "id": "tf-03",
-        "title": "Paesaggio Lunare di Vilaflor",
-        "caption": "Pinnacoli di tufo bianco scolpiti dal vento nella caldera meridionale.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-12",
+        "filename": "TOP10_07_FPL00171-Edit_M_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_12_TOP10_07_FPL00171-Edit_M_1.jpg"
       },
       {
-        "id": "tf-04",
-        "title": "L'Osservatorio del Teide sotto le Stelle",
-        "caption": "I telescopi solari ed astrofisici illuminati solo dalla luce zodiacale.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-13",
+        "filename": "TOP10_08_A7R00028-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_13_TOP10_08_A7R00028-Edit.jpg"
       },
       {
-        "id": "tf-05",
-        "title": "Punta de Teno e il Faro",
-        "caption": "Scogliere a picco e onde oceaniche al calare della notte atlantica.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-14",
+        "filename": "A7R00001-Enhanced-NR-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_14_A7R00001-Enhanced-NR-Edit.jpg"
       },
       {
-        "id": "tf-06",
-        "title": "Foresta di Laurisilva ad Anaga",
-        "caption": "Nebbie fitte e felci giganti nel polmone verde più antico dell'isola.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-15",
+        "filename": "A7R00018-Edit_K_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_15_A7R00018-Edit_K_1.jpg"
       },
       {
-        "id": "tf-07",
-        "title": "Pini Canari tra la Lava",
-        "caption": "Resistenza e contrasti cromatici tra aghi verdi e basalto nero vulcanico.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-16",
+        "filename": "A7R00074-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_16_A7R00074-Edit.jpg"
       },
       {
-        "id": "tf-08",
-        "title": "Alba sul Cratere del Pico Viejo",
-        "caption": "I primi raggi che disegnano l'ombra piramidale del Teide sull'oceano.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-17",
+        "filename": "A7R00076-Enhanced-NR.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_17_A7R00076-Enhanced-NR.jpg"
       },
       {
-        "id": "tf-09",
-        "title": "Cielo Profondo su Las Cañadas",
-        "caption": "Dettaglio delle nebulose della Via Lattea in assenza di inquinamento luminoso.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-18",
+        "filename": "A7R00081-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_18_A7R00081-Edit.jpg"
       },
       {
-        "id": "tf-10",
-        "title": "I Giganti dall'Oceano",
-        "caption": "Scogliere monumentali di Los Gigantes che scendono verticali nell'Atlantico.",
-        "image": "assets/minorca_photo_tour.png"
+        "id": "islanda-19",
+        "filename": "A7R00329-Enhanced-NR-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_19_A7R00329-Enhanced-NR-Edit.jpg"
+      },
+      {
+        "id": "islanda-20",
+        "filename": "DSC00021_I_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_20_DSC00021_I_1.jpg"
+      },
+      {
+        "id": "islanda-21",
+        "filename": "FPL00131-Edit_M_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_21_FPL00131-Edit_M_1.jpg"
+      },
+      {
+        "id": "islanda-22",
+        "filename": "FPL00179-HDR-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_22_FPL00179-HDR-Edit.jpg"
+      },
+      {
+        "id": "islanda-23",
+        "filename": "FPL00195-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_23_FPL00195-Edit.jpg"
+      },
+      {
+        "id": "islanda-24",
+        "filename": "Kirkjufell_NorthernLights_2.jpg",
+        "badge": null,
+        "image": "assets/galleries/islanda/islanda_24_Kirkjufell_NorthernLights_2.jpg"
       }
     ]
   },
@@ -1031,70 +1043,271 @@ const DEFAULT_GALLERIES_DATA = [
     "id": "madeira",
     "name": "Madeira",
     "title": "Galleria Fotografica • Madeira",
-    "badge": "🇵🇹 10 FOTO",
-    "coverImage": "assets/azzorre_photo_tour.png",
+    "coverImage": "assets/galleries/cover_madeira.jpg",
     "accentColor": "#A855F7",
     "description": "L'isola dell'eterna primavera: scogliere a picco sull'oceano, la foresta millenaria di Fanal e vette che emergono dalle nuvole.",
     "photos": [
       {
-        "id": "md-01",
-        "title": "La Magica Nebbia di Fanal",
-        "caption": "Faggi centenari di Tis avvolti nella nebbia densa della foresta Laurissilva.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-01",
+        "filename": "1X_03_awarded-3498663.jpg",
+        "badge": "1X Awarded",
+        "image": "assets/galleries/madeira/madeira_01_1X_03_awarded-3498663.jpg"
       },
       {
-        "id": "md-02",
-        "title": "Alba sul Pico do Arieiro",
-        "caption": "Creste affilate che galleggiano su un soffice tappeto di nuvole dorate.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-02",
+        "filename": "1X_04_published-3635688.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/madeira/madeira_02_1X_04_published-3635688.jpg"
       },
       {
-        "id": "md-03",
-        "title": "Faraglioni di Ribeira da Janela",
-        "caption": "Onde imponenti dell'Atlantico che si infrangono sui giganti di roccia lavica.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-03",
+        "filename": "1X_05_published-3498663.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/madeira/madeira_03_1X_05_published-3498663.jpg"
       },
       {
-        "id": "md-04",
-        "title": "Ponta de São Lourenço",
-        "caption": "Colori ocra e scogliere battute dal vento nella penisola orientale.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-04",
+        "filename": "1X_01_accepted-3520093.jpg",
+        "badge": "1X Accepted",
+        "image": "assets/galleries/madeira/madeira_04_1X_01_accepted-3520093.jpg"
       },
       {
-        "id": "md-05",
-        "title": "Cascata Dos Anjos",
-        "caption": "La cascata naturale che cade direttamente sulla vecchia strada costiera.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-05",
+        "filename": "1X_02_accepted-3635692.jpg",
+        "badge": "1X Accepted",
+        "image": "assets/galleries/madeira/madeira_05_1X_02_accepted-3635692.jpg"
       },
       {
-        "id": "md-06",
-        "title": "Sentiero tra Pico do Arieiro e Pico Ruivo",
-        "caption": "Percorso escursionistico mozzafiato sospeso sopra le valli scoscese.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-06",
+        "filename": "TOP10_02_BF_01400-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_06_TOP10_02_BF_01400-Edit.jpg"
       },
       {
-        "id": "md-07",
-        "title": "Piscine Naturali di Porto Moniz",
-        "caption": "Bacini vulcanici scavati nella lava costantemente alimentati dalle maree.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-07",
+        "filename": "TOP10_03_A7R00463-HDR-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_07_TOP10_03_A7R00463-HDR-Edit.jpg"
       },
       {
-        "id": "md-08",
-        "title": "Miradouro do Guindaste all'Alba",
-        "caption": "La passerella di vetro sospesa sulla scogliera durante le prime luci.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-08",
+        "filename": "TOP10_04_BF_01641-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_08_TOP10_04_BF_01641-Edit.jpg"
       },
       {
-        "id": "md-09",
-        "title": "Luce Filtrante lungo la Levada",
-        "caption": "Canali d'acqua storici immersi nella vegetazione lussureggiante dell'isola.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-09",
+        "filename": "TOP10_05_A7R00317-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_09_TOP10_05_A7R00317-Edit.jpg"
       },
       {
-        "id": "md-10",
-        "title": "Tramonto a Ponta do Pargo",
-        "caption": "Il faro solitario sull'estremo lembo occidentale illuminato dagli ultimi raggi.",
-        "image": "assets/azzorre_photo_tour.png"
+        "id": "madeira-10",
+        "filename": "TOP10_06_A7R00305-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_10_TOP10_06_A7R00305-Edit.jpg"
+      },
+      {
+        "id": "madeira-11",
+        "filename": "TOP10_07_A7R00374-Pano_Edit-Recovered1.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_11_TOP10_07_A7R00374-Pano_Edit-Recovered1.jpg"
+      },
+      {
+        "id": "madeira-12",
+        "filename": "TOP10_08_A7R00033.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_12_TOP10_08_A7R00033.jpg"
+      },
+      {
+        "id": "madeira-13",
+        "filename": "TOP10_09_A7R00019-Edit_M_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_13_TOP10_09_A7R00019-Edit_M_1.jpg"
+      },
+      {
+        "id": "madeira-14",
+        "filename": "TOP10_10_BF_01560-Enhanced-NR-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/madeira/madeira_14_TOP10_10_BF_01560-Enhanced-NR-Edit.jpg"
+      }
+    ]
+  },
+  {
+    "id": "tenerife",
+    "name": "Tenerife",
+    "title": "Galleria Fotografica • Tenerife",
+    "coverImage": "assets/galleries/cover_tenerife.jpg",
+    "accentColor": "#FFB800",
+    "description": "Paesaggi lunari del Parco Nazionale del Teide, mari di nubi e uno dei cieli stellati Starlight più puri del pianeta.",
+    "photos": [
+      {
+        "id": "tenerife-01",
+        "filename": "1X_02_awarded-3496868.jpg",
+        "badge": "1X Awarded",
+        "image": "assets/galleries/tenerife/tenerife_01_1X_02_awarded-3496868.jpg"
+      },
+      {
+        "id": "tenerife-02",
+        "filename": "1X_03_awarded-3598273.jpg",
+        "badge": "1X Awarded",
+        "image": "assets/galleries/tenerife/tenerife_02_1X_03_awarded-3598273.jpg"
+      },
+      {
+        "id": "tenerife-03",
+        "filename": "1X_06_awarded-3568397.jpg",
+        "badge": "1X Awarded",
+        "image": "assets/galleries/tenerife/tenerife_03_1X_06_awarded-3568397.jpg"
+      },
+      {
+        "id": "tenerife-04",
+        "filename": "1X_04_published-3635687.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_04_1X_04_published-3635687.jpg"
+      },
+      {
+        "id": "tenerife-05",
+        "filename": "1X_07_published-3496868.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_05_1X_07_published-3496868.jpg"
+      },
+      {
+        "id": "tenerife-06",
+        "filename": "1X_08_published-3523236.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_06_1X_08_published-3523236.jpg"
+      },
+      {
+        "id": "tenerife-07",
+        "filename": "1X_09_published-3524421.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_07_1X_09_published-3524421.jpg"
+      },
+      {
+        "id": "tenerife-08",
+        "filename": "1X_10_published-3525966.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_08_1X_10_published-3525966.jpg"
+      },
+      {
+        "id": "tenerife-09",
+        "filename": "1X_11_published-3568397.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_09_1X_11_published-3568397.jpg"
+      },
+      {
+        "id": "tenerife-10",
+        "filename": "1X_12_published-3598273.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_10_1X_12_published-3598273.jpg"
+      },
+      {
+        "id": "tenerife-11",
+        "filename": "1X_13_published-3617243.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_11_1X_13_published-3617243.jpg"
+      },
+      {
+        "id": "tenerife-12",
+        "filename": "1X_14_published-3668829.jpg",
+        "badge": "1X Published",
+        "image": "assets/galleries/tenerife/tenerife_12_1X_14_published-3668829.jpg"
+      },
+      {
+        "id": "tenerife-13",
+        "filename": "1X_01_accepted-3598271.jpg",
+        "badge": "1X Accepted",
+        "image": "assets/galleries/tenerife/tenerife_13_1X_01_accepted-3598271.jpg"
+      },
+      {
+        "id": "tenerife-14",
+        "filename": "1X_05_accepted-3700272.jpg",
+        "badge": "1X Accepted",
+        "image": "assets/galleries/tenerife/tenerife_14_1X_05_accepted-3700272.jpg"
+      },
+      {
+        "id": "tenerife-15",
+        "filename": "TOP10_02_IMG00023-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_15_TOP10_02_IMG00023-Edit.jpg"
+      },
+      {
+        "id": "tenerife-16",
+        "filename": "TOP10_03_IMG00012-Modifica.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_16_TOP10_03_IMG00012-Modifica.jpg"
+      },
+      {
+        "id": "tenerife-17",
+        "filename": "TOP10_04_A7R00256-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_17_TOP10_04_A7R00256-Edit.jpg"
+      },
+      {
+        "id": "tenerife-18",
+        "filename": "TOP10_05_A7R00018-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_18_TOP10_05_A7R00018-Edit.jpg"
+      },
+      {
+        "id": "tenerife-19",
+        "filename": "TOP10_08_IMG00301-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_19_TOP10_08_IMG00301-Edit.jpg"
+      },
+      {
+        "id": "tenerife-20",
+        "filename": "TOP10_09_A7R04063-Edit-3.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_20_TOP10_09_A7R04063-Edit-3.jpg"
+      },
+      {
+        "id": "tenerife-21",
+        "filename": "35mm.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_21_35mm.jpg"
+      },
+      {
+        "id": "tenerife-22",
+        "filename": "A6700062-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_22_A6700062-Edit.jpg"
+      },
+      {
+        "id": "tenerife-23",
+        "filename": "A7R00060-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_23_A7R00060-Edit.jpg"
+      },
+      {
+        "id": "tenerife-24",
+        "filename": "A7R00417-Edit_M_1.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_24_A7R00417-Edit_M_1.jpg"
+      },
+      {
+        "id": "tenerife-25",
+        "filename": "A7R00452-Edit.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_25_A7R00452-Edit.jpg"
+      },
+      {
+        "id": "tenerife-26",
+        "filename": "A7R04059-Edit-2.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_26_A7R04059-Edit-2.jpg"
+      },
+      {
+        "id": "tenerife-27",
+        "filename": "IMG00104-Modifica-2.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_27_IMG00104-Modifica-2.jpg"
+      },
+      {
+        "id": "tenerife-28",
+        "filename": "Playa_Amarilla_Post.jpg",
+        "badge": null,
+        "image": "assets/galleries/tenerife/tenerife_28_Playa_Amarilla_Post.jpg"
       }
     ]
   }
@@ -1109,16 +1322,16 @@ async function setupGalleriesModal() {
     const res = await fetch('data/galleries.json');
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data) && data.length) {
+      if (Array.isArray(data) && data.length > 0) {
         galleriesStore = data;
       }
     }
-  } catch (e) {
-    // Failover silenzioso
+  } catch (err) {
+    // Fallback su DEFAULT_GALLERIES_DATA
   }
 
-  // Event listener per le card verticali
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
+    // Click su card galleria
     const card = e.target.closest('.gallery-vertical-card');
     if (card) {
       e.preventDefault();
@@ -1127,22 +1340,41 @@ async function setupGalleriesModal() {
       return;
     }
 
+    // Click su thumbnail foto all'interno della modale
     const photoItem = e.target.closest('.gallery-photo-item');
     if (photoItem) {
       e.preventDefault();
       const index = parseInt(photoItem.getAttribute('data-photo-index'), 10);
       openGalleryLightbox(index);
+      return;
     }
   });
 
-  // Supporto tastiera per le card
-  document.addEventListener('keydown', (e) => {
+  // Accessibilita tastiera per card
+  document.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
       const card = document.activeElement.closest('.gallery-vertical-card');
       if (card) {
         e.preventDefault();
         const galleryId = card.getAttribute('data-gallery-id');
         openGalleryModal(galleryId);
+      }
+    } else if (e.key === 'Escape') {
+      const lb = document.getElementById('gallery-lightbox-overlay');
+      if (lb && lb.classList.contains('active')) {
+        closeGalleryLightbox();
+      } else {
+        closeGalleryModal();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      const lb = document.getElementById('gallery-lightbox-overlay');
+      if (lb && lb.classList.contains('active')) {
+        prevLightboxPhoto();
+      }
+    } else if (e.key === 'ArrowRight') {
+      const lb = document.getElementById('gallery-lightbox-overlay');
+      if (lb && lb.classList.contains('active')) {
+        nextLightboxPhoto();
       }
     }
   });
@@ -1166,32 +1398,36 @@ function openGalleryModal(galleryId) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
   }[c]));
 
-  const photosHtml = (gallery.photos || []).map((photo, idx) => `
-    <div class="gallery-photo-item" data-photo-index="${idx}" tabindex="0" role="button" aria-label="${escapeHtml(photo.title)}">
-      <span class="gallery-photo-badge">${idx + 1} / 10</span>
-      <img src="${escapeHtml(photo.image)}" alt="${escapeHtml(photo.title)}" class="gallery-photo-thumb" loading="lazy" />
-      <div class="gallery-photo-info">
-        <h4 class="gallery-photo-title">${escapeHtml(photo.title)}</h4>
-        <p class="gallery-photo-caption">${escapeHtml(photo.caption)}</p>
+  const photosHtml = (gallery.photos || []).map((photo, idx) => {
+    let badgeHtml = '';
+    if (photo.badge === '1X Awarded') {
+      badgeHtml = '<span class="gallery-photo-badge badge-awarded">🏆 1X Awarded</span>';
+    } else if (photo.badge === '1X Published') {
+      badgeHtml = '<span class="gallery-photo-badge badge-published">⭐ 1X Published</span>';
+    } else if (photo.badge === '1X Accepted') {
+      badgeHtml = '<span class="gallery-photo-badge badge-accepted">✨ 1X Accepted</span>';
+    }
+
+    return `
+      <div class="gallery-photo-item" data-photo-index="${idx}" tabindex="0" role="button" aria-label="Visualizza foto a schermo intero">
+        ${badgeHtml}
+        <img src="${escapeHtml(photo.image)}" alt="Fotografia ${escapeHtml(gallery.name)}" class="gallery-photo-thumb" loading="lazy" />
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   modal.innerHTML = `
-    <div class="modal-content" style="max-width: 1040px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
+    <div class="modal-content" style="max-width: 1140px; max-height: 92vh; overflow-y: auto; text-align: left; padding: 2.25rem 2rem;">
       <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
       
       <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 1.25rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.12em;">Galleria Fotografica Ufficiale</span>
-          <h3 style="font-size: 1.85rem; color: #fff; margin: 0.25rem 0 0 0;">${escapeHtml(gallery.name)}</h3>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.12em;">Galleria Fotografica</span>
+          <h3 style="font-size: 2rem; color: #fff; margin: 0.25rem 0 0 0; font-family: var(--font-heading);">${escapeHtml(gallery.name)}</h3>
         </div>
-        <span class="gallery-card-badge" style="position: static; font-size: 0.85rem; padding: 0.4rem 1rem;">
-          ${escapeHtml(gallery.badge || '10 FOTO')}
-        </span>
       </div>
 
-      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 820px;">
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.75rem; max-width: 860px;">
         ${escapeHtml(gallery.description)}
       </p>
 
@@ -1199,7 +1435,7 @@ function openGalleryModal(galleryId) {
         ${photosHtml}
       </div>
 
-      <div style="text-align: center; margin-top: 2rem; border-top: 1px solid var(--border-glass); padding-top: 1.5rem;">
+      <div style="text-align: center; margin-top: 2.5rem; border-top: 1px solid var(--border-glass); padding-top: 1.5rem;">
         <button type="button" class="btn btn-secondary" onclick="closeGalleryModal()" style="padding: 0.65rem 2.5rem; font-size: 0.95rem;">
           Chiudi Galleria
         </button>
@@ -1229,25 +1465,33 @@ function openGalleryLightbox(index) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
   }[c]));
 
+  let badgeHtml = '';
+  if (photo.badge === '1X Awarded') {
+    badgeHtml = '<span class="gallery-photo-badge badge-awarded" style="position: static; font-size: 0.85rem; padding: 0.35rem 0.85rem;">🏆 1X Awarded</span>';
+  } else if (photo.badge === '1X Published') {
+    badgeHtml = '<span class="gallery-photo-badge badge-published" style="position: static; font-size: 0.85rem; padding: 0.35rem 0.85rem;">⭐ 1X Published</span>';
+  } else if (photo.badge === '1X Accepted') {
+    badgeHtml = '<span class="gallery-photo-badge badge-accepted" style="position: static; font-size: 0.85rem; padding: 0.35rem 0.85rem;">✨ 1X Accepted</span>';
+  }
+
   lb.innerHTML = `
-    <div class="modal-content" style="max-width: 900px; padding: 1.5rem; text-align: center; background: rgba(4, 9, 20, 0.95); border: 1px solid var(--border-glow);">
-      <button class="modal-close" onclick="closeGalleryLightbox()">&times;</button>
+    <div class="gallery-lightbox-modal">
+      <button class="modal-close" onclick="closeGalleryLightbox()" title="Chiudi (Esc)">&times;</button>
       
-      <div style="position: relative; overflow: hidden; border-radius: var(--radius-md); max-height: 62vh; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="${escapeHtml(photo.image)}" alt="${escapeHtml(photo.title)}" style="width: 100%; height: auto; max-height: 60vh; object-fit: contain;" />
+      <!-- Frecce di Navigazione Laterali -->
+      <button type="button" class="lightbox-nav-arrow prev" onclick="prevLightboxPhoto()" aria-label="Foto precedente (Freccia Sinistra)">&#10094;</button>
+      <button type="button" class="lightbox-nav-arrow next" onclick="nextLightboxPhoto()" aria-label="Foto successiva (Freccia Destra)">&#10095;</button>
+
+      <div style="position: relative; overflow: hidden; border-radius: var(--radius-md); max-height: 80vh; display: flex; align-items: center; justify-content: center; background: #000;">
+        <img src="${escapeHtml(photo.image)}" alt="Fotografia ${escapeHtml(currentActiveGallery.name)}" style="width: auto; height: auto; max-width: 90vw; max-height: 78vh; object-fit: contain; display: block;" />
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; text-align: left; gap: 1rem; flex-wrap: wrap;">
-        <div>
-          <div style="font-size: 0.78rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase;">
-            ${escapeHtml(currentActiveGallery.name)} • Foto ${index + 1} di ${currentActiveGallery.photos.length}
-          </div>
-          <h4 style="font-size: 1.2rem; color: #fff; margin: 0.2rem 0;">${escapeHtml(photo.title)}</h4>
-          <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;">${escapeHtml(photo.caption)}</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1rem; padding: 0 0.5rem; min-height: 32px;">
+        <div style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;">
+          ${escapeHtml(currentActiveGallery.name)}
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button type="button" class="carousel-nav-btn" onclick="prevLightboxPhoto()" aria-label="Foto precedente">←</button>
-          <button type="button" class="carousel-nav-btn" onclick="nextLightboxPhoto()" aria-label="Foto successiva">→</button>
+        <div>
+          ${badgeHtml}
         </div>
       </div>
     </div>
@@ -1277,6 +1521,4 @@ function closeGalleryLightbox() {
   const lb = document.getElementById('gallery-lightbox-overlay');
   if (lb) lb.classList.remove('active');
 }
-
-
 
